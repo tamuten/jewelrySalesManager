@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title>売上一覧画面</title>
+</head>
+<body>
+	<div th:fragment="salesList_contents" class="h-100 w-100 uriage">
+		<div class="content-title border-bottom">
+			<h3>売上一覧</h3>
+		</div>
+		<div class="search-area d-flex w-25">
+			<input type="text" class="form-control mr-1 date" />
+			<button type="button" class="btn">検索</button>
+		</div>
+		<table id="salesList-table" class="table table-sm text-center" style="width: 100%;">
+			<thead class="thead-dark">
+				<tr>
+					<th style="width:11%;">受注日</th>
+					<th>計上日</th>
+					<th>売場</th>
+					<th>KS担当</th>
+					<th colspan="3" style="width: 9%;">品名</th>
+					<th class="">番号1</th>
+					<th>番号2</th>
+					<th>上代</th>
+					<th>下代</th>
+					<th>仕切日</th>
+					<th>仕切No</th>
+					<th>所属</th>
+					<th>担当者</th>
+					<th>客名</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>2022/02/07</td>
+					<td>2022/02/07</td>
+					<td>外商</td>
+					<td>田村</td>
+					<td>Pt</td>
+					<td>Lg</td>
+					<td>ho</td>
+					<td>SRW51</td>
+					<td>119851</td>
+					<td>500,000</td>
+					<td>400,000</td>
+					<td>2022/02/07</td>
+					<td>541369</td>
+					<td>外商</td>
+					<td>川村</td>
+					<td>山田正</td>
+					<td class="align-middle" ><button type="button" class="btn btn-sm">編集</button></td>
+				</tr>
+								<tr>
+					<td>2022/02/06</td>
+					<td>2022/02/06</td>
+					<td>店頭</td>
+					<td>田中</td>
+					<td>Pt</td>
+					<td>Lg</td>
+					<td>??</td>
+					<td>SRW51</td>
+					<td>119851</td>
+					<td>511,000</td>
+					<td>411,000</td>
+					<td>2022/02/06</td>
+					<td>541369</td>
+					<td>店頭</td>
+					<td>佐藤</td>
+					<td>髙橋太郎</td>
+					<td class="align-middle" ><button type="button" class="btn btn-sm">編集</button></td>
+				</tr>
+								<tr>
+					<td>2022/02/06</td>
+					<td>2022/02/06</td>
+					<td>店頭</td>
+					<td>中村</td>
+					<td>Pt</td>
+					<td>Lg</td>
+					<td>ho</td>
+					<td>SRW51</td>
+					<td>119851</td>
+					<td>500,000</td>
+					<td>400,000</td>
+					<td>2022/02/06</td>
+					<td>541369</td>
+					<td>店頭</td>
+					<td>鈴木</td>
+					<td>佐藤一郎</td>
+					<td class="align-middle" ><button type="button" class="btn btn-sm">編集</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

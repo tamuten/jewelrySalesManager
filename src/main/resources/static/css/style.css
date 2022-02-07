@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+html, body {
+	height: 100%;
+	overflow-y: hidden;
+	font-size: 14px;
+	font-family: "Helvetica Neue", "Helvetica", "Hiragino Sans",
+		"Hiragino Kaku Gothic ProN", "Arial", "Yu Gothic", "Meiryo",
+		sans-serif;
+}
+
+input:focus {
+	outline: none;
+}
+
+.login-wrapper {
+	max-width:400px;
+	display:block;
+	margin:auto;
+}
+
+.login-container {
+	display:flex;
+	align-items:center;
+	height:100%;
+}
+
+.main {
+	height: calc(100% - 50px);
+}
+
+.uriage {
+	padding: 10px;
+}
+
+.content-title {
+	margin-bottom: 10px;
+}
+
+.table {
+	margin-top: 10px;
+	table-layout: fixed;
+}
+
+.table input[type="text"] {
+	padding:0.25rem;
+}
+
+#addRow {
+	margin-left: auto;
+	margin-right:5px;
+}

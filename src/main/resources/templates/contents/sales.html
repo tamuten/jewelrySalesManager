@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title>売上登録画面</title>
+</head>
+<body>
+	<div th:fragment="sales_contents" class="h-100 w-100 uriage">
+		<div class="content-title border-bottom">
+			<h3>売上登録</h3>
+		</div>
+		<div class="d-flex">
+			<button type="button" class="btn" id="addRow">行追加</button>
+			<button type="button" class="btn" id="removeRow">行削除</button>
+		</div>
+
+		<table id="sales-table" class="table table-sm text-center " style="width: 100%;">
+			<thead class="thead-light">
+				<tr>
+					<th>受注日</th>
+					<th>計上日</th>
+					<th>売場</th>
+					<th>KS担当</th>
+					<th colspan="3" style="width: 9%;">品名</th>
+					<th class="">番号1</th>
+					<th>番号2</th>
+					<th>上代</th>
+					<th>下代</th>
+					<th>仕切日</th>
+					<th>仕切No</th>
+					<th>所属</th>
+					<th>担当者</th>
+					<th>客名</th>
+					<th style="width: 2%;"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="text" class="form-control form-control-sm date"></td>
+					<td><input type="text" class="form-control form-control-sm date"></td>
+					<td><select class="form-control form-control-sm">
+							<option></option>
+							<option>外商</option>
+							<option>店頭</option>
+							<option>売場1</option>
+							<option>売場2</option>
+							<option>売場3</option>
+					</select></td>
+					<td><select class="form-control form-control-sm">
+							<option></option>
+							<option>佐藤</option>
+							<option>田中</option>
+							<option>鈴木</option>
+							<option>伊藤</option>
+							<option>髙橋</option>
+					</select></td>
+					<td><input type="text" class="form-control form-control-sm"></td>
+					<td><input type="text" class="form-control form-control-sm"></td>
+					<td><input type="text" class="form-control form-control-sm"></td>
+					<td><input type="text" class="form-control form-control-sm"></td>
+					<td><input type="text" class="form-control form-control-sm"></td>
+					<td><input type="text" class="form-control form-control-sm"></td>
+					<td><input type="text" class="form-control form-control-sm"></td>
+					<td><input type="text" class="form-control form-control-sm date"></td>
+					<td><input type="text" class="form-control form-control-sm"></td>
+					<td><select class="form-control form-control-sm">
+							<option></option>
+							<option>外商</option>
+							<option>店頭</option>
+							<option>売場1</option>
+							<option>売場2</option>
+							<option>売場3</option>
+					</select></td>
+					<td><select class="form-control form-control-sm">
+							<option></option>
+							<option>佐藤</option>
+							<option>田中</option>
+							<option>鈴木</option>
+							<option>伊藤</option>
+							<option>髙橋</option>
+					</select></td>
+					<td><input type="text" class="form-control form-control-sm"></td>
+					<td class="align-middle" ><input type="checkbox" class="position-static"> </td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="btns d-flex justify-content-between">
+			<button type="button" class="btn btn-lg ">戻る</button>
+			<button type="button" class="btn btn-lg btn-primary">登録</button>
+		</div>
+	</div>
+</body>
+</html>
