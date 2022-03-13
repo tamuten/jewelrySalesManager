@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tantosha {
+public class Shozoku {
 	private Integer id;
 	private String name;
-	private Shozoku shozoku;
-	private String role;
 }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title>担当者一覧</title>
+</head>
+<body>
+	<div th:fragment="tantoshaList_contents" class="h-100 w-100 uriage">
+		<div class="content-title border-bottom">
+			<h3>担当者一覧</h3>
+		</div>
+		<table class="table">
+		<thead>
+			<tr>
+				<td></td>
+				<td>担当者名</td>
+				<td>権限</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="tantosha : ${tantoshaList}">
+				<td th:text="${tantosha.id}"></td>
+				<td th:text="${tantosha.name}"></td>
+				<th:block th:switch="${tantosha.role}">
+					<td th:case="ROLE_ADMIN" th:text="管理者"></td>
+					<td th:case="ROLE_GENERAL" th:text="一般"></td>
+				</th:block>
+				<td><a class="btn btn-sm btn-primary" th:href="@{'/tantosha/' + ${tantosha.id}}">詳細</a></td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+</body>
+</html>

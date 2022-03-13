@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jewelry.domain.repository.mapper.TantoshaMapper">
+	<select id="findAll" resultMap="tantoshaResultMap">
+		SELECT id, name, role FROM tantosha ORDER BY id
+	</select>
+
+	<resultMap type="com.jewelry.domain.model.Tantosha" id="tantoshaResultMap">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="role" column="role" />
+		<association property="shozoku" column="shozoku_id" javaType="ArrayList" select="findTantoshaShozoku"></association>
+ 	</resultMap>
+ 	<select id="findTantoshaShozoku" parameterType="integer" resultType="com.jewelry.domain.model.Shozoku">
+ 		SELECT id, name FROM shozoku WHERE id = #{shozokuId}
+ 	</select>
+
+	<select id="selectOne" parameterType="integer" resultType="com.jewelry.domain.model.Tantosha">
+		SELECT * FROM tantosha WHERE id = #{id}
+	</select>
 	<insert id="insertOne" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO tantosha (name, delete_flg, signup_datetime, update_datetime) VALUES (#{name}, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+		INSERT INTO tantosha (name, shozoku_id, role) VALUES (#{name}, #{shozokuId}, #{role})
 	</insert>
+	<update id="updateOne" parameterType="com.jewelry.domain.model.Tantosha">
+		UPDATE tantosha SET name = #{name}, role = #{role} WHERE id = #{id}
+	</update>
+	<update id="deleteOne" parameterType="integer">
+		DELETE FROM tantosha WHERE id = #{id}
+	</update>
 </mapper>
