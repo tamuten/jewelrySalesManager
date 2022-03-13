@@ -16,9 +16,7 @@ public class MvcConfigTest {
 
 	@Test
 	void 遷移のテスト() throws Exception {
-
 		transitionTest("/login", "login");
-		//		transitionTest("/", "homeLayout");
 	}
 
 	void transitionTest(String pass, String viewName) throws Exception {
