@@ -10,18 +10,21 @@
 		<div class="content-title border-bottom">
 			<h3>担当者一覧</h3>
 		</div>
-		<table class="table">
+		<table class="table w-50">
 		<thead>
 			<tr>
 				<td></td>
 				<td>担当者名</td>
+				<td>所属</td>
 				<td>権限</td>
+				<td></td>
 			</tr>
 		</thead>
 		<tbody>
 			<tr th:each="tantosha : ${tantoshaList}">
 				<td th:text="${tantosha.id}"></td>
 				<td th:text="${tantosha.name}"></td>
+				<td th:text="${tantosha.shozoku.name}"></td>
 				<th:block th:switch="${tantosha.role}">
 					<td th:case="ROLE_ADMIN" th:text="管理者"></td>
 					<td th:case="ROLE_GENERAL" th:text="一般"></td>

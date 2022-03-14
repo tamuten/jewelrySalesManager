@@ -15,9 +15,16 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.transaction.annotation.Transactional;
 
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.DbUnitConfiguration;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
+import com.jewelry.dataset.CsvDataSetLoader;
+import com.jewelry.domain.model.Shozoku;
 import com.jewelry.domain.model.Tantosha;
 
 @SpringBootTest
+@DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class) // DBUnitでCSVファイルを使えるよう指定。
 @TestExecutionListeners({
 		DependencyInjectionTestExecutionListener.class, // このテストクラスでDIを使えるように指定
 		TransactionDbUnitTestExecutionListener.class // @DatabaseSetupや＠ExpectedDatabaseなどを使えるように指定
@@ -35,6 +42,22 @@ public class TantoshaServiceTest {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
+	@Test
+	@DatabaseSetup("/testdata/TantoshaServiceTest/init-data")
+	@ExpectedDatabase(value = "/testdata/TantoshaServiceTest/after-create-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
+	void 担当者作成のテスト_DBチェック() {
+		Shozoku newShozoku = Shozoku.builder()
+			.id(1)
+			.build();
+		Tantosha newTantosha = Tantosha.builder()
+			.name("田中一郎")
+			.shozoku(newShozoku)
+			.role(ROLE_ADMIN)
+			.build();
+		tantoshaService.create(newTantosha);
+	}
+
+	@DatabaseSetup("/testdata/TantoshaServiceTest/init-data")
 	@Test
 	void 担当者作成のテスト() {
 
@@ -60,9 +83,12 @@ public class TantoshaServiceTest {
 	}
 
 	void 正常系のテスト(String name, int shozoku_id, String role, int expectedId) {
+		Shozoku newShozoku = Shozoku.builder()
+			.id(shozoku_id)
+			.build();
 		Tantosha newTantosha = Tantosha.builder()
 			.name(name)
-			//			.shozokuId(shozoku_id)
+			.shozoku(newShozoku)
 			.role(role)
 			.build();
 
@@ -70,26 +96,27 @@ public class TantoshaServiceTest {
 		assertEquals(1, createdCount);
 		assertEquals(expectedId, newTantosha.getId());
 
-		Map<String, Object> createdTantosha = jdbcTemplate
-			.queryForMap("SELECT name, shozoku_id, role FROM tantosha WHERE id = " + String.valueOf(expectedId));
-		assertEquals(name, createdTantosha.get("name"));
-		assertEquals(shozoku_id, createdTantosha.get("shozoku_id"));
-		assertEquals(role, createdTantosha.get("role"));
 	}
 
 	void 制約違反のテスト(String name, int shozoku_id, String role) {
+		Shozoku newShozoku = Shozoku.builder()
+			.id(shozoku_id)
+			.build();
 		Tantosha newTantosha = Tantosha.builder()
 			.name(name)
-			//			.shozokuId(shozoku_id)
+			.shozoku(newShozoku)
 			.role(role)
 			.build();
 		assertThrows(DataIntegrityViolationException.class, () -> tantoshaService.create(newTantosha));
 	}
 
 	void 存在しない所属IDのテスト(String name, int shozoku_id, String role) {
+		Shozoku newShozoku = Shozoku.builder()
+			.id(shozoku_id)
+			.build();
 		Tantosha newTantosha = Tantosha.builder()
 			.name(name)
-			//			.shozokuId(shozoku_id)
+			.shozoku(newShozoku)
 			.role(role)
 			.build();
 		assertThrows(DataIntegrityViolationException.class, () -> tantoshaService.create(newTantosha));

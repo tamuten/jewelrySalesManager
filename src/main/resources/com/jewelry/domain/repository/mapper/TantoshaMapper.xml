@@ -2,26 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jewelry.domain.repository.mapper.TantoshaMapper">
 	<select id="findAll" resultMap="tantoshaResultMap">
-		SELECT id, name, role FROM tantosha ORDER BY id
+		SELECT ta.id, ta.name, ta.role, sho.id as shozoku_id, sho.name as shozoku_name FROM tantosha ta INNER JOIN shozoku sho ON ta.shozoku_id = sho.id ORDER BY ta.id
 	</select>
 
-	<resultMap type="com.jewelry.domain.model.Tantosha" id="tantoshaResultMap">
+	<resultMap type="Tantosha" id="tantoshaResultMap">
 		<id property="id" column="id" />
 		<result property="name" column="name" />
 		<result property="role" column="role" />
-		<association property="shozoku" column="shozoku_id" javaType="ArrayList" select="findTantoshaShozoku"></association>
+		<association property="shozoku" column="shozoku_id" javaType="Shozoku">
+			<result property="id" column="shozoku_id"/>
+			<result property="name" column="shozoku_name"/>
+		</association>
  	</resultMap>
- 	<select id="findTantoshaShozoku" parameterType="integer" resultType="com.jewelry.domain.model.Shozoku">
- 		SELECT id, name FROM shozoku WHERE id = #{shozokuId}
- 	</select>
 
-	<select id="selectOne" parameterType="integer" resultType="com.jewelry.domain.model.Tantosha">
+	<select id="selectOne" parameterType="integer" resultType="Tantosha">
 		SELECT * FROM tantosha WHERE id = #{id}
 	</select>
 	<insert id="insertOne" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO tantosha (name, shozoku_id, role) VALUES (#{name}, #{shozokuId}, #{role})
+		INSERT INTO tantosha (name, shozoku_id, role) VALUES (#{name}, #{shozoku.id}, #{role})
 	</insert>
-	<update id="updateOne" parameterType="com.jewelry.domain.model.Tantosha">
+	<update id="updateOne" parameterType="Tantosha">
 		UPDATE tantosha SET name = #{name}, role = #{role} WHERE id = #{id}
 	</update>
 	<update id="deleteOne" parameterType="integer">

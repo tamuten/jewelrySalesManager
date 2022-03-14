@@ -40,18 +40,25 @@
 							class="dropdown-item" th:href="@{/salesList}">売上一覧</a>
 					</div>
 				</div>
-				<!--				<div class="dropdown">
-					<a id="sample"
+				<div class="dropdown">
+					<button type="button" id="customer"
 						class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="false">サンプル</a>
-					<div class="dropdown-menu" aria-labelledby="sample">
-						<a class="dropdown-item" th:href="@{/sales}">サンプル１</a> <a
-							class="dropdown-item" th:href="@{/salesList}">サンプル２</a>
+						aria-haspopup="true" aria-expanded="false">顧客</button>
+					<div class="dropdown-menu" aria-labelledby="customer">
+						<a class="dropdown-item" th:href="@{/customer/list}">顧客一覧</a>
+						<a class="dropdown-item" th:href="@{/customer/signup}">顧客登録</a>
 					</div>
-				</div>-->
+				</div>
+				<div class="dropdown">
+					<button type="button" id="master"
+						class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false">マスタ</button>
+					<div class="dropdown-menu" aria-labelledby="master">
+						<a class="dropdown-item" th:href="@{/tantosha/list}">担当者一覧</a>
+						<a class="dropdown-item" th:href="@{/shozoku/list}">所属一覧</a>
+					</div>
+				</div>
 			</div>
-
-
 			<form method="post" th:action="@{/logout}">
 				<button class="btn btn-link pull-right navbar-brand" type="submit">
 					ログアウト</button>

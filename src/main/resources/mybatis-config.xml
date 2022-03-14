@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!-- 設定３：TypeAlias-->
+    <typeAliases>
+        <typeAlias type="com.jewelry.domain.model.Tantosha" alias="Tantosha"/>
+        <typeAlias type="com.jewelry.domain.model.Shozoku" alias="Shozoku"/>
+    </typeAliases>
+
+</configuration>
