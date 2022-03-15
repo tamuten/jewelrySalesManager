@@ -1,0 +1,4 @@
+id,name,shozoku_id,role
+1,admin,1,ROLE_ADMIN
+2,user,4,ROLE_GENERAL
+3,更新後,1,ROLE_ADMIN

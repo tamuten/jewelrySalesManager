@@ -22,7 +22,7 @@
 		INSERT INTO tantosha (name, shozoku_id, role) VALUES (#{name}, #{shozoku.id}, #{role})
 	</insert>
 	<update id="updateOne" parameterType="Tantosha">
-		UPDATE tantosha SET name = #{name}, role = #{role} WHERE id = #{id}
+		UPDATE tantosha SET name = #{name}, shozoku_id = #{shozoku.id}, role = #{role} WHERE id = #{id}
 	</update>
 	<update id="deleteOne" parameterType="integer">
 		DELETE FROM tantosha WHERE id = #{id}
