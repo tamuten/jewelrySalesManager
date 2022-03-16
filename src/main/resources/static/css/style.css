@@ -9,20 +9,29 @@ html, body {
 		sans-serif;
 }
 
+p, h1, h2, h3, h4, h5 {
+	padding: 0;
+	margin: 0;
+}
+
 input:focus {
 	outline: none;
 }
 
+.table td {
+	vertical-align:middle;
+}
+
 .login-wrapper {
-	max-width:400px;
-	display:block;
-	margin:auto;
+	max-width: 400px;
+	display: block;
+	margin: auto;
 }
 
 .login-container {
-	display:flex;
-	align-items:center;
-	height:100%;
+	display: flex;
+	align-items: center;
+	height: 100%;
 }
 
 .main {
@@ -34,7 +43,7 @@ input:focus {
 }
 
 .content-title {
-	margin-bottom: 10px;
+	padding-bottom: 10px;
 }
 
 .table {
@@ -43,10 +52,10 @@ input:focus {
 }
 
 .table input[type="text"] {
-	padding:0.25rem;
+	padding: 0.25rem;
 }
 
 #addRow {
 	margin-left: auto;
-	margin-right:5px;
+	margin-right: 5px;
 }

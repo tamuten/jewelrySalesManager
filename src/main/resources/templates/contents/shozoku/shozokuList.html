@@ -22,7 +22,7 @@
 			<tr th:each="shozoku : ${shozokuList}">
 				<td th:text="${shozoku.id}"></td>
 				<td th:text="${shozoku.name}"></td>
-				<td><!-- <a class="btn btn-sm btn-primary" th:href="@{'/tantosha/' + ${tantosha.id}}">詳細</a> --></td>
+				<td><a class="btn btn-sm btn-primary" th:href="@{'/shozoku/detail/' + ${shozoku.id}}">詳細</a></td>
 			</tr>
 		</tbody>
 	</table>

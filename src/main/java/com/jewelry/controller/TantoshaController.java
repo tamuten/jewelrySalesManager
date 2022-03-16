@@ -21,7 +21,7 @@ public class TantoshaController {
 	public String getList(Model model) {
 		List<Tantosha> tantoshaList = service.findAll();
 
-		model.addAttribute("contents", "contents/tantoshaList :: tantoshaList_contents");
+		model.addAttribute("contents", "contents/tantosha/tantoshaList :: tantoshaList_contents");
 		model.addAttribute("tantoshaList", tantoshaList);
 		return "homeLayout";
 	}
