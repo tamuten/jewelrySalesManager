@@ -24,10 +24,10 @@ public class SalesControllerTest {
 		mockMvc.perform(get("/sales"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("homeLayout"))
-			.andExpect(model().attribute("contents", "contents/sales :: sales_contents"));
+			.andExpect(model().attribute("contents", "contents/sales/sales :: sales_contents"));
 		mockMvc.perform(get("/salesList"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("homeLayout"))
-			.andExpect(model().attribute("contents", "contents/salesList :: salesList_contents"));
+			.andExpect(model().attribute("contents", "contents/sales/salesList :: salesList_contents"));
 	}
 }

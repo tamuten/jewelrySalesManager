@@ -10,9 +10,10 @@ import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -24,12 +25,15 @@ import com.jewelry.domain.service.TantoshaService;
 public class TantoshaControllerTest {
 	private MockMvc mockMvc;
 
-	@MockBean
+	@Mock
 	private TantoshaService service;
+
+	@InjectMocks
+	private TantoshaController controller;
 
 	@BeforeEach
 	void setup() {
-		this.mockMvc = MockMvcBuilders.standaloneSetup(new TantoshaController())
+		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
 			.build();
 	}
 
@@ -42,7 +46,7 @@ public class TantoshaControllerTest {
 		MvcResult result = mockMvc.perform(get("/tantosha/list"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("homeLayout"))
-			.andExpect(model().attribute("contents", "contents/tantoshaList :: tantoshaList_contents"))
+			.andExpect(model().attribute("contents", "contents/tantosha/tantoshaList :: tantoshaList_contents"))
 			.andReturn();
 
 		Map<String, Object> model = result.getModelAndView()

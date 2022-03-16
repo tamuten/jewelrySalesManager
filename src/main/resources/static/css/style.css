@@ -14,12 +14,16 @@ p, h1, h2, h3, h4, h5 {
 	margin: 0;
 }
 
+.alert {
+	margin-top: 1rem;
+}
+
 input:focus {
 	outline: none;
 }
 
 .table td {
-	vertical-align:middle;
+	vertical-align: middle;
 }
 
 .login-wrapper {
