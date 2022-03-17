@@ -6,7 +6,7 @@
 <title>所属</title>
 </head>
 <body>
-	<div th:fragment="shozoku_contents" class="h-100 w-100 uriage">
+	<div th:fragment="shozoku_contents" class="h-100 w-100">
 		<div class="content-title border-bottom">
 			<h3>所属詳細</h3>
 		</div>
@@ -19,7 +19,7 @@
 				<p th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect.</p>
 			</div>
 			<div class="w-25">
-				<table class="table align-middel">
+				<table class="table table-sm align-middle">
 					<tbody>
 						<tr>
 							<td>id</td>

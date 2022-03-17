@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS tantosha CASCADE;
 CREATE TABLE tantosha (
   id serial PRIMARY KEY,
   name varchar(50) NOT NULL,
-  shozoku_id integer NOT NULL,
+  shozoku_id integer NOT NULL REFERENCES shozoku(id),
   role varchar(50) NOT NULL
 );
 
@@ -26,7 +26,7 @@ CREATE TABLE customers (
   mail_address varchar(100),
   address varchar(100),
   memo varchar(200),
-  tantosha_id integer
+  tantosha_id integer REFERENCES tantosha(id)
 );
 
 DROP TABLE IF EXISTS orders CASCADE;
@@ -43,5 +43,5 @@ CREATE TABLE orders (
   gedai integer,
   shikiri_date date,
   shikiri_no varchar(10),
-  customer_id integer NOT NULL
+  customer_id integer NOT NULL REFERENCES customers(id)
 );

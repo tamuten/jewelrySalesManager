@@ -57,4 +57,32 @@ public class TantoshaControllerTest {
 		List<Tantosha> tantoshaList = (List<Tantosha>) model.get("tantoshaList");
 		assertTrue(tantoshaList.isEmpty());
 	}
+
+	@Test
+	void 一件表示() {
+		// TODO:
+	}
+
+	@Test
+	void 更新_正常() {
+		// TODO:
+	}
+
+	@Test
+	void 登録_バリデーションエラー() {
+		// TODO: 空文字
+		// TODO: null
+		// TODO: 文字数オーバー
+	}
+
+	@Test
+	void 登録_正常() {
+		// TODO:
+	}
+
+	@Test
+	void 削除() {
+		// TODO:
+	}
+
 }

@@ -64,4 +64,16 @@ public class ShozokuController {
 		return detail(form, form.getId(), model);
 	}
 
+	@GetMapping("/signup")
+	public String signup() {
+		// TODO:
+		return "homeLayout";
+	}
+
+	@PostMapping("/delete")
+	public String delete() {
+		// TODO:
+		return "homeLayout";
+	}
+
 }

@@ -6,11 +6,11 @@
 <title>担当者一覧</title>
 </head>
 <body>
-	<div th:fragment="tantoshaList_contents" class="h-100 w-100 uriage">
+	<div th:fragment="tantoshaList_contents" class="h-100 w-100">
 		<div class="content-title border-bottom">
 			<h3>担当者一覧</h3>
 		</div>
-		<table class="table w-50">
+		<table class="table table-sm w-50">
 		<thead>
 			<tr>
 				<td></td>
@@ -29,7 +29,7 @@
 					<td th:case="ROLE_ADMIN" th:text="管理者"></td>
 					<td th:case="ROLE_GENERAL" th:text="一般"></td>
 				</th:block>
-				<td><a class="btn btn-sm btn-primary" th:href="@{'/tantosha/' + ${tantosha.id}}">詳細</a></td>
+				<td><a class="btn btn-sm btn-primary" th:href="@{'/tantosha/detail/' + ${tantosha.id}}">詳細</a></td>
 			</tr>
 		</tbody>
 	</table>

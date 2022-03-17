@@ -41,7 +41,7 @@ public class ShozokuControllerTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	void 全件表示のテスト() throws Exception {
+	void 全件表示() throws Exception {
 		Mockito.when(service.findAll())
 			.thenReturn(List.of(new Shozoku(1, "食品")));
 
@@ -64,7 +64,13 @@ public class ShozokuControllerTest {
 	}
 
 	@Test
-	void 更新のテスト() throws Exception {
+	void 一件表示() {
+		// TODO:
+	}
+
+	@Test
+	void 更新_バリデーションエラー() throws Exception {
+		// 空文字
 		ShozokuForm form = new ShozokuForm();
 		form.setId(1);
 		form.setName("");
@@ -83,5 +89,31 @@ public class ShozokuControllerTest {
 		String mes = bindResult.getFieldError()
 			.getDefaultMessage();
 		assertEquals("名前は1文字以上50文字以下で入力してください。", mes);
+
+		// TODO: null
+		// TODO: 文字数オーバー
 	}
+
+	@Test
+	void 更新_正常() {
+		// TODO:
+	}
+
+	@Test
+	void 登録_バリデーションエラー() {
+		// TODO: 空文字
+		// TODO: null
+		// TODO: 文字数オーバー
+	}
+
+	@Test
+	void 登録_正常() {
+		// TODO:
+	}
+
+	@Test
+	void 削除() {
+		// TODO:
+	}
+
 }
