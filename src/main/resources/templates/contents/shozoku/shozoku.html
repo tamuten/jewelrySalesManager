@@ -8,8 +8,8 @@
 <body>
 	<div th:fragment="shozoku_contents" class="h-100 w-100">
 		<div class="content-title border-bottom">
-			<h3 th:if="__${displayMode == 'update'}__">所属詳細</h3>
-			<h3 th:if="__${displayMode == 'signup'}__">所属</h3>
+			<h2 th:if="__${displayMode == 'update'}__">所属詳細</h2>
+			<h2 th:if="__${displayMode == 'signup'}__">所属登録</h2>
 		</div>
 		<form th:object="${shozokuForm}" method="post"
 			th:action="@{/shozoku/update}">
@@ -17,8 +17,9 @@
 				<p th:text="${message}"></p>
 			</div>
 			<div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
-				<p th:each="err : ${#fields.errors('*')}" th:text="${err}">Input
-					is incorrect.</p>
+				<th:block th:each="err : ${#fields.errors('*')}">
+					<p th:text="${err}">Input is incorrect.</p>
+				</th:block>
 			</div>
 			<div class="w-25">
 				<table class="table table-sm align-middle">

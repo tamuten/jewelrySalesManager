@@ -8,7 +8,10 @@
 <body>
 	<div th:fragment="shozokuList_contents" class="h-100 w-100">
 		<div class="content-title border-bottom">
-			<h3>所属一覧</h3>
+			<h2>所属一覧</h2>
+		</div>
+		<div class="signupBtn">
+			<input type="button" class="btn btn-success" value="新規登録" th:onclick="@{location.href='/shozoku/signup'}" />
 		</div>
 		<div th:if="${message}" class="alert alert-success">
 			<p th:text="${message}"></p>

@@ -78,7 +78,7 @@ public class ShozokuControllerTest {
 
 	@Test
 	void 更新_バリデーションエラー() throws Exception {
-		// 空文字
+		// TODO: 空文字
 		ShozokuForm form = new ShozokuForm();
 		form.setId(1);
 		form.setName("");
@@ -105,6 +105,17 @@ public class ShozokuControllerTest {
 	@Test
 	void 更新_正常() {
 		// TODO:
+	}
+
+	@Test
+	void 登録画面表示のテスト() throws Exception {
+		mockMvc.perform(get("/shozoku/signup"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("homeLayout"))
+			.andExpect(model().attribute("displayMode", "signup"))
+			.andExpect(model().attribute("contents", "contents/shozoku/shozoku :: shozoku_contents"))
+			.andExpect(model().attribute("shozokuForm", hasProperty("id", nullValue())))
+			.andExpect(model().attribute("shozokuForm", hasProperty("name", nullValue())));
 	}
 
 	@Test

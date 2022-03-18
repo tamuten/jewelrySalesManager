@@ -14,6 +14,22 @@ p, h1, h2, h3, h4, h5 {
 	margin: 0;
 }
 
+/* メインコンテンツ */
+.main {
+	height: calc(100% - 50px);
+}
+
+/* サイドバー */
+.main .sidebar {
+	width: 15%;
+	background-color: #2A3F54;
+	color: #FFFFFF;
+}
+
+.signupBtn {
+	margin-bottom: 10px;
+}
+
 .alert {
 	margin-top: 1rem;
 }
@@ -38,24 +54,17 @@ input:focus {
 	height: 100%;
 }
 
-.main {
-	height: calc(100% - 50px);
-}
-
-.sidebar {
-	width: 15%;
-	background-color: grey;
-}
-
-.content {
+/* メインコンテンツ */
+.main .content {
 	width: 85%;
-	padding: 10px;
+	padding: 20px;
 	overflow-y: auto;
 }
 
-.content-title {
-	padding-bottom: 10px;
+.main .content .content-title {
+	padding-bottom: 20px;
 	margin-bottom: 10px;
+	color: #73879C;
 }
 
 .table {
