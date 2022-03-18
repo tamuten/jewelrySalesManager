@@ -1,8 +1,10 @@
 package com.jewelry.controller;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -13,7 +15,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -42,7 +43,7 @@ public class ShozokuControllerTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	void 全件表示() throws Exception {
-		Mockito.when(service.findAll())
+		when(service.findAll())
 			.thenReturn(List.of(new Shozoku(1, "食品")));
 
 		MvcResult result = mockMvc.perform(get("/shozoku/list"))
@@ -64,8 +65,15 @@ public class ShozokuControllerTest {
 	}
 
 	@Test
-	void 一件表示() {
-		// TODO:
+	void 一件表示() throws Exception {
+		when(service.findByPk(1)).thenReturn(new Shozoku(1, "食品"));
+
+		mockMvc.perform(get("/shozoku/detail/1"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("homeLayout"))
+			.andExpect(model().attribute("contents", "contents/shozoku/shozoku :: shozoku_contents"))
+			.andExpect(model().attribute("shozokuForm", hasProperty("id", is(1))))
+			.andExpect(model().attribute("shozokuForm", hasProperty("name", is("食品"))));
 	}
 
 	@Test

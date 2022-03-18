@@ -10,22 +10,26 @@
 		<div class="content-title border-bottom">
 			<h3>所属一覧</h3>
 		</div>
+		<div th:if="${message}" class="alert alert-success">
+			<p th:text="${message}"></p>
+		</div>
 		<table class="table table-sm w-25">
-		<thead>
-			<tr>
-				<td></td>
-				<td>所属名</td>
-				<td></td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="shozoku : ${shozokuList}">
-				<td th:text="${shozoku.id}"></td>
-				<td th:text="${shozoku.name}"></td>
-				<td><a class="btn btn-sm btn-primary" th:href="@{'/shozoku/detail/' + ${shozoku.id}}">詳細</a></td>
-			</tr>
-		</tbody>
-	</table>
+			<thead>
+				<tr>
+					<td></td>
+					<td>所属名</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="shozoku : ${shozokuList}">
+					<td th:text="${shozoku.id}"></td>
+					<td th:text="${shozoku.name}"></td>
+					<td><a class="btn btn-sm btn-primary"
+						th:href="@{'/shozoku/detail/' + ${shozoku.id}}">詳細</a></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </body>
 </html>

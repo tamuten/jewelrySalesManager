@@ -65,15 +65,32 @@ public class ShozokuController {
 	}
 
 	@GetMapping("/signup")
-	public String signup() {
-		// TODO:
+	public String getSignup(ShozokuForm form, Model model) {
+		model.addAttribute("displayMode", "signup");
+		model.addAttribute("contents", "contents/shozoku/shozoku :: shozoku_contents");
 		return "homeLayout";
 	}
 
+	@PostMapping("/signup")
+	public String postSignup(@Validated ShozokuForm form, BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			return getSignup(form, model);
+		}
+		Shozoku shozoku = new Shozoku();
+		BeanUtils.copyProperties(form, shozoku);
+
+		shozokuService.create(shozoku);
+
+		model.addAttribute("message", messageService.getMessage(Message.SIGNUP));
+		return detail(form, shozoku.getId(), model);
+	}
+
 	@PostMapping("/delete")
-	public String delete() {
-		// TODO:
-		return "homeLayout";
+	public String delete(ShozokuForm form, Model model) {
+		shozokuService.delete(form.getId());
+
+		model.addAttribute("message", messageService.getMessage(Message.DELETE));
+		return getList(model);
 	}
 
 }
