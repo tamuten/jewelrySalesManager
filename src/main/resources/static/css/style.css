@@ -67,6 +67,11 @@ input:focus {
 	color: #73879C;
 }
 
+.main .content .content-title h2 {
+	font-weight: bold;
+}
+
+
 .table {
 	table-layout: fixed;
 }

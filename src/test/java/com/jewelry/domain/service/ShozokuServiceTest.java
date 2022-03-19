@@ -12,6 +12,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,6 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
-import com.jewelry.ForeignKey;
 import com.jewelry.ForeignKeyDisableTestExecutionListener;
 import com.jewelry.constant.Const;
 import com.jewelry.dataset.CsvDataSetLoader;
@@ -40,10 +40,11 @@ import lombok.extern.slf4j.Slf4j;
 public class ShozokuServiceTest {
 	@Autowired
 	private ShozokuService shozokuService;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
 	@Test
 	@Order(1)
-	@ForeignKey
 	@DatabaseSetup("/testdata/ShozokuServiceTest/init-data")
 	@ExpectedDatabase(value = "/testdata/ShozokuServiceTest/after-create-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
 	void 所属作成のテスト_DBチェック() {
@@ -147,7 +148,9 @@ public class ShozokuServiceTest {
 	@DatabaseSetup("/testdata/ShozokuServiceTest/init-data")
 	@ExpectedDatabase(value = "/testdata/ShozokuServiceTest/after-delete-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
 	void 削除のテスト() {
+		jdbcTemplate.execute("SET REFERENTIAL_INTEGRITY FALSE");
 		int deleteCount = shozokuService.delete(6);
 		assertEquals(deleteCount, 1);
+		jdbcTemplate.execute("SET REFERENTIAL_INTEGRITY TRUE");
 	}
 }

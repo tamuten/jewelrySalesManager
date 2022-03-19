@@ -136,6 +136,8 @@ public class TantoshaServiceTest {
 		Tantosha actual = tantoshaService.findByPk(1);
 		assertEquals(1, actual.getId());
 		assertEquals("admin", actual.getName());
+		assertEquals(1, actual.getShozoku().getId());
+		assertEquals("所属1", actual.getShozoku().getName());
 		assertEquals("ROLE_ADMIN", actual.getRole());
 	}
 

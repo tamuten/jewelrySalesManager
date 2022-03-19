@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jewelry.domain.repository.mapper.TantoshaMapper">
 	<select id="findAll" resultMap="tantoshaResultMap">
-		SELECT ta.id, ta.name, ta.role, sho.id as shozoku_id, sho.name as shozoku_name FROM tantosha ta INNER JOIN shozoku sho ON ta.shozoku_id = sho.id ORDER BY ta.id
+		SELECT ta.id, ta.name, ta.role, sho.id as shozoku_id, sho.name as shozoku_name FROM tantosha ta LEFT OUTER JOIN shozoku sho ON ta.shozoku_id = sho.id ORDER BY ta.id
 	</select>
 
 	<resultMap type="Tantosha" id="tantoshaResultMap">
@@ -15,8 +15,8 @@
 		</association>
  	</resultMap>
 
-	<select id="selectOne" parameterType="integer" resultType="Tantosha">
-		SELECT * FROM tantosha WHERE id = #{id}
+	<select id="selectOne" parameterType="integer" resultMap="tantoshaResultMap">
+		SELECT ta.id, ta.name, ta.role, sho.id as shozoku_id, sho.name as shozoku_name FROM tantosha ta LEFT OUTER JOIN shozoku sho ON ta.shozoku_id = sho.id  WHERE ta.id = #{id}
 	</select>
 	<insert id="insertOne" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO tantosha (name, shozoku_id, role) VALUES (#{name}, #{shozoku.id}, #{role})
