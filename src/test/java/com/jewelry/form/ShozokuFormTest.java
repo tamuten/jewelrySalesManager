@@ -1,40 +1,82 @@
 package com.jewelry.form;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
+
+import com.jewelry.constant.Const;
 
 @SpringBootTest
 public class ShozokuFormTest {
-	@Autowired
-	@Qualifier("mvcValidator")
-	Validator validator;
+	private static Validator validator;
 
-	private ShozokuForm testShozokuForm = new ShozokuForm();
-	private BindingResult bindingResult = new BindException(testShozokuForm, "shozokuForm");
-
-	@Test
-	void 正常系() {
-		testShozokuForm.setName("ああああ");
-		validator.validate(testShozokuForm, bindingResult);
-		assertNull(bindingResult.getFieldError());
+	@BeforeEach
+	void setup() {
+		ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+		validator = validatorFactory.getValidator();
 	}
 
 	@Test
-	void 異常系_０文字() {
+	void 正常系() {
+		ShozokuForm testShozokuForm = new ShozokuForm();
+		testShozokuForm.setName("ああああ");
+
+		 Set<ConstraintViolation<ShozokuForm>> violations = validator.validate(testShozokuForm);
+		 assertEquals(violations.size(), 0);
+	}
+
+	@Test
+	void 正常系_境界値_1() {
+		ShozokuForm testShozokuForm = new ShozokuForm();
+		testShozokuForm.setName("あ");
+
+		 Set<ConstraintViolation<ShozokuForm>> violations = validator.validate(testShozokuForm);
+		 assertEquals(violations.size(), 0);
+	}
+
+	@Test
+	void 正常系_境界値_50() {
+		ShozokuForm testShozokuForm = new ShozokuForm();
+		testShozokuForm.setName(Const.CHARS_50);
+
+		 Set<ConstraintViolation<ShozokuForm>> violations = validator.validate(testShozokuForm);
+		 assertEquals(violations.size(), 0);
+	}
+
+	@Test
+	void 異常系_空文字() {
+		ShozokuForm testShozokuForm = new ShozokuForm();
 		testShozokuForm.setName("");
-		validator.validate(testShozokuForm, bindingResult);
-		//		assertTrue(bindingResult.getFieldError()
-		//			.toString()
-		//			.contains("名前は1文字以上50文字以下で入力してください。"));
-		assertNotNull(bindingResult.getFieldError());
-		System.out.println(bindingResult.getFieldError()
-			.getDefaultMessage());
+
+		 Set<ConstraintViolation<ShozokuForm>> violations = validator.validate(testShozokuForm);
+		 assertThat(violations.size()).isEqualTo(1);
+	}
+
+	@Test
+	void 異常系_null() {
+		ShozokuForm testShozokuForm = new ShozokuForm();
+		testShozokuForm.setName(null);
+
+		 Set<ConstraintViolation<ShozokuForm>> violations = validator.validate(testShozokuForm);
+		 assertThat(violations.size()).isEqualTo(1);
+	}
+
+	@Test
+	void 異常系_文字数オーバー() {
+		ShozokuForm testShozokuForm = new ShozokuForm();
+		testShozokuForm.setName(Const.CHARS_51);
+
+		 Set<ConstraintViolation<ShozokuForm>> violations = validator.validate(testShozokuForm);
+		 assertThat(violations.size()).isEqualTo(1);
 	}
 }

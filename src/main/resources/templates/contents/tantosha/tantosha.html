@@ -36,7 +36,6 @@
 						<tr>
 							<td>所属</td>
 							<td><select class="form-control" name="shozoku.id">
-									<option value="0">---</option>
 									<option th:each="shozoku : ${shozokuList}"
 										th:value="${shozoku.id}"
 										th:selected="${shozoku.id} == *{shozoku.id}" th:inline="text">[[${shozoku.name}]]</option>

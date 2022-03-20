@@ -18,19 +18,22 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.BindingResult;
 
+import com.jewelry.Message;
+import com.jewelry.WebConfig;
 import com.jewelry.domain.model.Shozoku;
+import com.jewelry.domain.service.MessageService;
 import com.jewelry.domain.service.ShozokuService;
 import com.jewelry.form.ShozokuForm;
 
-@SpringBootTest
+@SpringBootTest(classes = WebConfig.class)
 public class ShozokuControllerTest {
 	private MockMvc mockMvc;
 	@Mock
-	private ShozokuService service;
+	private ShozokuService shozokuService;
+	@Mock
+	private MessageService messageService;
 	@InjectMocks
 	private ShozokuController controller;
 
@@ -43,7 +46,7 @@ public class ShozokuControllerTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	void 全件表示() throws Exception {
-		when(service.findAll())
+		when(shozokuService.findAll())
 			.thenReturn(List.of(new Shozoku(1, "食品")));
 
 		MvcResult result = mockMvc.perform(get("/shozoku/list"))
@@ -66,7 +69,7 @@ public class ShozokuControllerTest {
 
 	@Test
 	void 一件表示() throws Exception {
-		when(service.findByPk(1)).thenReturn(new Shozoku(1, "食品"));
+		when(shozokuService.findByPk(1)).thenReturn(new Shozoku(1, "食品"));
 
 		mockMvc.perform(get("/shozoku/detail/1"))
 			.andExpect(status().isOk())
@@ -78,33 +81,36 @@ public class ShozokuControllerTest {
 
 	@Test
 	void 更新_バリデーションエラー() throws Exception {
-		// TODO: 空文字
+		//  空文字
 		ShozokuForm form = new ShozokuForm();
 		form.setId(1);
 		form.setName("");
 
-		ResultActions results = mockMvc.perform(post("/shozoku/update").flashAttr("form", form))
+		mockMvc.perform(post("/shozoku/update").flashAttr("form", form))
 			.andExpect(model().hasErrors())
 			.andExpect(model().attribute("form", form))
 			.andExpect(view().name("homeLayout"))
 			.andExpect(model().attribute("contents", "contents/shozoku/shozoku :: shozoku_contents"))
 			.andExpect(model().attribute("displayMode", "update"));
-
-		BindingResult bindResult = (BindingResult) results.andReturn()
-			.getModelAndView()
-			.getModel()
-			.get(BindingResult.MODEL_KEY_PREFIX + "form");
-		String mes = bindResult.getFieldError()
-			.getDefaultMessage();
-		assertEquals("名前は1文字以上50文字以下で入力してください。", mes);
-
-		// TODO: null
-		// TODO: 文字数オーバー
 	}
 
 	@Test
-	void 更新_正常() {
+	void 更新_正常() throws Exception {
 		// TODO:
+		when(messageService.getMessage(Message.UPDATE)).thenReturn("更新が完了しました。");
+
+		ShozokuForm form = new ShozokuForm();
+		form.setId(1);
+		form.setName("更新");
+
+		mockMvc.perform(post("/shozoku/update").flashAttr("form", form))
+				.andExpect(model().hasNoErrors())
+				.andExpect(model().attribute("form", form))
+				.andExpect(view().name("homeLayout"))
+				.andExpect(model().attribute("contents", "contents/shozoku/shozoku :: shozoku_contents"))
+				.andExpect(model().attribute("displayMode", "update"))
+				.andExpect(model().attribute("message", "更新が完了しました。"));
+
 	}
 
 	@Test
