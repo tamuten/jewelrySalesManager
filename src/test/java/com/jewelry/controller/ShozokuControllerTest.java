@@ -19,9 +19,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.BindingResult;
 
 import com.jewelry.Message;
-import com.jewelry.WebConfig;
+import com.jewelry.configuration.WebConfig;
 import com.jewelry.domain.model.Shozoku;
 import com.jewelry.domain.service.MessageService;
 import com.jewelry.domain.service.ShozokuService;
@@ -86,12 +87,16 @@ public class ShozokuControllerTest {
 		form.setId(1);
 		form.setName("");
 
-		mockMvc.perform(post("/shozoku/update").flashAttr("form", form))
+		MvcResult result = mockMvc.perform(post("/shozoku/update").flashAttr("shozokuForm", form))
 			.andExpect(model().hasErrors())
-			.andExpect(model().attribute("form", form))
+			.andExpect(model().attribute("shozokuForm", form))
 			.andExpect(view().name("homeLayout"))
 			.andExpect(model().attribute("contents", "contents/shozoku/shozoku :: shozoku_contents"))
-			.andExpect(model().attribute("displayMode", "update"));
+			.andExpect(model().attribute("displayMode", "update")).andReturn();
+
+		BindingResult bindingResult =(BindingResult) result.getModelAndView().getModel().get(BindingResult.MODEL_KEY_PREFIX + "shozokuForm");
+		String mes = bindingResult.getFieldError().getCode();
+		System.out.println(mes);
 	}
 
 	@Test
@@ -103,9 +108,9 @@ public class ShozokuControllerTest {
 		form.setId(1);
 		form.setName("更新");
 
-		mockMvc.perform(post("/shozoku/update").flashAttr("form", form))
+		mockMvc.perform(post("/shozoku/update").flashAttr("shozokuForm", form))
 				.andExpect(model().hasNoErrors())
-				.andExpect(model().attribute("form", form))
+				.andExpect(model().attribute("shozokuForm", form))
 				.andExpect(view().name("homeLayout"))
 				.andExpect(model().attribute("contents", "contents/shozoku/shozoku :: shozoku_contents"))
 				.andExpect(model().attribute("displayMode", "update"))

@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 
 import com.jewelry.Message;
-import com.jewelry.WebConfig;
+import com.jewelry.configuration.WebConfig;
 import com.jewelry.domain.service.MessageService;
 
 @SpringBootTest(classes = {WebConfig.class, MessageService.class})

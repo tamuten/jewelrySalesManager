@@ -1,4 +1,4 @@
-package com.jewelry;
+package com.jewelry.configuration;
 
 import java.io.IOException;
 

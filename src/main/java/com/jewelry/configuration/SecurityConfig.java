@@ -1,4 +1,4 @@
-package com.jewelry;
+package com.jewelry.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

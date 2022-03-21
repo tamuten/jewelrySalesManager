@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jewelry.domain.repository.mapper.CustomerMapper">
+<resultMap type="Customers" id="customerResultMap">
+	<id column="id" property="id" />
+	<result column="name" property="name" />
+	<result column="name_kana" property="nameKana" />
+	<result column="birthday" property="birthday" />
+	<result column="gender" property="gender" />
+	<result column="blood_tyoe" property="bloodType" />
+	<result column="address" property="address" />
+	<result column="memo" property="memo" />
+	<association property="tantosha" column="tantosha_id" javaType="Tantosha">
+		<id column="tantosha_id" property="id" />
+		<result column="tantosha_name" property="name" />
+		<result column="role" property="role" />
+		<association property="shozoku" column="shozoku_id" javaType="Shozoku">
+			<id column="shozoku_id" property="id"/>
+			<result column="shozoku_name" property="name" />
+		</association>
+	</association>
+	<collection property="customerPhoneList" ofType="CustomerPhone">
+		<id column="phone_id" property="id" />
+		<result column="phone_number" property="phoneNumber" />
+		<result column="phone_memo" property="memo" />
+	</collection>
+	<collection property="customerMailList" ofType="CustomerMail">
+		<id column="mail_id" property="id" />
+		<result column="mail_address" property="mailAddress" />
+		<result column="mail_memo" property="memo" />
+	</collection>
+</resultMap>
+
+<sql id="findCustomer">
+SELECT
+    cu.id,
+    cu.name,
+    cu.name_kana,
+    cu.birthday,
+    cu.gender,
+    cu.blood_type,
+    cu.address,
+    cu.memo,
+    ta.id as tantosha_id,
+    ta.name as tantosha_name,
+    ta.role,
+    sho.id as shozoku_id,
+    sho.name as shozoku_name,
+    ph.id as phone_id,
+    ph.customer_id as customer_phone_id,
+    ph.phone_number,
+    ph.memo as phone_memo,
+    ma.id as mail_id,
+    ma.customer_id as customer_mail_id,
+    ma.mail_address,
+    ma.memo as mail_memo
+FROM
+    customers cu
+    LEFT OUTER JOIN
+    	tantosha ta
+    ON cu.tantosha_id = ta.id
+    LEFT OUTER JOIN
+    	shozoku sho
+    ON ta.shozoku_id = sho.id
+    LEFT OUTER JOIN
+        customer_phone ph
+    ON  cu.id = ph.customer_id
+    LEFT OUTER JOIN
+        customer_mail ma
+    ON  cu.id = ma.customer_id
+</sql>
+	<select id="findAll" resultMap="customerResultMap">
+	<include refid="findCustomer"/>
+ORDER BY
+    cu.id
+	</select>
+	<select id="selectOne" parameterType="integer" resultMap="customerResultMap">
+	<include refid="findCustomer"/>
+WHERE
+    cu.id = #{id}
+	</select>
+	<insert id="insertOne" parameterType="Customers" useGeneratedKeys="true" keyProperty="id">
+INSERT INTO customers(
+    name,
+    name_kana,
+    birthday,
+    gender,
+    blood_type,
+    address,
+    memo,
+    tantosha_id,
+    signup_date
+)
+VALUES(
+    #{name},
+    #{nameKana},
+    #{birthday},
+    #{gender},
+    #{bloodType},
+    #{address},
+    #{memo},
+    #{tantosha.id},
+    #{signupDate}
+)
+
+	</insert>
+	<update id="updateOne" parameterType="Customers">
+UPDATE
+    customers
+SET
+    name = #{name},
+    name_kana = #{nameKana},
+    birthday = #{birthday},
+    gender = #{gender},
+    blood_type = #{bloodType},
+    address = #{address},
+    memo = #{memo}
+WHERE
+    id = #{id}
+	</update>
+	<update id="deleteOne" parameterType="integer">
+		DELETE FROM customers WHERE id = #{id} CASCADE
+	</update>
+</mapper>

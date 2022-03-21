@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jewelry.domain.repository.mapper.CustomerMailMapper">
+	<insert id="insertBulk" parameterType="java.util.List">
+INSERT INTO customer_phone(
+	customer_id,
+	mail_address,
+	memo
+) VALUES
+	<foreach collection="list" item="ma" separator=",">
+(
+	#{ma.customerId},
+	#{ma.mailAddress},
+	#{ma.memo}
+)
+	</foreach>
+	</insert>
+	<insert id="upsertBulk">
+		INESRT INTO customer_mail(
+			customer_id,
+			mail_address,
+			memo
+		) VALUES
+		<foreach collection="list" item="ph" separator=",">
+			(
+				#{ph.customerId},
+				#{ph.mailAddress},
+				#{ph.memo}
+			)
+		</foreach>
+		ON DUPLICATE KEY UPDATE
+			mail_address = VALUES(mailAddress),
+			memo = VALUES(memo)
+	</insert>
+
+	<delete id="deleteBulk">
+		DELETE FROM customer_mail
+		WHERE id IN
+			<foreach collection="ist" item="id" open="(" separator="," close=")">
+				#{id}
+			</foreach>
+	</delete>
+</mapper>

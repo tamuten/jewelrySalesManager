@@ -20,13 +20,26 @@ CREATE TABLE customers (
   birthday date,
   gender varchar(10),
   blood_type varchar(5),
-  phone_number1 varchar(20),
-  phone_number2 varchar(20),
-  phone_number3 varchar(20),
-  mail_address varchar(100),
   address varchar(100),
   memo varchar(200),
-  tantosha_id integer REFERENCES tantosha(id)
+  tantosha_id integer REFERENCES tantosha(id),
+  signup_date date NOT NULL
+);
+
+DROP TABLE IF EXISTS customer_phone CASCADE;
+CREATE TABLE customer_phone (
+	id serial PRIMARY KEY,
+	customer_id integer NOT NULL REFERENCES customers(id),
+	phone_number varchar(20) NOT NULL,
+	memo varchar(50)
+);
+
+DROP TABLE IF EXISTS customer_mail CASCADE;
+CREATE TABLE customer_mail (
+	id serial PRIMARY KEY,
+	customer_id integer NOT NULL REFERENCES customers(id),
+	mail_address varchar(100) NOT NULL,
+	memo varchar(50)
 );
 
 DROP TABLE IF EXISTS orders CASCADE;

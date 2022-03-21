@@ -87,6 +87,11 @@ input:focus {
 	padding: 0.25rem;
 }
 
+/* ページネーション */
+.pagination li a {
+	color:#2A3F54;
+}
+
 #addRow {
 	margin-left: auto;
 	margin-right: 5px;

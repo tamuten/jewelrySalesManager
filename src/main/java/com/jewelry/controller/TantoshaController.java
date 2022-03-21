@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,7 +43,8 @@ public class TantoshaController {
 	}
 
 	@GetMapping("/list")
-	public String getList(Model model) {
+	public String getList(Model model, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+		// TODO: ページング対応
 		List<Tantosha> tantoshaList = tantoshaService.findAll();
 
 		model.addAttribute("contents", "contents/tantosha/tantoshaList :: tantoshaList_contents");
@@ -106,7 +109,8 @@ public class TantoshaController {
 		tantoshaService.delete(form.getId());
 
 		model.addAttribute("message", messageService.getMessage(Message.DELETE));
-		return getList(model);
+		// TODO: ページング対応
+		return getList(model, null);
 	}
 
 }

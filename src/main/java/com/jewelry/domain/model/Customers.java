@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class Customers {
 	private Integer id;
 	private String name;
-	private String kana;
+	private String nameKana;
 	private Date birthday;
 	private String gender;
 	private String bloodType;
@@ -28,6 +28,6 @@ public class Customers {
 
 	private Tantosha tantosha;
 
-	private List< CustomerPhone> customerPhoneList;
-	private List< CustomerMail> customerMailList;
+	private List<CustomerPhone> customerPhoneList;
+	private List<CustomerMail> customerMailList;
 }

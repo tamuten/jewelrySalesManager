@@ -2,6 +2,7 @@ package com.jewelry.domain.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.jewelry.domain.model.Tantosha;
@@ -16,6 +17,10 @@ public class TantoshaRepository {
 
 	public List<Tantosha> findAll() {
 		return mapper.findAll();
+	}
+
+	public List<Tantosha> findPage(Pageable pageable){
+		return mapper.findPage(pageable);
 	}
 
 	public Tantosha findByPk(int id) {

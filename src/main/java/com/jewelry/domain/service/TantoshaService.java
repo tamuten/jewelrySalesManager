@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TantoshaService {
 	private final TantoshaRepository repository;
+	// TODO: ページング対応
 
 	public List<Tantosha> findAll() {
 		return repository.findAll();
