@@ -3,6 +3,7 @@ package com.jewelry.domain.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jewelry.domain.model.Tantosha;
 import com.jewelry.domain.repository.TantoshaRepository;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TantoshaService {
 	private final TantoshaRepository repository;
 	// TODO: ページング対応

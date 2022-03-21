@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customers {
+public class Customer {
 	private Integer id;
 	private String name;
 	private String nameKana;

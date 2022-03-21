@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jewelry.domain.repository.mapper.CustomerMapper">
-<resultMap type="Customers" id="customerResultMap">
+<resultMap type="Customer" id="customerResultMap">
 	<id column="id" property="id" />
 	<result column="name" property="name" />
 	<result column="name_kana" property="nameKana" />
@@ -79,7 +79,7 @@ ORDER BY
 WHERE
     cu.id = #{id}
 	</select>
-	<insert id="insertOne" parameterType="Customers" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insertOne" parameterType="Customer" useGeneratedKeys="true" keyProperty="id">
 INSERT INTO customers(
     name,
     name_kana,
@@ -104,7 +104,7 @@ VALUES(
 )
 
 	</insert>
-	<update id="updateOne" parameterType="Customers">
+	<update id="updateOne" parameterType="Customer">
 UPDATE
     customers
 SET

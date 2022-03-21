@@ -8,7 +8,7 @@
     <typeAliases>
         <typeAlias type="com.jewelry.domain.model.Tantosha" alias="Tantosha"/>
         <typeAlias type="com.jewelry.domain.model.Shozoku" alias="Shozoku"/>
-        <typeAlias type="com.jewelry.domain.model.Customers" alias="Customers"/>
+        <typeAlias type="com.jewelry.domain.model.Customer" alias="Customer"/>
         <typeAlias type="com.jewelry.domain.model.CustomerPhone" alias="CustomerPhone"/>
         <typeAlias type="com.jewelry.domain.model.CustomerMail" alias="CustomerMail"/>
     </typeAliases>

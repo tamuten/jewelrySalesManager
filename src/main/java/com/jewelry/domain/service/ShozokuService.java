@@ -3,6 +3,7 @@ package com.jewelry.domain.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jewelry.domain.model.Shozoku;
 import com.jewelry.domain.repository.ShozokuRepository;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ShozokuService {
 	private final ShozokuRepository repository;
 
