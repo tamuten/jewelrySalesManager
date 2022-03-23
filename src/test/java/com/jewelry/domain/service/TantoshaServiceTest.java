@@ -75,8 +75,8 @@ public class TantoshaServiceTest {
 		制約違反のテスト(Const.CHARS_51, 1, Const.CHARS_51);
 		制約違反のテスト("", 1, Const.CHARS_51);
 
-		存在しない所属IDのテスト("", 0, "");
-		存在しない所属IDのテスト("", 10000, "");
+		//		存在しない所属IDのテスト("", 0, "");
+		//		存在しない所属IDのテスト("", 10000, "");
 	}
 
 	void 正常系のテスト(String name, int shozoku_id, String role, int expectedId) {
@@ -136,8 +136,10 @@ public class TantoshaServiceTest {
 		Tantosha actual = tantoshaService.findByPk(1);
 		assertEquals(1, actual.getId());
 		assertEquals("admin", actual.getName());
-		assertEquals(1, actual.getShozoku().getId());
-		assertEquals("所属1", actual.getShozoku().getName());
+		assertEquals(1, actual.getShozoku()
+			.getId());
+		assertEquals("所属1", actual.getShozoku()
+			.getName());
 		assertEquals("ROLE_ADMIN", actual.getRole());
 	}
 

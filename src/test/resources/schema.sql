@@ -8,12 +8,12 @@ DROP TABLE IF EXISTS tantosha CASCADE;
 CREATE TABLE tantosha (
   id serial PRIMARY KEY,
   name varchar(50) NOT NULL,
-  shozoku_id integer NOT NULL REFERENCES shozoku(id),
+  shozoku_id integer NOT NULL,
   role varchar(50) NOT NULL
 );
 
-DROP TABLE IF EXISTS customers CASCADE;
-CREATE TABLE customers (
+DROP TABLE IF EXISTS customer CASCADE;
+CREATE TABLE customer (
   id serial PRIMARY KEY,
   name varchar(50) NOT NULL,
   name_kana varchar(100),
@@ -22,14 +22,14 @@ CREATE TABLE customers (
   blood_type varchar(5),
   address varchar(100),
   memo varchar(200),
-  tantosha_id integer REFERENCES tantosha(id),
+  tantosha_id integer,
   signup_date date NOT NULL
 );
 
 DROP TABLE IF EXISTS customer_phone CASCADE;
 CREATE TABLE customer_phone (
 	id serial PRIMARY KEY,
-	customer_id integer NOT NULL REFERENCES customers(id),
+	customer_id integer NOT NULL,
 	phone_number varchar(20) NOT NULL,
 	memo varchar(50)
 );
@@ -37,7 +37,7 @@ CREATE TABLE customer_phone (
 DROP TABLE IF EXISTS customer_mail CASCADE;
 CREATE TABLE customer_mail (
 	id serial PRIMARY KEY,
-	customer_id integer NOT NULL REFERENCES customers(id),
+	customer_id integer NOT NULL,
 	mail_address varchar(100) NOT NULL,
 	memo varchar(50)
 );
@@ -56,5 +56,5 @@ CREATE TABLE orders (
   gedai integer,
   shikiri_date date,
   shikiri_no varchar(10),
-  customer_id integer NOT NULL REFERENCES customers(id)
+  customer_id integer NOT NULL
 );

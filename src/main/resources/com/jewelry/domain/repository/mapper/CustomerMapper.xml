@@ -7,9 +7,10 @@
 	<result column="name_kana" property="nameKana" />
 	<result column="birthday" property="birthday" />
 	<result column="gender" property="gender" />
-	<result column="blood_tyoe" property="bloodType" />
+	<result column="blood_type" property="bloodType" />
 	<result column="address" property="address" />
 	<result column="memo" property="memo" />
+	<result column="signup_date" property="signupDate" />
 	<association property="tantosha" column="tantosha_id" javaType="Tantosha">
 		<id column="tantosha_id" property="id" />
 		<result column="tantosha_name" property="name" />
@@ -21,11 +22,13 @@
 	</association>
 	<collection property="customerPhoneList" ofType="CustomerPhone">
 		<id column="phone_id" property="id" />
+		<result column="customer_phone_id" property="customerId" />
 		<result column="phone_number" property="phoneNumber" />
 		<result column="phone_memo" property="memo" />
 	</collection>
 	<collection property="customerMailList" ofType="CustomerMail">
 		<id column="mail_id" property="id" />
+		<result column="customer_mail_id" property="customerId" />
 		<result column="mail_address" property="mailAddress" />
 		<result column="mail_memo" property="memo" />
 	</collection>
@@ -41,6 +44,7 @@ SELECT
     cu.blood_type,
     cu.address,
     cu.memo,
+    cu.signup_date,
     ta.id as tantosha_id,
     ta.name as tantosha_name,
     ta.role,
@@ -55,7 +59,7 @@ SELECT
     ma.mail_address,
     ma.memo as mail_memo
 FROM
-    customers cu
+    customer cu
     LEFT OUTER JOIN
     	tantosha ta
     ON cu.tantosha_id = ta.id
@@ -80,7 +84,7 @@ WHERE
     cu.id = #{id}
 	</select>
 	<insert id="insertOne" parameterType="Customer" useGeneratedKeys="true" keyProperty="id">
-INSERT INTO customers(
+INSERT INTO customer(
     name,
     name_kana,
     birthday,
@@ -106,7 +110,7 @@ VALUES(
 	</insert>
 	<update id="updateOne" parameterType="Customer">
 UPDATE
-    customers
+    customer
 SET
     name = #{name},
     name_kana = #{nameKana},
@@ -119,6 +123,6 @@ WHERE
     id = #{id}
 	</update>
 	<update id="deleteOne" parameterType="integer">
-		DELETE FROM customers WHERE id = #{id} CASCADE
+		DELETE FROM customer WHERE id = #{id} CASCADE
 	</update>
 </mapper>

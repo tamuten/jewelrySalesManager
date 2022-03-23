@@ -1,1 +1,1 @@
-customers
+customer
