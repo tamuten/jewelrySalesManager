@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jewelry.Message;
 import com.jewelry.domain.model.Tantosha;
 import com.jewelry.domain.service.MessageService;
@@ -52,6 +55,29 @@ public class TantoshaController {
 		return "homeLayout";
 	}
 
+	/**
+	* 引数のオブジェクトをJSON文字列に変換する
+	* @param data オブジェクトのデータ
+	* @return 変換後JSON文字列
+	*/
+	private String getJsonData(Object data) {
+		String retVal = null;
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			retVal = objectMapper.writeValueAsString(data);
+		} catch (JsonProcessingException e) {
+			System.err.println(e);
+		}
+		return retVal;
+	}
+
+	@GetMapping("/getTantoshaList")
+	@ResponseBody
+	public String getTantoshaList() {
+		List<Tantosha> tantoshaList = tantoshaService.findAll();
+		return getJsonData(tantoshaList);
+	}
+
 	@GetMapping("/detail/{id}")
 	public String detail(@PathVariable int id, TantoshaForm form, Model model) {
 		Tantosha tantosha = tantoshaService.findByPk(id);
@@ -65,7 +91,7 @@ public class TantoshaController {
 
 	@PostMapping("/update")
 	public String update(@Validated TantoshaForm form, BindingResult result, Model model) {
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			model.addAttribute("displayMode", "update");
 			model.addAttribute("contents", "contents/tantosha/tantosha :: tantosha_contents");
 			model.addAttribute("shozokuList", shozokuService.findAll());
@@ -91,7 +117,7 @@ public class TantoshaController {
 
 	@PostMapping("/signup")
 	public String postSignup(@Validated TantoshaForm form, BindingResult result, Model model) {
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			return getSignup(form, model);
 		}
 
