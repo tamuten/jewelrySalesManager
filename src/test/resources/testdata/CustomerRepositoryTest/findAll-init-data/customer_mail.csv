@@ -1,0 +1,6 @@
+id,customer_id,mail_address,memo
+1,1,ichiro1@example.com,佐藤一郎さんのメールアドレス１
+2,1,ichiro2@example.com,佐藤一郎さんのメールアドレス２
+3,1,ichiro3@example.com,佐藤一郎さんのメールアドレス３
+4,3,saburo1@example.com,佐藤三郎さんのメールアドレス１
+5,3,saburo2@example.com,佐藤三郎さんのメールアドレス２

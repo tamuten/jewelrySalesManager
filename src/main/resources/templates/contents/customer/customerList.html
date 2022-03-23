@@ -6,7 +6,7 @@
 <title>お客様一覧</title>
 </head>
 <body>
-	<div th:fragment="tantoshaList_contents" class="h-100 w-100">
+	<div th:fragment="customerList_contents" class="h-100 w-100">
 		<div class="content-title border-bottom">
 			<h2>お客様一覧</h2>
 		</div>
@@ -17,8 +17,8 @@
 		<div th:if="${message}" class="alert alert-success">
 			<p th:text="${message}"></p>
 		</div>
-		<div class="w-50">
-			<table class="table table-sm text-center">
+		<div class="w-100">
+			<table class="table table-sm text-center table-responsive" style="width:100%;">
 				<thead>
 					<tr>
 						<td></td>
@@ -27,23 +27,46 @@
 						<td>生年月日</td>
 						<td>性別</td>
 						<td>血液型</td>
+						<td>住所</td>
+						<td>メモ</td>
+						<td>電話番号</td>
+						<td>メールアドレス</td>
+						<td>担当者</td>
 						<td></td>
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="tantosha : ${tantoshaList}">
-						<td th:text="${tantosha.id}"></td>
-						<td th:text="${tantosha.name}"></td>
-						<td th:text="${tantosha.shozoku.name}"></td>
-						<th:block th:switch="${tantosha.role}">
-							<td th:case="ROLE_ADMIN" th:text="管理者"></td>
-							<td th:case="ROLE_GENERAL" th:text="一般"></td>
-						</th:block>
+					<tr th:each="customer : ${customerList}">
+						<td th:text="${customer.id}"></td>
+						<td th:text="${customer.name}"></td>
+						<td th:text="${customer.nameKana}"></td>
+						<td th:text="${customer.birthday}"></td>
+						<td>
+							<th:block th:switch="${customer.gender}">
+								<th:block th:case="male">男性</th:block>
+								<th:block th:case="female">女性</th:block>
+							</th:block>
+						</td>
+						<td th:text="${customer.bloodType}"></td>
+						<td th:text="${customer.address}"></td>
+						<td th:text="${customer.memo}"></td>
+						<td>
+							<th:block th:each="phone : ${customer.customerPhoneList}">
+								<p th:text="${phone.phoneNumber}"></p>
+							</th:block>
+						</td>
+						<td>
+							<th:block th:each="mail : ${customer.customerMailList}">
+								<p th:text="${mail.mailAddress}"></p>
+							</th:block>
+						</td>
+						<td th:text="${customer.tantosha.name}"></td>
 						<td><a class="btn btn-sm btn-primary"
-							th:href="@{'/tantosha/detail/' + ${tantosha.id}}">詳細</a></td>
+							th:href="@{'/customer/detail/' + ${customer.id}}">詳細</a></td>
 					</tr>
 				</tbody>
 			</table>
+			<!--/*
 			<nav aria-label="Page navigation">
 				<ul class="pagination justify-content-center">
 					<li class="page-item disabled" th:classappend="${page.first} ? 'disabled'"><a class="page-link" href="#"
@@ -58,6 +81,7 @@
 					</a></li>
 				</ul>
 			</nav>
+			 */-->
 		</div>
 	</div>
 </body>

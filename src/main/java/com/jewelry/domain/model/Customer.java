@@ -21,7 +21,7 @@ public class Customer {
 	private Date birthday;
 	private String gender;
 	private String bloodType;
-	private String zipcode;
+	//	private String zipcode;
 	private String address;
 	private String memo;
 	private Date signupDate;
