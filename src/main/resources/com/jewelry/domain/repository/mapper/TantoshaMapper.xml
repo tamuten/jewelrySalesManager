@@ -22,10 +22,12 @@ ORDER BY
 
 	<select id="findPage" resultMap="tantoshaResultMap">
 	<include refid="findTantosha"/>
+	 <if test="pageable.pageSize != null and pageable.offset != null">
 	LIMIT
 	    #{pageable.pageSize}
 	OFFSET
 	    #{pageable.offset}
+	    </if>
 	</select>
 
 	<resultMap type="Tantosha" id="tantoshaResultMap">

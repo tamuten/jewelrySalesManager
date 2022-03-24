@@ -111,10 +111,10 @@ public class ShozokuServiceTest {
 			.id(6)
 			.name("食品")
 			.build();
-		List<Shozoku> shozokuList = shozokuService.findAll();
-		log.info("actual shozokuList = {}", shozokuList);
-		assertEquals(6, shozokuList.size());
-		assertEquals(shozokuList, Arrays.asList(expect1, expect2, expect3, expect4, expect5, expect6));
+		List<Shozoku> actual = shozokuService.findAll();
+		log.info("actual shozokuList = {}", actual);
+		assertEquals(6, actual.size());
+		assertEquals(actual, Arrays.asList(expect1, expect2, expect3, expect4, expect5, expect6));
 	}
 
 	@Test

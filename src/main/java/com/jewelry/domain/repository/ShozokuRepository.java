@@ -2,6 +2,7 @@ package com.jewelry.domain.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.jewelry.domain.model.Shozoku;
@@ -14,8 +15,16 @@ import lombok.RequiredArgsConstructor;
 public class ShozokuRepository {
 	private final ShozokuMapper mapper;
 
+	public long count() {
+		return mapper.count();
+	}
+
 	public List<Shozoku> findAll() {
 		return mapper.findAll();
+	}
+
+	public List<Shozoku> findPage(Pageable pageable) {
+		return mapper.findPage(pageable);
 	}
 
 	public Shozoku findByPk(int id) {

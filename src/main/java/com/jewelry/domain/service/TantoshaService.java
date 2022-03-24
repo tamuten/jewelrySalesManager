@@ -2,6 +2,7 @@ package com.jewelry.domain.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,10 +16,13 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class TantoshaService {
 	private final TantoshaRepository repository;
-	// TODO: ページング対応
 
 	public List<Tantosha> findAll() {
 		return repository.findAll();
+	}
+
+	public List<Tantosha> findPage(Pageable pageable) {
+		return repository.findPage(pageable);
 	}
 
 	public Tantosha findByPk(int id) {

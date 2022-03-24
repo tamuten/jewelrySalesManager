@@ -45,10 +45,12 @@ public class TantoshaController {
 	@GetMapping("/list")
 	public String getList(Model model, @PageableDefault(page = 0, size = 10) Pageable pageable) {
 		// TODO: ページング対応
-		List<Tantosha> tantoshaList = tantoshaService.findAll();
+		//		List<Tantosha> tantoshaList = tantoshaService.findAll();
+		List<Tantosha> tantoshaList = tantoshaService.findPage(pageable);
 
 		model.addAttribute("contents", "contents/tantosha/tantoshaList :: tantoshaList_contents");
 		model.addAttribute("tantoshaList", tantoshaList);
+		model.addAttribute("page", pageable);
 		return "homeLayout";
 	}
 
@@ -65,7 +67,7 @@ public class TantoshaController {
 
 	@PostMapping("/update")
 	public String update(@Validated TantoshaForm form, BindingResult result, Model model) {
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			model.addAttribute("displayMode", "update");
 			model.addAttribute("contents", "contents/tantosha/tantosha :: tantosha_contents");
 			model.addAttribute("shozokuList", shozokuService.findAll());
@@ -91,7 +93,7 @@ public class TantoshaController {
 
 	@PostMapping("/signup")
 	public String postSignup(@Validated TantoshaForm form, BindingResult result, Model model) {
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			return getSignup(form, model);
 		}
 

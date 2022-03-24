@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jewelry.domain.repository.mapper.ShozokuMapper">
+	<select id="count" resultType="long">
+		SELECT COUNT(*) FROM shozoku
+	</select>
 	<select id="findAll" resultType="Shozoku">
 		SELECT * FROM shozoku ORDER BY id
+	</select>
+	<select id="findPage" resultType="Shozoku">
+		SELECT * FROM shozoku ORDER BY id
+		<if test="pageable.pageSize != null and pageable.offset != null">
+		LIMIT #{pageable.pageSize} OFFSET #{pageable.offset}
+		</if>
 	</select>
 	<select id="selectOne" parameterType="integer" resultType="Shozoku">
 		SELECT * FROM shozoku WHERE id = #{id}

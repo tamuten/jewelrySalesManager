@@ -1,9 +1,10 @@
 package com.jewelry.controller;
 
-import java.util.List;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,11 +29,12 @@ public class ShozokuController {
 	private MessageService messageService;
 
 	@GetMapping("/list")
-	public String getList(Model model) {
-		List<Shozoku> shozokuList = shozokuService.findAll();
+	public String getList(Model model, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+		Page<Shozoku> shozokuPage = shozokuService.findPage(pageable);
 
 		model.addAttribute("contents", "contents/shozoku/shozokuList :: shozokuList_contents");
-		model.addAttribute("shozokuList", shozokuList);
+		model.addAttribute("page", shozokuPage);
+		model.addAttribute("shozokuList", shozokuPage.getContent());
 
 		return "homeLayout";
 	}
@@ -90,7 +92,8 @@ public class ShozokuController {
 		shozokuService.delete(form.getId());
 
 		model.addAttribute("message", messageService.getMessage(Message.DELETE));
-		return getList(model);
+		// TODO: ページング対応
+		return getList(model, null);
 	}
 
 }
