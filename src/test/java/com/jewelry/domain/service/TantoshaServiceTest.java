@@ -1,5 +1,6 @@
 package com.jewelry.domain.service;
 
+import static com.jewelry.constant.Const.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
@@ -20,7 +21,6 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
-import com.jewelry.constant.Const;
 import com.jewelry.dataset.CsvDataSetLoader;
 import com.jewelry.domain.model.Shozoku;
 import com.jewelry.domain.model.Tantosha;
@@ -48,7 +48,7 @@ public class TantoshaServiceTest {
 		Tantosha newTantosha = Tantosha.builder()
 			.name("田中一郎")
 			.shozoku(newShozoku)
-			.role(Const.ROLE_ADMIN)
+			.role(ROLE_ADMIN)
 			.build();
 		tantoshaService.create(newTantosha);
 	}
@@ -59,10 +59,10 @@ public class TantoshaServiceTest {
 	void 担当者作成のテスト() {
 
 		// 正常系
-		正常系のテスト("田中一郎", 5, Const.ROLE_ADMIN, 5);// 通常値
-		正常系のテスト(Const.CHARS_50, 3, Const.ROLE_GENERAL, 6);// 境界値
-		正常系のテスト(Const.CHARS_50, 3, Const.CHARS_50, 7);// 境界値
-		正常系のテスト("", 1, Const.ROLE_GENERAL, 8);// 空文字
+		正常系のテスト("田中一郎", 5, ROLE_ADMIN, 5);// 通常値
+		正常系のテスト(CHARS_50, 3, ROLE_GENERAL, 6);// 境界値
+		正常系のテスト(CHARS_50, 3, CHARS_50, 7);// 境界値
+		正常系のテスト("", 1, ROLE_GENERAL, 8);// 空文字
 		正常系のテスト("", 1, "", 9);// 空文字
 
 		// 異常系
@@ -71,9 +71,9 @@ public class TantoshaServiceTest {
 		制約違反のテスト("", 1, null);
 		制約違反のテスト(null, 1, "");
 		// 文字数オーバー
-		制約違反のテスト(Const.CHARS_51, 1, "");
-		制約違反のテスト(Const.CHARS_51, 1, Const.CHARS_51);
-		制約違反のテスト("", 1, Const.CHARS_51);
+		制約違反のテスト(CHARS_51, 1, "");
+		制約違反のテスト(CHARS_51, 1, CHARS_51);
+		制約違反のテスト("", 1, CHARS_51);
 
 		//		存在しない所属IDのテスト("", 0, "");
 		//		存在しない所属IDのテスト("", 10000, "");
@@ -155,7 +155,7 @@ public class TantoshaServiceTest {
 			.id(3)
 			.name("更新後")
 			.shozoku(newShozoku)
-			.role(Const.ROLE_ADMIN)
+			.role(ROLE_ADMIN)
 			.build();
 		int updateCount = tantoshaService.update(newTantosha);
 		assertEquals(updateCount, 1);
@@ -169,4 +169,6 @@ public class TantoshaServiceTest {
 		int deletedCount = tantoshaService.delete(3);
 		assertEquals(deletedCount, 1);
 	}
+
+
 }

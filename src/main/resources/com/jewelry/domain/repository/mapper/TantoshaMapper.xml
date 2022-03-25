@@ -9,25 +9,31 @@ SELECT
     sho.id as shozoku_id,
     sho.name as shozoku_name
 FROM
-    tantosha ta
+    ${tantoshaTable} ta
     LEFT OUTER JOIN
         shozoku sho
     ON  ta.shozoku_id = sho.id
-ORDER BY
-    ta.id
 </sql>
 	<select id="findAll" resultMap="tantoshaResultMap">
-<include refid="findTantosha"/>
+		<bind name="tantoshaTable" value="'tantosha'"/>
+		<include refid="findTantosha"/>
 	</select>
 
 	<select id="findPage" resultMap="tantoshaResultMap">
+	<bind name="tantoshaTable" value="
+	'(
+	SELECT
+		*
+	FROM
+		tantosha
+	ORDER BY
+		id
+	LIMIT #{pageable.pageSize}
+	OFFSET #{pageable.offset}
+	)'"/>
 	<include refid="findTantosha"/>
-	 <if test="pageable.pageSize != null and pageable.offset != null">
-	LIMIT
-	    #{pageable.pageSize}
-	OFFSET
-	    #{pageable.offset}
-	    </if>
+	ORDER BY
+    	ta.id
 	</select>
 
 	<resultMap type="Tantosha" id="tantoshaResultMap">
@@ -41,7 +47,9 @@ ORDER BY
  	</resultMap>
 
 	<select id="selectOne" parameterType="integer" resultMap="tantoshaResultMap">
-		SELECT ta.id, ta.name, ta.role, sho.id as shozoku_id, sho.name as shozoku_name FROM tantosha ta LEFT OUTER JOIN shozoku sho ON ta.shozoku_id = sho.id  WHERE ta.id = #{id}
+		<bind name="tantoshaTable" value="'tantosha'"/>
+		<include refid="findTantosha"/>
+		WHERE ta.id = #{id}
 	</select>
 	<insert id="insertOne" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO tantosha (name, shozoku_id, role) VALUES (#{name}, #{shozoku.id}, #{role})
