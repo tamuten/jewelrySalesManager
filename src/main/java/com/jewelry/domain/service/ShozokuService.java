@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jewelry.domain.model.Shozoku;
 import com.jewelry.domain.repository.ShozokuRepository;
+import com.jewelry.domain.repository.jpa.ShozokuJpaRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ShozokuService {
 	private final ShozokuRepository repository;
+	private final ShozokuJpaRepository jpaRepository;
 
 	public List<Shozoku> findAll() {
-		return repository.findAll();
+		//		return repository.findAll();
+		return jpaRepository.findAll();
 	}
 
 	public Page<Shozoku> findPage(Pageable pageable) {

@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/jewelry
+    username: postgres
+    password: P@ssw0rd
+  jpa:
+    database: POSTGRESQL
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        
+      
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    
+logging:
+  level:
+    org: 
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+      springframework: WARN
+    com:
+      jewelry:
+        domain:
+          repository:
+            mapper: DEBUG
+      
