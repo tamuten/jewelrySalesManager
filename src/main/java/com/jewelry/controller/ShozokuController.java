@@ -1,5 +1,11 @@
 package com.jewelry.controller;
 
+import com.jewelry.Message;
+import com.jewelry.domain.model.Shozoku;
+import com.jewelry.domain.service.MessageService;
+import com.jewelry.domain.service.ShozokuService;
+import com.jewelry.form.ShozokuForm;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,12 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.jewelry.Message;
-import com.jewelry.domain.model.Shozoku;
-import com.jewelry.domain.service.MessageService;
-import com.jewelry.domain.service.ShozokuService;
-import com.jewelry.form.ShozokuForm;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/shozoku")
@@ -88,12 +89,11 @@ public class ShozokuController {
 	}
 
 	@PostMapping("/delete")
-	public String delete(ShozokuForm form, Model model) {
+	public String delete(ShozokuForm form, RedirectAttributes redirectAttributes) {
 		shozokuService.delete(form.getId());
 
-		model.addAttribute("message", messageService.getMessage(Message.DELETE));
-		// TODO: ページング対応
-		return getList(model, null);
+		redirectAttributes.addFlashAttribute("message", messageService.getMessage(Message.DELETE));
+		return "redirect:/shozoku/list";
 	}
 
 }

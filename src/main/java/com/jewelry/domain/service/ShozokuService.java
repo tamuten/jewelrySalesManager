@@ -3,14 +3,16 @@ package com.jewelry.domain.service;
 import java.util.Collections;
 import java.util.List;
 
+import com.jewelry.domain.model.Shozoku;
+import com.jewelry.domain.repository.ShozokuRepository;
+import com.jewelry.domain.repository.TantoshaRepository;
+import com.jewelry.exception.ForeignKeyConstraintViolationException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.jewelry.domain.model.Shozoku;
-import com.jewelry.domain.repository.ShozokuRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ShozokuService {
 	private final ShozokuRepository repository;
+	private final TantoshaRepository tantoshaRepository;
 
 	public List<Shozoku> findAll() {
 		return repository.findAll();
@@ -52,6 +55,9 @@ public class ShozokuService {
 	}
 
 	public int delete(int id) {
+		if(tantoshaRepository.existsByShozokuId(id)){
+            throw new ForeignKeyConstraintViolationException("some tantosha has shozoku_id = " + String.valueOf(id));
+		}
 		return repository.delete(id);
 	}
 }

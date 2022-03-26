@@ -1,9 +1,17 @@
 package com.jewelry.controller;
 
-import java.util.List;
+import com.jewelry.Message;
+import com.jewelry.domain.model.Tantosha;
+import com.jewelry.domain.service.MessageService;
+import com.jewelry.domain.service.ShozokuService;
+import com.jewelry.domain.service.TantoshaService;
+import com.jewelry.form.TantoshaForm;
+import com.jewelry.form.validator.TantoshaFormValidator;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -16,14 +24,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.jewelry.Message;
-import com.jewelry.domain.model.Tantosha;
-import com.jewelry.domain.service.MessageService;
-import com.jewelry.domain.service.ShozokuService;
-import com.jewelry.domain.service.TantoshaService;
-import com.jewelry.form.TantoshaForm;
-import com.jewelry.form.validator.TantoshaFormValidator;
 
 @Controller
 @RequestMapping("/tantosha")
@@ -44,13 +44,11 @@ public class TantoshaController {
 
 	@GetMapping("/list")
 	public String getList(Model model, @PageableDefault(page = 0, size = 10) Pageable pageable) {
-		// TODO: ページング対応
-		//		List<Tantosha> tantoshaList = tantoshaService.findAll();
-		List<Tantosha> tantoshaList = tantoshaService.findPage(pageable);
+		Page<Tantosha> tantoshaPage = tantoshaService.findPage(pageable);
 
 		model.addAttribute("contents", "contents/tantosha/tantoshaList :: tantoshaList_contents");
-		model.addAttribute("tantoshaList", tantoshaList);
-		model.addAttribute("page", pageable);
+		model.addAttribute("tantoshaList", tantoshaPage.getContent());
+		model.addAttribute("page", tantoshaPage);
 		return "homeLayout";
 	}
 
@@ -111,8 +109,7 @@ public class TantoshaController {
 		tantoshaService.delete(form.getId());
 
 		model.addAttribute("message", messageService.getMessage(Message.DELETE));
-		// TODO: ページング対応
-		return getList(model, null);
+		return getList(model, PageRequest.of(0, 10));
 	}
 
 }

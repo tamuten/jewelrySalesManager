@@ -10,6 +10,8 @@ import com.jewelry.domain.model.Tantosha;
 
 @Mapper
 public interface TantoshaMapper {
+	public long count();
+	public boolean existsByShozokuId(Integer shozokuId);
 	public List<Tantosha> findAll();
 	public List<Tantosha> findPage(@Param("pageable") Pageable pageable);
 	public Tantosha selectOne(int id);

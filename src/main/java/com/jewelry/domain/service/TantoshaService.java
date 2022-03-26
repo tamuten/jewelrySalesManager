@@ -1,19 +1,24 @@
 package com.jewelry.domain.service;
 
+import java.util.Collections;
 import java.util.List;
-
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.jewelry.domain.model.Tantosha;
 import com.jewelry.domain.repository.TantoshaRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class TantoshaService {
 	private final TantoshaRepository repository;
 
@@ -21,8 +26,17 @@ public class TantoshaService {
 		return repository.findAll();
 	}
 
-	public List<Tantosha> findPage(Pageable pageable) {
-		return repository.findPage(pageable);
+	public Page<Tantosha> findPage(Pageable pageable) {
+		long tantoshaCnt = repository.count();
+		List<Tantosha> tantoshaList = Collections.emptyList();
+
+		if (tantoshaCnt > 0){
+			tantoshaList = repository.findPage(pageable);
+		}
+
+		log.info("[TantoshaList] " + tantoshaList.toString());
+
+		return new PageImpl<Tantosha>(tantoshaList, pageable, tantoshaCnt);
 	}
 
 	public Tantosha findByPk(int id) {

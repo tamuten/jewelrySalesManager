@@ -15,6 +15,14 @@ import lombok.RequiredArgsConstructor;
 public class TantoshaRepository {
 	private final TantoshaMapper mapper;
 
+	public long count(){
+		return mapper.count();
+	}
+
+	public boolean existsByShozokuId(Integer shozokuId){
+		return mapper.existsByShozokuId(shozokuId);
+	}
+
 	public List<Tantosha> findAll() {
 		return mapper.findAll();
 	}
