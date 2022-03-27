@@ -282,8 +282,12 @@ public class CustomerRepositoryTest {
 		assertEquals(expected, actual);
 	}
 
-	void 更新のテスト() {
-
+	@Test
+	@Order(5)
+	@DatabaseSetup("/testdata/CustomerRepositoryTest/init-data")
+	@ExpectedDatabase(value = "/testdata/CustomerRepositoryTest/after-update-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
+	void ありうる全てのパラメータを更新() {
+		
 	}
 
 	void 削除のテスト() {

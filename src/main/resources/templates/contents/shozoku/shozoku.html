@@ -36,8 +36,8 @@
 					</tbody>
 				</table>
 				<div class="d-flex justify-content-between">
-					<input type="button" class="btn" value="戻る"
-						onclick="history.back()" />
+					<input type="button" class="btn" value="一覧"
+						th:onclick="@{location.href='/shozoku/list'}" />
 					<div th:if="__${displayMode == 'update'}__" class="right-btn-group">
 						<input type="submit" class="btn btn-danger" value="削除" th:formaction="@{/shozoku/delete}" />
 						<input type="submit" class="btn btn-primary" value="更新" th:formaction="@{/shozoku/update}" />

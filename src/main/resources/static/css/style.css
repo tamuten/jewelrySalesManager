@@ -92,6 +92,12 @@ input:focus {
 	color:#2A3F54;
 }
 
+.pagination .page-item.active a {
+	background-color: #2A3F54;
+	border-color: #2A3F54;
+}
+
+/* 行追加ボタン */
 #addRow {
 	margin-left: auto;
 	margin-right: 5px;

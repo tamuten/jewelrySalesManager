@@ -30,7 +30,7 @@
 					<tr th:each="shozoku : ${shozokuList}">
 						<td th:text="${shozoku.id}"></td>
 						<td th:text="${shozoku.name}"></td>
-						<td><a class="btn btn-sm btn-primary"
+						<td><a class="btn btn-sm btn-secondary"
 							th:href="@{'/shozoku/detail/' + ${shozoku.id}}">詳細</a></td>
 					</tr>
 				</tbody>

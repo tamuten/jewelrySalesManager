@@ -60,8 +60,8 @@
 					</tbody>
 				</table>
 				<div class="d-flex justify-content-between">
-					<input type="button" class="btn" value="戻る"
-						onclick="history.back()" />
+					<input type="button" class="btn" value="一覧"
+						th:onclick="@{location.href='/tantosha/list'}" />
 					<div th:if="__${displayMode == 'update'}__" class="right-btn-group">
 						<input type="submit" class="btn btn-danger" value="削除"
 							th:formaction="@{/tantosha/delete}" /> <input type="submit"
