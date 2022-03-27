@@ -6,7 +6,8 @@ import java.util.List;
 import com.jewelry.domain.model.Shozoku;
 import com.jewelry.domain.repository.ShozokuRepository;
 import com.jewelry.domain.repository.TantoshaRepository;
-import com.jewelry.exception.ForeignKeyConstraintViolationException;
+import com.jewelry.exception.ShozokuChildForeignKeyConstraintViolationException;
+import com.jewelry.form.ShozokuForm;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -55,9 +56,12 @@ public class ShozokuService {
 	}
 
 	public int delete(int id) {
-		if(tantoshaRepository.existsByShozokuId(id)){
-            throw new ForeignKeyConstraintViolationException("some tantosha has shozoku_id = " + String.valueOf(id));
-		}
 		return repository.delete(id);
+	}
+
+	public void validate(ShozokuForm form) throws ShozokuChildForeignKeyConstraintViolationException {
+		if (tantoshaRepository.existsByShozokuId(form.getId())) {
+			throw new ShozokuChildForeignKeyConstraintViolationException();
+		}
 	}
 }

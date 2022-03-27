@@ -4,6 +4,7 @@ import com.jewelry.Message;
 import com.jewelry.domain.model.Shozoku;
 import com.jewelry.domain.service.MessageService;
 import com.jewelry.domain.service.ShozokuService;
+import com.jewelry.exception.ShozokuChildForeignKeyConstraintViolationException;
 import com.jewelry.form.ShozokuForm;
 
 import org.springframework.beans.BeanUtils;
@@ -14,6 +15,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -89,9 +91,18 @@ public class ShozokuController {
 	}
 
 	@PostMapping("/delete")
-	public String delete(ShozokuForm form, RedirectAttributes redirectAttributes) {
+	public String delete(ShozokuForm form, Errors errors, Model model, RedirectAttributes redirectAttributes) {
+		try {
+			shozokuService.validate(form);
+		} catch(ShozokuChildForeignKeyConstraintViolationException e){
+			errors.rejectValue("id", "shozokuForm.id.foreignkey", new String[]{"所属"}, "foreignKey error.");
+			model.addAttribute("displayMode", "update");
+			model.addAttribute("contents", "contents/shozoku/shozoku :: shozoku_contents");
+			return "homeLayout";
+		}
+		
 		shozokuService.delete(form.getId());
-
+		
 		redirectAttributes.addFlashAttribute("message", messageService.getMessage(Message.DELETE));
 		return "redirect:/shozoku/list";
 	}

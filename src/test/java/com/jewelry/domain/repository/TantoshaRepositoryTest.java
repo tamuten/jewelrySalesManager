@@ -64,4 +64,20 @@ public class TantoshaRepositoryTest {
 		assertThat(actual.get(8)).isEqualTo(expected.get(8));
 		assertThat(actual.get(9)).isEqualTo(expected.get(9));
 	}
+
+	@Test
+	@DatabaseSetup("/testdata/TantoshaServiceTest/init-data")
+	@ExpectedDatabase(value = "/testdata/TantoshaServiceTest/init-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
+	void existsByShozokuIdは引数に指定した所属IDに該当する担当者が存在する場合Trueを返す(){
+		boolean actual = repository.existsByShozokuId(1);
+		assertThat(actual).isTrue();
+	}
+
+	@Test
+	@DatabaseSetup("/testdata/TantoshaServiceTest/init-data")
+	@ExpectedDatabase(value = "/testdata/TantoshaServiceTest/init-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
+	void existsByShozokuIdは引数に指定した所属IDに該当する担当者が存在しない場合Falseを返す(){
+		boolean actual = repository.existsByShozokuId(5);
+		assertThat(actual).isFalse();
+	}
 }

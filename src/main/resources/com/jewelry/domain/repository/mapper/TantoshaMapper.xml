@@ -20,7 +20,7 @@ FROM
 	</select>
 
 	<select id="existsByShozokuId" parameterType="integer" resultType="boolean">
-	<![CDATA[ < 
+	<![CDATA[
         SELECT COUNT(*) > 0 FROM tantosha WHERE shozoku_id = #{shozokuId} 
 	]]>
 	</select>

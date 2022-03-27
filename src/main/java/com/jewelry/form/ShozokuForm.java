@@ -9,6 +9,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 public class ShozokuForm {
+	public static interface DeleteShozoku {
+	};
+
+	
 	private Integer id;
 	@NotNull
 	@Size(max = 50, min = 1)

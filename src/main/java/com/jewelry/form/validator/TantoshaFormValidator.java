@@ -31,6 +31,7 @@ public class TantoshaFormValidator extends AbstractValidator<TantoshaForm> {
 		if(!role.equals(Constant.ROLE_ADMIN) && !role.equals(Constant.ROLE_GENERAL)) {
 			errors.rejectValue("role", "tantoshaForm.role.isInvalid");
 		}
+		
 	}
 
 }
