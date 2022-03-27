@@ -25,6 +25,10 @@ public class CustomerService {
 		return repository.findAll();
 	}
 
+	public Customer findByPk(Integer id) {
+		return repository.findByPk(id);
+	}
+
 	public void create(Customer customer) {
 		repository.create(customer);
 		phoneRepository.createAll(customer.getCustomerPhoneList());
