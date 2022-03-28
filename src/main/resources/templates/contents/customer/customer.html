@@ -21,8 +21,8 @@
 					<p th:text="${err}">Input is incorrect.</p>
 				</th:block>
 			</div>
-			<div class="w-25">
-				<table class="table  align-middle">
+			<div class="w-50">
+				<table class="table align-middle">
 					<tbody>
 						<tr>
 							<td>id</td>
@@ -33,12 +33,77 @@
 							<td><input type="text" autocomplete="off"
 								class="form-control" th:field="*{name}" /></td>
 						</tr>
+						<tr>
+							<td>カナ</td>
+							<td><input type="text" autocomplete="off"
+								class="form-control" th:field="*{nameKana}" /></td>
+						</tr>
+						<tr>
+							<td>生年月日</td>
+							<td>
+							<label for="year">年</label>
+								<select id="year" class="custom-select" >
+									<option value="">---</option>
+									<th:block th:each="i : ${#numbers.sequence(1900, __${#calendars.format(#calendars.createNow(), 'yyyy')}__)}">
+										<!--/* <option th:value="${i}" th:text="${i}" th:selected="${i} == ${#dates.year(*{birthday})}"></option> */-->
+									</th:block>
+								</select>
+
+							<input type="text" autocomplete="off"
+								class="form-control date" th:field="*{birthday}" /></td>
+						</tr>
+						<tr>
+							<td>性別</td>
+							<td>
+								<div class="btn-group btn-group-toggle" data-toggle="buttons">
+									<label class="btn btn-outline-secondary"
+										th:classappend="*{gender} == 'male' ? 'active'"> <input
+										type="radio" th:field="*{gender}" value="male"
+										autocomplete="off">男性
+									</label> <label class="btn btn-outline-secondary"
+										th:classappend="*{gender} == 'female' ? 'active'"> <input
+										type="radio" th:field="*{gender}" value="female"
+										autocomplete="off">女性
+									</label>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>血液型</td>
+							<td>
+								<div class="btn-group btn-group-toggle" data-toggle="buttons">
+									<th:block th:each="item : ${radioBloodType}">
+										<label class="btn btn-outline-secondary"
+											th:classappend="*{bloodType} == ${item.value} ? 'active'">
+											<input type="radio" th:field="*{bloodType}"
+											th:text="${item.key}" th:value="${item.value}"
+											autocomplete="off" />
+										</label>
+									</th:block>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>住所</td>
+							<td><input type="text" autocomplete="off"
+								class="form-control" th:field="*{address}" /></td>
+						</tr>
+						<tr>
+							<td>備考</td>
+							<td><textarea autocomplete="off" class="form-control"
+									th:field="*{memo}"></textarea></td>
+						</tr>
+						<tr th:if="__${displayMode == 'signup'}__">
+							<td>登録日</td>
+							<td><input type="text" autocomplete="off"
+								class="form-control date" th:field="*{signupDate}" /></td>
+						</tr>
 
 					</tbody>
 				</table>
 				<div class="d-flex justify-content-between">
-					<input type="button" class="btn" value="戻る"
-						onclick="history.back()" />
+					<input type="button" class="btn" value="一覧画面へ"
+						th:onclick="@{location.href='/customer/list'}" />
 					<div th:if="__${displayMode == 'update'}__" class="right-btn-group">
 						<input type="submit" class="btn btn-danger" value="削除"
 							th:formaction="@{/customer/delete}" /> <input type="submit"

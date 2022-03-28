@@ -1,6 +1,8 @@
 package com.jewelry.controller;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,17 @@ public class CustomerController {
 		return "homeLayout";
 	}
 
+	private Map<String, String> initRadioBloodType() {
+		Map<String, String> radio = new LinkedHashMap<>();
+
+		radio.put("A", "A");
+		radio.put("B", "B");
+		radio.put("O", "O");
+		radio.put("AB", "AB");
+
+		return radio;
+	}
+
 	@GetMapping("/detail/{id}")
 	public String detail(CustomerForm form, @PathVariable int id, Model model) {
 		Customer customer = customerService.findByPk(id);
@@ -42,8 +55,10 @@ public class CustomerController {
 		form.setSignupDate(DateUtil.sqlToUtil(customer.getSignupDate()));
 
 		model.addAttribute("displayMode", "update");
+		model.addAttribute("radioBloodType", initRadioBloodType());
 		model.addAttribute("tantoshaList", tantoshaService.findAll());
 		model.addAttribute("contents", "contents/customer/customer :: customer_contents");
 		return "homeLayout";
 	}
+
 }

@@ -1,6 +1,7 @@
 package com.jewelry.domain.repository;
 
 import static com.jewelry.constant.Const.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Date;
@@ -41,18 +42,6 @@ import com.jewelry.domain.model.Tantosha;
 public class CustomerRepositoryTest {
 	@Autowired
 	private CustomerRepository repository;
-	//	@Autowired
-	//	private JdbcTemplate jdbcTemplate;
-	//
-	//	@BeforeEach
-	//	void setup() {
-	//		jdbcTemplate.execute("SET REFERENTIAL_INTEGRITY FALSE");
-	//	}
-	//
-	//	@AfterEach
-	//	void after() {
-	//		jdbcTemplate.execute("SET REFERENTIAL_INTEGRITY TRUE");
-	//	}
 
 	@Test
 	@Order(1)
@@ -79,11 +68,20 @@ public class CustomerRepositoryTest {
 	@Test
 	@Order(2)
 	void 顧客作成のテスト() {
+		// 正常系
 		正常に登録(CHARS_50, CHARS_100, "2000-1-1", CHARS_10, CHARS_5, CHARS_100, CHARS_200, 2, "2000-1-1");
 		正常に登録(CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY, 2, "2000-1-1");
 		正常に登録("山本美月", null, null, null, null, null, null, 3, "2000-1-1");
+		正常に登録("山本美月", null, null, null, null, null, null, null, "2000-1-1");
 
-		// TODO: 異常系
+		// 異常系
+		登録に失敗(CHARS_51, CHARS_101, "2020-1-1", CHARS_11, CHARS_6, CHARS_101, CHARS_201, null, "2020-1-31");
+		登録に失敗(CHARS_51, CHARS_100, "2020-1-1", CHARS_10, CHARS_5, CHARS_100, CHARS_200, null, "2020-1-31");
+		登録に失敗(CHARS_50, CHARS_101, "2020-1-1", CHARS_10, CHARS_5, CHARS_100, CHARS_200, null, "2020-1-31");
+		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_11, CHARS_5, CHARS_100, CHARS_200, null, "2020-1-31");
+		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_10, CHARS_6, CHARS_100, CHARS_200, null, "2020-1-31");
+		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_10, CHARS_5, CHARS_101, CHARS_200, null, "2020-1-31");
+		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_10, CHARS_5, CHARS_100, CHARS_201, null, "2020-1-31");
 	}
 
 	/**
@@ -286,12 +284,54 @@ public class CustomerRepositoryTest {
 	@Order(5)
 	@DatabaseSetup("/testdata/CustomerRepositoryTest/init-data")
 	@ExpectedDatabase(value = "/testdata/CustomerRepositoryTest/after-update-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
-	void ありうる全てのパラメータを更新() {
-		
+	void ありうる全てのパラメータを更新しDBを検証() {
+		Customer update = Customer.builder()
+			.id(16)
+			.name("田中葵")
+			.nameKana("タナカアオイ")
+			.birthday(Date.valueOf("1993-3-7"))
+			.gender("female")
+			.bloodType("B")
+			.address("埼玉県さいたま市北区〇〇町1-2-3")
+			.memo("サンプル変更")
+			.tantosha(Tantosha.builder()
+				.id(2)
+				.build())
+			.build();
+
+		int updateCnt = repository.update(update);
+		assertThat(updateCnt).isEqualTo(1);
 	}
 
-	void 削除のテスト() {
+	@Test
+	@Order(6)
+	@DatabaseSetup("/testdata/CustomerRepositoryTest/init-data")
+	@ExpectedDatabase(value = "/testdata/CustomerRepositoryTest/after-part-update-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
+	void 一部のパラメータを更新しDBを検証() {
+		Customer update = Customer.builder()
+			.id(16)
+			.name("田中葵")
+			.nameKana("タナカイチロウ")
+			.birthday(Date.valueOf("1993-2-7"))
+			.gender("male")
+			.bloodType("AB")
+			.address("埼玉県さいたま市北区〇〇町1-1-1")
+			.memo("サンプル")
+			.tantosha(Tantosha.builder()
+				.id(1)
+				.build())
+			.build();
 
+		int updateCnt = repository.update(update);
+		assertThat(updateCnt).isEqualTo(1);
 	}
 
+	@Test
+	@Order(7)
+	@DatabaseSetup("/testdata/CustomerRepositoryTest/init-data")
+	@ExpectedDatabase(value = "/testdata/CustomerRepositoryTest/after-delete-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
+	void 一件削除() {
+		int deleteCnt = repository.delete(20);
+		assertThat(deleteCnt).isEqualTo(1);
+	}
 }

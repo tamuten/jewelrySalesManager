@@ -118,11 +118,12 @@ SET
     gender = #{gender},
     blood_type = #{bloodType},
     address = #{address},
-    memo = #{memo}
+    memo = #{memo},
+    tantosha_id = #{tantosha.id}
 WHERE
     id = #{id}
 	</update>
 	<update id="deleteOne" parameterType="integer">
-		DELETE FROM customer WHERE id = #{id} CASCADE
+		DELETE FROM customer WHERE id = #{id}
 	</update>
 </mapper>
