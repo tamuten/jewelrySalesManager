@@ -15,6 +15,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
@@ -333,5 +334,95 @@ public class CustomerRepositoryTest {
 	void 一件削除() {
 		int deleteCnt = repository.delete(20);
 		assertThat(deleteCnt).isEqualTo(1);
+	}
+
+	@Test
+	@Order(8)
+	@DatabaseSetup("/testdata/CustomerRepositoryTest/findAll-init-data")
+	@ExpectedDatabase(value = "/testdata/CustomerRepositoryTest/findAll-init-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
+	void findPageは指定された10件を正しく取得する() {
+		List<Customer> expectedList = new ArrayList<>();
+
+		List<CustomerPhone> expectedPhones1 = new ArrayList<>();
+		expectedPhones1.add(new CustomerPhone(1, 1, "07000000000", "佐藤一郎さんの電話番号１"));
+		expectedPhones1.add(new CustomerPhone(2, 1, "07000000001", "佐藤一郎さんの電話番号２"));
+		expectedPhones1.add(new CustomerPhone(3, 1, "07000000002", "佐藤一郎さんの電話番号３"));
+		List<CustomerMail> expectedMails1 = new ArrayList<>();
+		expectedMails1.add(new CustomerMail(1, 1, "ichiro1@example.com", "佐藤一郎さんのメールアドレス１"));
+		expectedMails1.add(new CustomerMail(2, 1, "ichiro2@example.com", "佐藤一郎さんのメールアドレス２"));
+		expectedMails1.add(new CustomerMail(3, 1, "ichiro3@example.com", "佐藤一郎さんのメールアドレス３"));
+
+		Customer expectedCustomer1 = new Customer(
+				1,
+				"佐藤一郎",
+				"サトウイチロウ",
+				Date.valueOf("1993-2-20"),
+				"male",
+				"B",
+				"埼玉県さいたま市北区〇〇町1-1-1",
+				"サンプル",
+				Date.valueOf("2022-3-22"),
+				new Tantosha(1, "admin", new Shozoku(1, "所属1"), ROLE_ADMIN),
+				expectedPhones1,
+				expectedMails1);
+		expectedList.add(expectedCustomer1);
+
+		List<CustomerPhone> expectedPhones2 = new ArrayList<>();
+		expectedPhones2.add(new CustomerPhone(4, 2, "08000000000", "佐藤次郎さんの電話番号１"));
+		List<CustomerMail> expectedMails2 = new ArrayList<>();
+		Customer expectedCustomer2 = new Customer(
+				2,
+				"佐藤次郎",
+				"サトウジロウ",
+				Date.valueOf("1993-2-21"),
+				"male",
+				"A",
+				"埼玉県さいたま市北区〇〇町1-1-1",
+				"サンプル",
+				Date.valueOf("2022-3-22"),
+				new Tantosha(2, "user", new Shozoku(4, "婦人服"), ROLE_GENERAL),
+				expectedPhones2,
+				expectedMails2);
+		expectedList.add(expectedCustomer2);
+
+		List<CustomerPhone> expectedPhones3 = new ArrayList<>();
+		expectedPhones3.add(new CustomerPhone(5, 3, "09000000000", "佐藤三郎さんの電話番号１"));
+		expectedPhones3.add(new CustomerPhone(6, 3, "09000000001", "佐藤三郎さんの電話番号２"));
+		List<CustomerMail> expectedMails3 = new ArrayList<>();
+		expectedMails3.add(new CustomerMail(4, 3, "saburo1@example.com", "佐藤三郎さんのメールアドレス１"));
+		expectedMails3.add(new CustomerMail(5, 3, "saburo2@example.com", "佐藤三郎さんのメールアドレス２"));
+
+		Customer expectedCustomer3 = new Customer(
+				3,
+				"佐藤三郎",
+				"サトウサブロウ",
+				Date.valueOf("1993-2-22"),
+				"male",
+				"O",
+				"埼玉県さいたま市北区〇〇町1-1-1",
+				"サンプル",
+				Date.valueOf("2022-3-22"),
+				new Tantosha(3, "test", new Shozoku(6, "食品"), ROLE_GENERAL),
+				expectedPhones3,
+				expectedMails3);
+		expectedList.add(expectedCustomer3);
+
+		List<Customer> actualList = repository.findPage(PageRequest.of(0, 10));
+
+		assertEquals(3, actualList.size());
+		assertEquals(expectedList, actualList);
+		assertThat(actualList.get(0)).isEqualTo(expectedCustomer1);
+		assertThat(actualList.get(1)).isEqualTo(expectedCustomer2);
+		assertThat(actualList.get(2)).isEqualTo(expectedCustomer3);
+
+	}
+
+	@Test
+	@Order(9)
+	@DatabaseSetup("/testdata/CustomerRepositoryTest/init-data")
+	@ExpectedDatabase(value = "/testdata/CustomerRepositoryTest/init-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
+	void countはレコードの件数を正しく取得する() {
+		long actual = repository.count();
+		assertThat(actual).isEqualTo(20L);
 	}
 }

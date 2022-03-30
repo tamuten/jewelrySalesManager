@@ -1,11 +1,13 @@
 package com.jewelry.controller;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +30,11 @@ public class CustomerController {
 	private TantoshaService tantoshaService;
 
 	@GetMapping("/list")
-	public String getList(Model model) {
-		List<Customer> customerList = customerService.findAll();
+	public String getList(Model model, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+		Page<Customer> customerPage = customerService.findPage(pageable);
 
-		model.addAttribute("customerList", customerList);
+		model.addAttribute("page", customerPage);
+		model.addAttribute("customerList", customerPage.getContent());
 		model.addAttribute("contents", "contents/customer/customerList :: customerList_contents");
 		return "homeLayout";
 	}

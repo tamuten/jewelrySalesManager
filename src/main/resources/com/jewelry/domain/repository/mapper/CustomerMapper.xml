@@ -34,6 +34,9 @@
 	</collection>
 </resultMap>
 
+<select id="count" resultType="long">
+SELECT COUNT(*) FROM customer
+</select>
 <sql id="findCustomer">
 SELECT
     cu.id,
@@ -59,7 +62,7 @@ SELECT
     ma.mail_address,
     ma.memo as mail_memo
 FROM
-    customer cu
+    ${customerTable} cu
     LEFT OUTER JOIN
     	tantosha ta
     ON cu.tantosha_id = ta.id
@@ -74,11 +77,30 @@ FROM
     ON  cu.id = ma.customer_id
 </sql>
 	<select id="findAll" resultMap="customerResultMap">
+	<bind name="customerTable" value="'customer'"/>
 	<include refid="findCustomer"/>
 ORDER BY
     cu.id
 	</select>
+
+	<select id="findPage" resultMap="customerResultMap">
+	<bind name="customerTable" value="
+	'(
+	SELECT
+		*
+	FROM
+		customer
+	ORDER BY
+		id
+	LIMIT #{pageable.pageSize}
+	OFFSET #{pageable.offset}
+	)'"/>
+	<include refid="findCustomer"/>
+	ORDER BY
+    cu.id
+	</select>
 	<select id="selectOne" parameterType="integer" resultMap="customerResultMap">
+	<bind name="customerTable" value="'customer'"/>
 	<include refid="findCustomer"/>
 WHERE
     cu.id = #{id}

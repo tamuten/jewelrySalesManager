@@ -21,86 +21,188 @@
 					<p th:text="${err}">Input is incorrect.</p>
 				</th:block>
 			</div>
-			<div class="w-50">
-				<table class="table align-middle">
-					<tbody>
-						<tr>
-							<td>id</td>
-							<td th:text="*{id}"></td>
-						</tr>
-						<tr>
-							<td>名前</td>
-							<td><input type="text" autocomplete="off"
-								class="form-control" th:field="*{name}" /></td>
-						</tr>
-						<tr>
-							<td>カナ</td>
-							<td><input type="text" autocomplete="off"
-								class="form-control" th:field="*{nameKana}" /></td>
-						</tr>
-						<tr>
-							<td>生年月日</td>
-							<td>
-							<label for="year">年</label>
-								<select id="year" class="custom-select" >
-									<option value="">---</option>
-									<th:block th:each="i : ${#numbers.sequence(1900, __${#calendars.format(#calendars.createNow(), 'yyyy')}__)}">
-										<!--/* <option th:value="${i}" th:text="${i}" th:selected="${i} == ${#dates.year(*{birthday})}"></option> */-->
-									</th:block>
-								</select>
+			<div class="w-100">
+				<div class="d-flex">
+					<div class="w-50 pr-2">
+						<table class="table align-middle">
+							<tbody>
+								<tr>
 
-							<input type="text" autocomplete="off"
-								class="form-control date" th:field="*{birthday}" /></td>
-						</tr>
-						<tr>
-							<td>性別</td>
-							<td>
-								<div class="btn-group btn-group-toggle" data-toggle="buttons">
-									<label class="btn btn-outline-secondary"
-										th:classappend="*{gender} == 'male' ? 'active'"> <input
-										type="radio" th:field="*{gender}" value="male"
-										autocomplete="off">男性
-									</label> <label class="btn btn-outline-secondary"
-										th:classappend="*{gender} == 'female' ? 'active'"> <input
-										type="radio" th:field="*{gender}" value="female"
-										autocomplete="off">女性
-									</label>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>血液型</td>
-							<td>
-								<div class="btn-group btn-group-toggle" data-toggle="buttons">
-									<th:block th:each="item : ${radioBloodType}">
-										<label class="btn btn-outline-secondary"
-											th:classappend="*{bloodType} == ${item.value} ? 'active'">
-											<input type="radio" th:field="*{bloodType}"
-											th:text="${item.key}" th:value="${item.value}"
-											autocomplete="off" />
-										</label>
-									</th:block>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>住所</td>
-							<td><input type="text" autocomplete="off"
-								class="form-control" th:field="*{address}" /></td>
-						</tr>
-						<tr>
-							<td>備考</td>
-							<td><textarea autocomplete="off" class="form-control"
-									th:field="*{memo}"></textarea></td>
-						</tr>
-						<tr th:if="__${displayMode == 'signup'}__">
-							<td>登録日</td>
-							<td><input type="text" autocomplete="off"
-								class="form-control date" th:field="*{signupDate}" /></td>
-						</tr>
+									<td width="25%">id</td>
+									<td width="75%" th:text="*{id}"></td>
+								</tr>
+								<tr>
+									<td>名前</td>
+									<td><input type="text" autocomplete="off"
+										class="form-control" th:field="*{name}" /></td>
+								</tr>
+								<tr>
+									<td>カナ</td>
+									<td><input type="text" autocomplete="off"
+										class="form-control" th:field="*{nameKana}" /></td>
+								</tr>
+								<tr>
+									<td>生年月日</td>
+									<td>
+										<div class="row">
+											<div class="col-5">
+												<label for="year">年</label> <select id="year"
+													class="custom-select" name="birthdayYear">
+													<option value="">---</option>
+													<th:block
+														th:each="i : ${#numbers.sequence(1900, __${#calendars.format(#calendars.createNow(), 'yyyy')}__ + 10)}">
+														<option th:value="${i}" th:text="${i}"
+															th:selected="${i} == *{#dates.year(birthday)}"></option>
+													</th:block>
+												</select>
+											</div>
+											<div class="col-3">
+												<label for="month">月</label> <select id="month"
+													class="custom-select" name="birthdayMonth">
+													<option value="">---</option>
+													<th:block th:each="i : ${#numbers.sequence(1, 12)}">
+														<option th:value="${i}" th:text="${i}"
+															th:selected="${i} == *{#dates.month(birthday)}"></option>
+													</th:block>
+												</select>
+											</div>
+											<div class="col-4">
+												<label for="day">日</label> <select id="day"
+													class="custom-select" name="birthdayDay">
+													<option value="">---</option>
+													<th:block th:each="i : ${#numbers.sequence(1, 31)}">
+														<option th:value="${i}" th:text="${i}"
+															th:selected="${i} == *{#dates.day(birthday)}"></option>
+													</th:block>
+												</select>
+											</div>
+										</div> <input type="hidden" th:field="*{birthday}" />
+									</td>
+								</tr>
+								<tr>
+									<td>性別</td>
+									<td>
+										<div class="btn-group btn-group-toggle" data-toggle="buttons">
+											<label class="btn btn-outline-secondary"
+												th:classappend="*{gender} == 'unknown' ? 'active'">
+												<input type="radio" th:field="*{gender}" value="unknown"
+												autocomplete="off">不明
+											</label> <label class="btn btn-outline-secondary"
+												th:classappend="*{gender} == 'male' ? 'active'"> <input
+												type="radio" th:field="*{gender}" value="male"
+												autocomplete="off">男性
+											</label> <label class="btn btn-outline-secondary"
+												th:classappend="*{gender} == 'female' ? 'active'"> <input
+												type="radio" th:field="*{gender}" value="female"
+												autocomplete="off">女性
+											</label>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>血液型</td>
+									<td>
+										<div class="btn-group btn-group-toggle" data-toggle="buttons">
+											<th:block th:each="item : ${radioBloodType}">
+												<label class="btn btn-outline-secondary"
+													th:classappend="*{bloodType} == ${item.value} ? 'active'">
+													<input type="radio" th:field="*{bloodType}"
+													th:text="${item.key}" th:value="${item.value}"
+													autocomplete="off" />
+												</label>
+											</th:block>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>住所</td>
+									<td><input type="text" autocomplete="off"
+										class="form-control" th:field="*{address}" /></td>
+								</tr>
+								<tr>
+									<td>担当者</td>
+									<td><input type="text" class="form-control"
+										list="tantoshaList" id="tanto" th:value="*{tantosha.name}" />
+										<input type="hidden" id="tantoHi" name="tamtosha.id"
+										th:value="*{tantosha.id}"> <datalist id="tantoshaList">
+											<th:block th:each="data : ${tantoshaList}">
+												<option th:value="${data.name}" th:label="${data.id}"
+													th:inline="text">[[${data.name}]]</option>
+											</th:block>
+										</datalist></td>
+								</tr>
+								<tr>
+									<td>備考</td>
+									<td><textarea autocomplete="off" class="form-control"
+											th:field="*{memo}"></textarea></td>
+								</tr>
+								<tr th:if="__${displayMode == 'signup'}__">
+									<td>登録日</td>
+									<td><input type="text" autocomplete="off"
+										class="form-control date" th:field="*{signupDate}" /></td>
+								</tr>
 
-					</tbody>
-				</table>
+							</tbody>
+						</table>
+
+					</div>
+					<div class="w-50 pl-2">
+						<table class="table align-middle">
+							<tr>
+								<td width="25%">電話番号</td>
+								<td width="75%"><input type="hidden"
+									id="customerPhoneListSize"
+									th:value="*{#lists.size(customerPhoneList)}" /> <th:block
+										th:each="ph, stat : *{customerPhoneList}">
+										<input type="hidden"
+											th:field="*{customerPhoneList[__${stat.index}__].id}" />
+										<input type="hidden"
+											th:field="*{customerPhoneList[__${stat.index}__].customerId}" />
+										<div class="row">
+											<div class="col-5">
+
+												<input type="text" class="form-control"
+													th:value="${ph.phoneNumber}"
+													th:name="|customerPhoneList[${stat.index}].phoneNumber|" />
+											</div>
+											<div class="col-7">
+
+												<input type="text" class="form-control"
+													th:value="${ph.memo}"
+													th:name="|customerPhoneList[${stat.index}].memo|" />
+											</div>
+										</div>
+
+
+									</th:block></td>
+							</tr>
+							<tr>
+								<td>メールアドレス</td>
+								<td><input type="hidden" id="customerMailListSize"
+									th:value="*{#lists.size(customerMailList)}" /> <th:block
+										th:each="ma, stat : *{customerMailList}">
+										<input type="hidden"
+											th:field="*{customerMailList[__${stat.index}__].id}" />
+										<input type="hidden"
+											th:field="*{customerMailList[__${stat.index}__].customerId}" />
+										<div class="row">
+											<div class="col-6">
+												<input type="text" class="form-control"
+													th:value="${ma.mailAddress}"
+													th:name="|customerMailList[${stat.index}].mailAddress|" />
+											</div>
+											<div class="col-6">
+												<input type="text" class="form-control"
+													th:value="${ma.memo}"
+													th:name="|customerMailList[${stat.index}].memo|" />
+											</div>
+										</div>
+									</th:block></td>
+							</tr>
+						</table>
+					</div>
+					<input type="hidden" th:field="*{id}" />
+				</div>
 				<div class="d-flex justify-content-between">
 					<input type="button" class="btn" value="一覧画面へ"
 						th:onclick="@{location.href='/customer/list'}" />
@@ -116,11 +218,18 @@
 					</div>
 				</div>
 			</div>
-			<input type="hidden" th:field="*{id}" />
+
 		</form>
 		<script type="text/javascript" th:inline="javascript">
 			/*<![CDATA[*/
-
+			$('#tanto').on(
+					'change',
+					function() {
+						var $id = $(
+								"#tantoshaList option[value='" + $(this).val()
+										+ "']").prop('label');
+						$('#tantoHi').val($id);
+					});
 			/*]]>*/
 		</script>
 	</div>

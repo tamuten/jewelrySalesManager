@@ -5,10 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +23,6 @@ import com.jewelry.dataset.CsvDataSetLoader;
 import com.jewelry.domain.model.Shozoku;
 
 @SpringBootTest
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class) // DBUnitでCSVファイルを使えるよう指定。
 @TestExecutionListeners({
 		DependencyInjectionTestExecutionListener.class, // このテストクラスでDIを使えるように指定
@@ -38,7 +34,6 @@ public class ShozokuRepositoryTest {
 	private ShozokuRepository repository;
 
 	@Test
-	@Order(1)
 	@DatabaseSetup("/testdata/ShozokuRepositoryTest/findPage-init-data")
 	@ExpectedDatabase(value = "/testdata/ShozokuRepositoryTest/findPage-init-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
 	void testFindPage() {
@@ -59,4 +54,13 @@ public class ShozokuRepositoryTest {
 		assertThat(actualList.size()).isEqualTo(expectedList.size());
 		assertThat(actualList).isEqualTo(expectedList);
 	}
+
+	@Test
+	@DatabaseSetup("/testdata/ShozokuRepositoryTest/init-data")
+	@ExpectedDatabase(value = "/testdata/ShozokuRepositoryTest/init-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
+	void countはレコードの行数を正しく取得する() {
+		long actual = repository.count();
+		assertThat(actual).isEqualTo(6L);
+	}
+
 }

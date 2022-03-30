@@ -1,30 +1,15 @@
 package com.jewelry.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import com.jewelry.Message;
-import com.jewelry.configuration.WebConfig;
-import com.jewelry.domain.model.Shozoku;
-import com.jewelry.domain.service.MessageService;
-import com.jewelry.domain.service.ShozokuService;
-import com.jewelry.form.ShozokuForm;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -43,6 +28,13 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.BindingResult;
 
+import com.jewelry.Message;
+import com.jewelry.configuration.WebConfig;
+import com.jewelry.domain.model.Shozoku;
+import com.jewelry.domain.service.MessageService;
+import com.jewelry.domain.service.ShozokuService;
+import com.jewelry.form.ShozokuForm;
+
 @SpringBootTest(classes = WebConfig.class)
 public class ShozokuControllerTest {
 	private MockMvc mockMvc;
@@ -56,8 +48,8 @@ public class ShozokuControllerTest {
 	@BeforeEach
 	void setup() {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
-				.setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
-				.build();
+			.setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
+			.build();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -79,16 +71,16 @@ public class ShozokuControllerTest {
 		Page<Shozoku> expectedPage = new PageImpl<Shozoku>(expectedList, pageable, 10);
 
 		when(shozokuService.findPage(pageable))
-				.thenReturn(expectedPage);
+			.thenReturn(expectedPage);
 
 		MvcResult result = mockMvc.perform(get("/shozoku/list?page=0"))
-				.andExpect(status().isOk())
-				.andExpect(view().name("homeLayout"))
-				.andExpect(model().attribute("contents", "contents/shozoku/shozokuList :: shozokuList_contents"))
-				.andReturn();
+			.andExpect(status().isOk())
+			.andExpect(view().name("homeLayout"))
+			.andExpect(model().attribute("contents", "contents/shozoku/shozokuList :: shozokuList_contents"))
+			.andReturn();
 
 		Map<String, Object> model = result.getModelAndView()
-				.getModel();
+			.getModel();
 		assertTrue(model.containsKey("page"));
 		assertThat(model.get("page")).isEqualTo(expectedPage);
 
@@ -106,11 +98,11 @@ public class ShozokuControllerTest {
 		when(shozokuService.findByPk(1)).thenReturn(new Shozoku(1, "食品"));
 
 		mockMvc.perform(get("/shozoku/detail/1"))
-				.andExpect(status().isOk())
-				.andExpect(view().name("homeLayout"))
-				.andExpect(model().attribute("contents", "contents/shozoku/shozoku :: shozoku_contents"))
-				.andExpect(model().attribute("shozokuForm", hasProperty("id", is(1))))
-				.andExpect(model().attribute("shozokuForm", hasProperty("name", is("食品"))));
+			.andExpect(status().isOk())
+			.andExpect(view().name("homeLayout"))
+			.andExpect(model().attribute("contents", "contents/shozoku/shozoku :: shozoku_contents"))
+			.andExpect(model().attribute("shozokuForm", hasProperty("id", is(1))))
+			.andExpect(model().attribute("shozokuForm", hasProperty("name", is("食品"))));
 	}
 
 	@Test
@@ -121,19 +113,22 @@ public class ShozokuControllerTest {
 		form.setName("");
 
 		MvcResult result = mockMvc.perform(post("/shozoku/update").flashAttr("shozokuForm", form))
-				.andExpect(model().hasErrors())
-				.andExpect(model().attribute("shozokuForm", form))
-				.andExpect(view().name("homeLayout"))
-				.andExpect(model().attribute("contents", "contents/shozoku/shozoku :: shozoku_contents"))
-				.andExpect(model().attribute("displayMode", "update")).andReturn();
+			.andExpect(model().hasErrors())
+			.andExpect(model().attribute("shozokuForm", form))
+			.andExpect(view().name("homeLayout"))
+			.andExpect(model().attribute("contents", "contents/shozoku/shozoku :: shozoku_contents"))
+			.andExpect(model().attribute("displayMode", "update"))
+			.andReturn();
 
-		BindingResult bindingResult = (BindingResult) result.getModelAndView().getModel()
-				.get(BindingResult.MODEL_KEY_PREFIX + "shozokuForm");
-		String mes = bindingResult.getFieldError().getCode();
+		BindingResult bindingResult = (BindingResult) result.getModelAndView()
+			.getModel()
+			.get(BindingResult.MODEL_KEY_PREFIX + "shozokuForm");
+		String mes = bindingResult.getFieldError()
+			.getCode();
 		System.out.println(mes);
 	}
 
-	@Disabled
+	@Disabled // TODO:
 	@Test
 	void 更新_正常() throws Exception {
 		// TODO:
@@ -144,7 +139,7 @@ public class ShozokuControllerTest {
 		form.setName("更新");
 
 		mockMvc.perform(post("/shozoku/update").flashAttr("shozokuForm", form)
-				.with(SecurityMockMvcRequestPostProcessors.csrf()));
+			.with(SecurityMockMvcRequestPostProcessors.csrf()));
 		// .andExpect(model().hasNoErrors())
 		// .andExpect(model().attribute("shozokuForm", form))
 		// .andExpect(view().name("homeLayout"))
@@ -158,12 +153,12 @@ public class ShozokuControllerTest {
 	@Test
 	void 登録画面表示のテスト() throws Exception {
 		mockMvc.perform(get("/shozoku/signup"))
-				.andExpect(status().isOk())
-				.andExpect(view().name("homeLayout"))
-				.andExpect(model().attribute("displayMode", "signup"))
-				.andExpect(model().attribute("contents", "contents/shozoku/shozoku :: shozoku_contents"))
-				.andExpect(model().attribute("shozokuForm", hasProperty("id", nullValue())))
-				.andExpect(model().attribute("shozokuForm", hasProperty("name", nullValue())));
+			.andExpect(status().isOk())
+			.andExpect(view().name("homeLayout"))
+			.andExpect(model().attribute("displayMode", "signup"))
+			.andExpect(model().attribute("contents", "contents/shozoku/shozoku :: shozoku_contents"))
+			.andExpect(model().attribute("shozokuForm", hasProperty("id", nullValue())))
+			.andExpect(model().attribute("shozokuForm", hasProperty("name", nullValue())));
 	}
 
 	@Test

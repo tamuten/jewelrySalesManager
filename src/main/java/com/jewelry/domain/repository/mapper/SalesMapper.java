@@ -1,5 +1,5 @@
 package com.jewelry.domain.repository.mapper;
 
-public class SalesMapper {
+public interface SalesMapper {
 	// TODO:
 }

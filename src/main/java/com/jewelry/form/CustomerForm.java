@@ -38,4 +38,5 @@ public class CustomerForm {
 
 	private List<CustomerPhone> customerPhoneList;
 	private List<CustomerMail> customerMailList;
+
 }
