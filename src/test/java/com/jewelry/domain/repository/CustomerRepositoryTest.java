@@ -178,13 +178,13 @@ public class CustomerRepositoryTest {
 		List<Customer> expectedList = new ArrayList<>();
 
 		List<CustomerPhone> expectedPhones1 = new ArrayList<>();
-		expectedPhones1.add(new CustomerPhone(1, 1, "07000000000", "佐藤一郎さんの電話番号１"));
-		expectedPhones1.add(new CustomerPhone(2, 1, "07000000001", "佐藤一郎さんの電話番号２"));
-		expectedPhones1.add(new CustomerPhone(3, 1, "07000000002", "佐藤一郎さんの電話番号３"));
+		expectedPhones1.add(new CustomerPhone(1, 1, "07000000000", "佐藤一郎さんの電話番号１", false));
+		expectedPhones1.add(new CustomerPhone(2, 1, "07000000001", "佐藤一郎さんの電話番号２", false));
+		expectedPhones1.add(new CustomerPhone(3, 1, "07000000002", "佐藤一郎さんの電話番号３", false));
 		List<CustomerMail> expectedMails1 = new ArrayList<>();
-		expectedMails1.add(new CustomerMail(1, 1, "ichiro1@example.com", "佐藤一郎さんのメールアドレス１"));
-		expectedMails1.add(new CustomerMail(2, 1, "ichiro2@example.com", "佐藤一郎さんのメールアドレス２"));
-		expectedMails1.add(new CustomerMail(3, 1, "ichiro3@example.com", "佐藤一郎さんのメールアドレス３"));
+		expectedMails1.add(new CustomerMail(1, 1, "ichiro1@example.com", "佐藤一郎さんのメールアドレス１", false));
+		expectedMails1.add(new CustomerMail(2, 1, "ichiro2@example.com", "佐藤一郎さんのメールアドレス２", false));
+		expectedMails1.add(new CustomerMail(3, 1, "ichiro3@example.com", "佐藤一郎さんのメールアドレス３", false));
 		expectedList.add(new Customer(
 				1,
 				"佐藤一郎",
@@ -200,7 +200,7 @@ public class CustomerRepositoryTest {
 				expectedMails1));
 
 		List<CustomerPhone> expectedPhones2 = new ArrayList<>();
-		expectedPhones2.add(new CustomerPhone(4, 2, "08000000000", "佐藤次郎さんの電話番号１"));
+		expectedPhones2.add(new CustomerPhone(4, 2, "08000000000", "佐藤次郎さんの電話番号１", false));
 		List<CustomerMail> expectedMails2 = new ArrayList<>();
 		expectedList.add(new Customer(
 				2,
@@ -217,11 +217,11 @@ public class CustomerRepositoryTest {
 				expectedMails2));
 
 		List<CustomerPhone> expectedPhones3 = new ArrayList<>();
-		expectedPhones3.add(new CustomerPhone(5, 3, "09000000000", "佐藤三郎さんの電話番号１"));
-		expectedPhones3.add(new CustomerPhone(6, 3, "09000000001", "佐藤三郎さんの電話番号２"));
+		expectedPhones3.add(new CustomerPhone(5, 3, "09000000000", "佐藤三郎さんの電話番号１", false));
+		expectedPhones3.add(new CustomerPhone(6, 3, "09000000001", "佐藤三郎さんの電話番号２", false));
 		List<CustomerMail> expectedMails3 = new ArrayList<>();
-		expectedMails3.add(new CustomerMail(4, 3, "saburo1@example.com", "佐藤三郎さんのメールアドレス１"));
-		expectedMails3.add(new CustomerMail(5, 3, "saburo2@example.com", "佐藤三郎さんのメールアドレス２"));
+		expectedMails3.add(new CustomerMail(4, 3, "saburo1@example.com", "佐藤三郎さんのメールアドレス１", false));
+		expectedMails3.add(new CustomerMail(5, 3, "saburo2@example.com", "佐藤三郎さんのメールアドレス２", false));
 		expectedList.add(new Customer(
 				3,
 				"佐藤三郎",
@@ -246,13 +246,13 @@ public class CustomerRepositoryTest {
 	@ExpectedDatabase(value = "/testdata/CustomerRepositoryTest/init-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
 	void 一件選択のテスト() {
 		List<CustomerPhone> expectedPhones = new ArrayList<>();
-		expectedPhones.add(new CustomerPhone(1, 1, "07000000000", "メモ"));
-		expectedPhones.add(new CustomerPhone(2, 1, "07000000001", "メモ"));
-		expectedPhones.add(new CustomerPhone(3, 1, "07000000002", "メモ"));
+		expectedPhones.add(new CustomerPhone(1, 1, "07000000000", "メモ", false));
+		expectedPhones.add(new CustomerPhone(2, 1, "07000000001", "メモ", false));
+		expectedPhones.add(new CustomerPhone(3, 1, "07000000002", "メモ", false));
 		List<CustomerMail> expectedMails = new ArrayList<>();
-		expectedMails.add(new CustomerMail(1, 1, "sample1@example.com", "メモ"));
-		expectedMails.add(new CustomerMail(2, 1, "sample2@example.com", "メモ"));
-		expectedMails.add(new CustomerMail(3, 1, "sample3@example.com", "メモ"));
+		expectedMails.add(new CustomerMail(1, 1, "sample1@example.com", "メモ", false));
+		expectedMails.add(new CustomerMail(2, 1, "sample2@example.com", "メモ", false));
+		expectedMails.add(new CustomerMail(3, 1, "sample3@example.com", "メモ", false));
 		Shozoku expectedShozoku = Shozoku.builder()
 			.id(1)
 			.name("所属1")
@@ -344,13 +344,13 @@ public class CustomerRepositoryTest {
 		List<Customer> expectedList = new ArrayList<>();
 
 		List<CustomerPhone> expectedPhones1 = new ArrayList<>();
-		expectedPhones1.add(new CustomerPhone(1, 1, "07000000000", "佐藤一郎さんの電話番号１"));
-		expectedPhones1.add(new CustomerPhone(2, 1, "07000000001", "佐藤一郎さんの電話番号２"));
-		expectedPhones1.add(new CustomerPhone(3, 1, "07000000002", "佐藤一郎さんの電話番号３"));
+		expectedPhones1.add(new CustomerPhone(1, 1, "07000000000", "佐藤一郎さんの電話番号１", false));
+		expectedPhones1.add(new CustomerPhone(2, 1, "07000000001", "佐藤一郎さんの電話番号２", false));
+		expectedPhones1.add(new CustomerPhone(3, 1, "07000000002", "佐藤一郎さんの電話番号３", false));
 		List<CustomerMail> expectedMails1 = new ArrayList<>();
-		expectedMails1.add(new CustomerMail(1, 1, "ichiro1@example.com", "佐藤一郎さんのメールアドレス１"));
-		expectedMails1.add(new CustomerMail(2, 1, "ichiro2@example.com", "佐藤一郎さんのメールアドレス２"));
-		expectedMails1.add(new CustomerMail(3, 1, "ichiro3@example.com", "佐藤一郎さんのメールアドレス３"));
+		expectedMails1.add(new CustomerMail(1, 1, "ichiro1@example.com", "佐藤一郎さんのメールアドレス１", false));
+		expectedMails1.add(new CustomerMail(2, 1, "ichiro2@example.com", "佐藤一郎さんのメールアドレス２", false));
+		expectedMails1.add(new CustomerMail(3, 1, "ichiro3@example.com", "佐藤一郎さんのメールアドレス３", false));
 
 		Customer expectedCustomer1 = new Customer(
 				1,
@@ -368,7 +368,7 @@ public class CustomerRepositoryTest {
 		expectedList.add(expectedCustomer1);
 
 		List<CustomerPhone> expectedPhones2 = new ArrayList<>();
-		expectedPhones2.add(new CustomerPhone(4, 2, "08000000000", "佐藤次郎さんの電話番号１"));
+		expectedPhones2.add(new CustomerPhone(4, 2, "08000000000", "佐藤次郎さんの電話番号１", false));
 		List<CustomerMail> expectedMails2 = new ArrayList<>();
 		Customer expectedCustomer2 = new Customer(
 				2,
@@ -386,11 +386,11 @@ public class CustomerRepositoryTest {
 		expectedList.add(expectedCustomer2);
 
 		List<CustomerPhone> expectedPhones3 = new ArrayList<>();
-		expectedPhones3.add(new CustomerPhone(5, 3, "09000000000", "佐藤三郎さんの電話番号１"));
-		expectedPhones3.add(new CustomerPhone(6, 3, "09000000001", "佐藤三郎さんの電話番号２"));
+		expectedPhones3.add(new CustomerPhone(5, 3, "09000000000", "佐藤三郎さんの電話番号１", false));
+		expectedPhones3.add(new CustomerPhone(6, 3, "09000000001", "佐藤三郎さんの電話番号２", false));
 		List<CustomerMail> expectedMails3 = new ArrayList<>();
-		expectedMails3.add(new CustomerMail(4, 3, "saburo1@example.com", "佐藤三郎さんのメールアドレス１"));
-		expectedMails3.add(new CustomerMail(5, 3, "saburo2@example.com", "佐藤三郎さんのメールアドレス２"));
+		expectedMails3.add(new CustomerMail(4, 3, "saburo1@example.com", "佐藤三郎さんのメールアドレス１", false));
+		expectedMails3.add(new CustomerMail(5, 3, "saburo2@example.com", "佐藤三郎さんのメールアドレス２", false));
 
 		Customer expectedCustomer3 = new Customer(
 				3,

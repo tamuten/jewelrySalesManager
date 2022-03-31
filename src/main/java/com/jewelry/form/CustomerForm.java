@@ -1,5 +1,6 @@
 package com.jewelry.form;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,12 +14,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @Data
 @EqualsAndHashCode
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class CustomerForm {
 	// TODO:
@@ -38,5 +37,18 @@ public class CustomerForm {
 
 	private List<CustomerPhone> customerPhoneList;
 	private List<CustomerMail> customerMailList;
+
+	private String displayMode;
+
+	public CustomerForm() {
+		this.gender = "unknown";
+		this.bloodType = "A";
+		this.tantosha = new Tantosha();
+		this.customerPhoneList = new ArrayList<CustomerPhone>() {
+		};
+		this.customerMailList = new ArrayList<CustomerMail>() {
+		};
+		this.signupDate = new Date();
+	}
 
 }

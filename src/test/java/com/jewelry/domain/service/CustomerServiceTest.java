@@ -50,13 +50,13 @@ public class CustomerServiceTest {
 		.signupDate(Date.valueOf("2022-3-22"))
 		.customerPhoneList(new ArrayList<CustomerPhone>() {
 			{
-				add(new CustomerPhone(1, 1, "00000000000", "memo1"));
-				add(new CustomerPhone(2, 1, "00000000001", "memo2"));
+				add(new CustomerPhone(1, 1, "00000000000", "memo1", false));
+				add(new CustomerPhone(2, 1, "00000000001", "memo2", false));
 			}
 		})
 		.customerMailList(new ArrayList<CustomerMail>() {
 			{
-				add(new CustomerMail(1, 1, "sample@example.com", "memo1"));
+				add(new CustomerMail(1, 1, "sample@example.com", "memo1", false));
 			}
 		})
 		.build();

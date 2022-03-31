@@ -16,4 +16,7 @@ public class CustomerMail {
 	private Integer customerId;
 	private String mailAddress;
 	private String memo;
+
+	// フォーム用
+	private boolean rowDelete;
 }

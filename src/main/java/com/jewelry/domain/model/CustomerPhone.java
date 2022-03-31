@@ -16,4 +16,7 @@ public class CustomerPhone {
 	private Integer customerId;
 	private String phoneNumber;
 	private String memo;
+
+	// フォーム用
+	private boolean rowDelete;
 }

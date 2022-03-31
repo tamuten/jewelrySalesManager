@@ -56,4 +56,14 @@ public class CustomerPhoneRepositoryTest {
 		int createdCount = repository.createAll(createList);
 		assertEquals(createdCount, 2);
 	}
+
+	@Test
+	void testUpdate() {
+		// TODO:
+	}
+
+	@Test
+	void testDelete() {
+		// TODO:
+	}
 }

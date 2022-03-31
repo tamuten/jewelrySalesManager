@@ -7,12 +7,13 @@
 </head>
 <body>
 	<div th:fragment="customer_contents" class="h-100 w-100">
-		<div class="content-title border-bottom">
-			<h2 th:if="__${displayMode == 'update'}__">顧客詳細</h2>
-			<h2 th:if="__${displayMode == 'signup'}__">顧客登録</h2>
-		</div>
 		<form th:object="${customerForm}" method="post"
 			th:action="@{/customer/update}">
+			<div class="content-title border-bottom">
+				<h2 th:if="__*{displayMode == 'update'}__">顧客詳細</h2>
+				<h2 th:if="__*{displayMode == 'signup'}__">顧客登録</h2>
+			</div>
+
 			<div th:if="${message}" class="alert alert-success">
 				<p th:text="${message}"></p>
 			</div>
@@ -136,83 +137,104 @@
 									<td><textarea autocomplete="off" class="form-control"
 											th:field="*{memo}"></textarea></td>
 								</tr>
-								<tr th:if="__${displayMode == 'signup'}__">
+								<tr th:if="__*{displayMode == 'signup'}__">
 									<td>登録日</td>
 									<td><input type="text" autocomplete="off"
-										class="form-control date" th:field="*{signupDate}" /></td>
+										class="form-control date"
+										th:value="*{#dates.format(signupDate, 'yyyy/MM/dd')}"
+										name="signupDate" id="signupDate" /></td>
 								</tr>
-
 							</tbody>
 						</table>
 
 					</div>
 					<div class="w-50 pl-2">
-						<table class="table align-middle">
+						<!-- 電話番号 -->
+						<div class="d-flex mb-2">
+							<button type="submit" class="btn btn-sm btn-secondary"
+								th:formaction="@{/customer/phone/addRow}" id="addRow">行追加</button>
+							<button type="submit" class="btn btn-sm btn-secondary"
+								th:formaction="@{/customer/phone/removeRow}" id="removeRow">行削除</button>
+						</div>
+						<input type="hidden" id="customerPhoneListSize"
+							th:value="*{#lists.size(customerPhoneList)}" />
+						<table class="table table-sm align-middle">
 							<tr>
-								<td width="25%">電話番号</td>
-								<td width="75%"><input type="hidden"
-									id="customerPhoneListSize"
-									th:value="*{#lists.size(customerPhoneList)}" /> <th:block
-										th:each="ph, stat : *{customerPhoneList}">
-										<input type="hidden"
-											th:field="*{customerPhoneList[__${stat.index}__].id}" />
-										<input type="hidden"
-											th:field="*{customerPhoneList[__${stat.index}__].customerId}" />
-										<div class="row">
-											<div class="col-5">
-
-												<input type="text" class="form-control"
-													th:value="${ph.phoneNumber}"
-													th:name="|customerPhoneList[${stat.index}].phoneNumber|" />
-											</div>
-											<div class="col-7">
-
-												<input type="text" class="form-control"
-													th:value="${ph.memo}"
-													th:name="|customerPhoneList[${stat.index}].memo|" />
-											</div>
-										</div>
-
-
-									</th:block></td>
+								<td width="60%">電話番号</td>
+								<td width="35%">メモ</td>
+								<td width=" 5%"></td>
 							</tr>
+							<th:block th:each="ph, stat : *{customerPhoneList}">
+								<tr>
+									<td><input type="hidden"
+										th:field="*{customerPhoneList[__${stat.index}__].id}" /> <input
+										type="hidden"
+										th:field="*{customerPhoneList[__${stat.index}__].customerId}" />
+										<input type="text" class="form-control"
+										th:value="${ph.phoneNumber}"
+										th:name="|customerPhoneList[${stat.index}].phoneNumber|" /></td>
+									<td><input type="text" class="form-control"
+										th:value="${ph.memo}"
+										th:name="|customerPhoneList[${stat.index}].memo|" /></td>
+									<td>
+										<div class="form-check">
+											<input class="form-check-input position-static"
+												type="checkbox" th:field="*{customerPhoneList[__${stat.index}__].rowDelete}">
+										</div>
+									</td>
+								</tr>
+							</th:block>
+						</table>
+						<!-- メールアドレス -->
+						<div class="d-flex mb-2">
+							<button type="submit" class="btn btn-sm btn-secondary"
+								th:formaction="@{/customer/mail/addRow}" id="addRow">行追加</button>
+							<button type="submit" class="btn btn-sm btn-secondary"
+								th:formaction="@{/customer/mail/removeRow}" id="removeRow">行削除</button>
+						</div>
+						<input type="hidden" id="customerMailListSize"
+							th:value="*{#lists.size(customerMailList)}" />
+						<table class="table table-sm align-middle">
 							<tr>
-								<td>メールアドレス</td>
-								<td><input type="hidden" id="customerMailListSize"
-									th:value="*{#lists.size(customerMailList)}" /> <th:block
-										th:each="ma, stat : *{customerMailList}">
-										<input type="hidden"
-											th:field="*{customerMailList[__${stat.index}__].id}" />
-										<input type="hidden"
-											th:field="*{customerMailList[__${stat.index}__].customerId}" />
-										<div class="row">
-											<div class="col-6">
-												<input type="text" class="form-control"
-													th:value="${ma.mailAddress}"
-													th:name="|customerMailList[${stat.index}].mailAddress|" />
-											</div>
-											<div class="col-6">
-												<input type="text" class="form-control"
-													th:value="${ma.memo}"
-													th:name="|customerMailList[${stat.index}].memo|" />
-											</div>
-										</div>
-									</th:block></td>
+								<td width="60%">メールアドレス</td>
+								<td width="35%">メモ</td>
+								<td width=" 5%"></td>
 							</tr>
+							<th:block th:each="ma, stat : *{customerMailList}">
+								<tr>
+									<td><input type="hidden"
+										th:field="*{customerMailList[__${stat.index}__].id}" /> <input
+										type="hidden"
+										th:field="*{customerMailList[__${stat.index}__].customerId}" />
+										<input type="text" class="form-control"
+										th:value="${ma.mailAddress}"
+										th:name="|customerMailList[${stat.index}].mailAddress|" /></td>
+									<td><input type="text" class="form-control"
+										th:value="${ma.memo}"
+										th:name="|customerMailList[${stat.index}].memo|" /></td>
+									<td>
+										<div class="form-check">
+											<input class="form-check-input position-static"
+												type="checkbox" th:field="*{customerMailList[__${stat.index}__].rowDelete}">
+										</div>
+									</td>
+								</tr>
+							</th:block>
 						</table>
 					</div>
 					<input type="hidden" th:field="*{id}" />
+					<input type="hidden" th:field="*{displayMode}"/>
 				</div>
 				<div class="d-flex justify-content-between">
 					<input type="button" class="btn" value="一覧画面へ"
 						th:onclick="@{location.href='/customer/list'}" />
-					<div th:if="__${displayMode == 'update'}__" class="right-btn-group">
+					<div th:if="__*{displayMode == 'update'}__" class="right-btn-group">
 						<input type="submit" class="btn btn-danger" value="削除"
 							th:formaction="@{/customer/delete}" /> <input type="submit"
 							class="btn btn-primary" value="更新"
 							th:formaction="@{/customer/update}" />
 					</div>
-					<div th:if="__${displayMode == 'signup'}__" class="right-btn-group">
+					<div th:if="__*{displayMode == 'signup'}__" class="right-btn-group">
 						<input type="submit" class="btn btn-primary" value="登録"
 							th:formaction="@{/customer/signup}" />
 					</div>
@@ -230,6 +252,7 @@
 										+ "']").prop('label');
 						$('#tantoHi').val($id);
 					});
+
 			/*]]>*/
 		</script>
 	</div>
