@@ -1,3 +1,2 @@
 customer
-customer_phone
-customer_mail
+tantosha

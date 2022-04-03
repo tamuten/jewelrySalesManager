@@ -1,5 +1,5 @@
-id,name,shozoku_id,role
-1,admin,1,ROLE_ADMIN
-2,user,4,ROLE_GENERAL
-3,test,6,ROLE_GENERAL
-4,田中一郎,1,ROLE_ADMIN
+name,shozoku_id,role
+admin,1,ROLE_ADMIN
+user,4,ROLE_GENERAL
+test,6,ROLE_GENERAL
+田中一郎,1,ROLE_ADMIN

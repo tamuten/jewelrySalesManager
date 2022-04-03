@@ -8,10 +8,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -27,13 +24,10 @@ import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.jewelry.dataset.CsvDataSetLoader;
 import com.jewelry.domain.model.Customer;
-import com.jewelry.domain.model.CustomerMail;
-import com.jewelry.domain.model.CustomerPhone;
 import com.jewelry.domain.model.Shozoku;
 import com.jewelry.domain.model.Tantosha;
 
 @SpringBootTest
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class) // DBUnitでCSVファイルを使えるよう指定。
 @TestExecutionListeners({
 		DependencyInjectionTestExecutionListener.class, // このテストクラスでDIを使えるように指定
@@ -45,10 +39,10 @@ public class CustomerRepositoryTest {
 	private CustomerRepository repository;
 
 	@Test
-	@Order(1)
 	@DatabaseSetup("/testdata/CustomerRepositoryTest/init-data")
 	@ExpectedDatabase(value = "/testdata/CustomerRepositoryTest/after-create-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
 	void 顧客作成のテスト_DBチェック() {
+		// Setup
 		Tantosha newTantosha = Tantosha.builder()
 			.id(1)
 			.build();
@@ -58,31 +52,59 @@ public class CustomerRepositoryTest {
 			.birthday(Date.valueOf("2000-3-21"))
 			.gender("female")
 			.bloodType("A")
+			.phoneNo1("00000000000")
+			.phoneNo2("00000000001")
+			.mailAddress("mail@example.com")
 			.address("埼玉県上尾市瓦葺1111-1-101")
 			.memo("新規追加")
 			.tantosha(newTantosha)
 			.signupDate(Date.valueOf("2022-3-21"))
 			.build();
-		repository.create(newCustomer);
+
+		// Execute
+		int createdCount = repository.create(newCustomer);
+
+		// Verify
+		assertThat(createdCount).isEqualTo(1);
 	}
 
 	@Test
-	@Order(2)
 	void 顧客作成のテスト() {
 		// 正常系
-		正常に登録(CHARS_50, CHARS_100, "2000-1-1", CHARS_10, CHARS_5, CHARS_100, CHARS_200, 2, "2000-1-1");
-		正常に登録(CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY, 2, "2000-1-1");
-		正常に登録("山本美月", null, null, null, null, null, null, 3, "2000-1-1");
-		正常に登録("山本美月", null, null, null, null, null, null, null, "2000-1-1");
+		正常に登録(CHARS_50, CHARS_100, "2000-1-1", CHARS_10, CHARS_5, CHARS_20, CHARS_20, CHARS_20, CHARS_100, CHARS_100,
+				CHARS_200, 2, "2000-1-1");
+		正常に登録(CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY,
+				CHARS_EMPTY, CHARS_EMPTY, CHARS_EMPTY, 2, "2000-1-1");
+		正常に登録("山本美月", null, null, null, null, null, null, null, null, null, null, 3, "2000-1-1");
+		正常に登録("山本美月", null, null, null, null, null, null, null, null, null, null, null, "2000-1-1");
 
 		// 異常系
-		登録に失敗(CHARS_51, CHARS_101, "2020-1-1", CHARS_11, CHARS_6, CHARS_101, CHARS_201, null, "2020-1-31");
-		登録に失敗(CHARS_51, CHARS_100, "2020-1-1", CHARS_10, CHARS_5, CHARS_100, CHARS_200, null, "2020-1-31");
-		登録に失敗(CHARS_50, CHARS_101, "2020-1-1", CHARS_10, CHARS_5, CHARS_100, CHARS_200, null, "2020-1-31");
-		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_11, CHARS_5, CHARS_100, CHARS_200, null, "2020-1-31");
-		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_10, CHARS_6, CHARS_100, CHARS_200, null, "2020-1-31");
-		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_10, CHARS_5, CHARS_101, CHARS_200, null, "2020-1-31");
-		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_10, CHARS_5, CHARS_100, CHARS_201, null, "2020-1-31");
+		登録に失敗(CHARS_51, CHARS_101, "2020-1-1", CHARS_11, CHARS_6, CHARS_21, CHARS_21, CHARS_21, CHARS_101, CHARS_101,
+				CHARS_201, null, "2020-1-31");
+		登録に失敗(null, CHARS_100, "2020-1-1", CHARS_10, CHARS_5, CHARS_20, CHARS_20, CHARS_20, CHARS_100, CHARS_100,
+				CHARS_200, null, "2020-1-31");
+		登録に失敗(CHARS_51, CHARS_100, "2020-1-1", CHARS_10, CHARS_5, CHARS_20, CHARS_20, CHARS_20, CHARS_100, CHARS_100,
+				CHARS_200, null, "2020-1-31");
+		登録に失敗(CHARS_50, CHARS_101, "2020-1-1", CHARS_10, CHARS_5, CHARS_20, CHARS_20, CHARS_20, CHARS_100, CHARS_100,
+				CHARS_200, null, "2020-1-31");
+		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_11, CHARS_5, CHARS_20, CHARS_20, CHARS_20, CHARS_100, CHARS_100,
+				CHARS_200, null, "2020-1-31");
+		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_10, CHARS_6, CHARS_20, CHARS_20, CHARS_20, CHARS_100, CHARS_100,
+				CHARS_200, null, "2020-1-31");
+		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_10, CHARS_5, CHARS_21, CHARS_20, CHARS_20, CHARS_100, CHARS_100,
+				CHARS_200, null, "2020-1-31");
+		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_10, CHARS_5, CHARS_20, CHARS_21, CHARS_20, CHARS_100, CHARS_100,
+				CHARS_200, null, "2020-1-31");
+		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_10, CHARS_5, CHARS_20, CHARS_20, CHARS_21, CHARS_100, CHARS_100,
+				CHARS_200, null, "2020-1-31");
+		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_10, CHARS_5, CHARS_20, CHARS_20, CHARS_20, CHARS_101, CHARS_100,
+				CHARS_200, null, "2020-1-31");
+		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_10, CHARS_5, CHARS_20, CHARS_20, CHARS_20, CHARS_100, CHARS_101,
+				CHARS_200, null, "2020-1-31");
+		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_10, CHARS_5, CHARS_20, CHARS_20, CHARS_20, CHARS_100, CHARS_100,
+				CHARS_201, null, "2020-1-31");
+		登録に失敗(CHARS_50, CHARS_100, "2020-1-1", CHARS_10, CHARS_5, CHARS_20, CHARS_20, CHARS_20, CHARS_100, CHARS_100,
+				CHARS_200, null, null);
 	}
 
 	/**
@@ -98,7 +120,8 @@ public class CustomerRepositoryTest {
 	 * @param tantoshaId 担当者ID
 	 * @param signupDateStr 登録日（文字列）
 	 */
-	void 正常に登録(String name, String kana, String birthdayStr, String gender, String bloodType, String address,
+	void 正常に登録(String name, String kana, String birthdayStr, String gender, String bloodType, String phoneNo1,
+			String phoneNo2, String phoneNo3, String mailAddress, String address,
 			String memo, Integer tantoshaId, String signupDateStr) {
 		Date birthday = null;
 		if (!(birthdayStr == null || birthdayStr.equals(""))) {
@@ -119,6 +142,10 @@ public class CustomerRepositoryTest {
 			.birthday(birthday)
 			.gender(gender)
 			.bloodType(bloodType)
+			.phoneNo1(phoneNo1)
+			.phoneNo2(phoneNo2)
+			.phoneNo3(phoneNo3)
+			.mailAddress(mailAddress)
 			.address(address)
 			.memo(memo)
 			.tantosha(newTantosha)
@@ -141,7 +168,8 @@ public class CustomerRepositoryTest {
 	 * @param tantoshaId 担当者ID
 	 * @param signupDateStr 登録日（文字列）
 	 */
-	void 登録に失敗(String name, String kana, String birthdayStr, String gender, String bloodType, String address,
+	void 登録に失敗(String name, String kana, String birthdayStr, String gender, String bloodType, String phoneNo1,
+			String phoneNo2, String phoneNo3, String mailAddress, String address,
 			String memo, Integer tantoshaId, String signupDateStr) {
 		Date birthday = null;
 		if (!(birthdayStr == null || birthdayStr.equals(""))) {
@@ -162,6 +190,10 @@ public class CustomerRepositoryTest {
 			.birthday(birthday)
 			.gender(gender)
 			.bloodType(bloodType)
+			.phoneNo1(phoneNo1)
+			.phoneNo2(phoneNo2)
+			.phoneNo3(phoneNo3)
+			.mailAddress(mailAddress)
 			.address(address)
 			.memo(memo)
 			.tantosha(newTantosha)
@@ -170,122 +202,116 @@ public class CustomerRepositoryTest {
 		assertThrows(DataIntegrityViolationException.class, () -> repository.create(newCustomer));
 	}
 
+	private static final List<Customer> FOR_FINDALL = new ArrayList<Customer>() {
+		{
+			add(Customer.builder()
+				.id(1)
+				.name("佐藤一郎")
+				.nameKana("サトウイチロウ")
+				.birthday(Date.valueOf("1993-2-20"))
+				.gender("male")
+				.bloodType("B")
+				.phoneNo1("00000000000")
+				.phoneNo2("00000000001")
+				.phoneNo3("00000000002")
+				.mailAddress("mail@example.com")
+				.address("埼玉県さいたま市北区〇〇町1-1-1")
+				.memo("サンプル")
+				.signupDate(Date.valueOf("2022-3-22"))
+				.tantosha(new Tantosha(1, "admin", new Shozoku(1, "所属1"), ROLE_ADMIN))
+				.build());
+			add(Customer.builder()
+				.id(2)
+				.name("佐藤次郎")
+				.nameKana("サトウジロウ")
+				.birthday(Date.valueOf("1993-2-21"))
+				.gender("male")
+				.bloodType("A")
+				.phoneNo1("00000000000")
+				.phoneNo2("00000000001")
+				.phoneNo3("00000000002")
+				.mailAddress("mail@example.com")
+				.address("埼玉県さいたま市北区〇〇町1-1-1")
+				.memo("サンプル")
+				.signupDate(Date.valueOf("2022-3-22"))
+				.tantosha(new Tantosha(2, "user", new Shozoku(4, "婦人服"), ROLE_GENERAL))
+				.build());
+			add(Customer.builder()
+				.id(3)
+				.name("佐藤三郎")
+				.nameKana("サトウサブロウ")
+				.birthday(Date.valueOf("1993-2-22"))
+				.gender("male")
+				.bloodType("O")
+				.phoneNo1("00000000000")
+				.phoneNo2("00000000001")
+				.phoneNo3("00000000002")
+				.mailAddress("mail@example.com")
+				.address("埼玉県さいたま市北区〇〇町1-1-1")
+				.memo("サンプル")
+				.signupDate(Date.valueOf("2022-3-22"))
+				.tantosha(new Tantosha(3, "test", new Shozoku(6, "食品"), ROLE_GENERAL))
+				.build());
+		}
+	};
+
+	private static final Customer FOR_FINDBYPK = Customer.builder()
+		.id(1)
+		.name("佐藤一郎")
+		.nameKana("サトウイチロウ")
+		.birthday(Date.valueOf("1993-2-20"))
+		.gender("male")
+		.bloodType("B")
+		.phoneNo1("00000000000")
+		.phoneNo2("00000000001")
+		.phoneNo3("00000000002")
+		.mailAddress("mail@example.com")
+		.address("埼玉県さいたま市北区〇〇町1-1-1")
+		.memo("サンプル")
+		.signupDate(Date.valueOf("2022-3-22"))
+		.tantosha(new Tantosha(1, "admin", new Shozoku(1, "所属1"), ROLE_ADMIN))
+		.build();
+
 	@Test
-	@Order(3)
 	@DatabaseSetup("/testdata/CustomerRepositoryTest/findAll-init-data")
 	@ExpectedDatabase(value = "/testdata/CustomerRepositoryTest/findAll-init-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
 	void 全件選択のテスト() {
-		List<Customer> expectedList = new ArrayList<>();
-
-		List<CustomerPhone> expectedPhones1 = new ArrayList<>();
-		expectedPhones1.add(new CustomerPhone(1, 1, "07000000000", "佐藤一郎さんの電話番号１", false));
-		expectedPhones1.add(new CustomerPhone(2, 1, "07000000001", "佐藤一郎さんの電話番号２", false));
-		expectedPhones1.add(new CustomerPhone(3, 1, "07000000002", "佐藤一郎さんの電話番号３", false));
-		List<CustomerMail> expectedMails1 = new ArrayList<>();
-		expectedMails1.add(new CustomerMail(1, 1, "ichiro1@example.com", "佐藤一郎さんのメールアドレス１", false));
-		expectedMails1.add(new CustomerMail(2, 1, "ichiro2@example.com", "佐藤一郎さんのメールアドレス２", false));
-		expectedMails1.add(new CustomerMail(3, 1, "ichiro3@example.com", "佐藤一郎さんのメールアドレス３", false));
-		expectedList.add(new Customer(
-				1,
-				"佐藤一郎",
-				"サトウイチロウ",
-				Date.valueOf("1993-2-20"),
-				"male",
-				"B",
-				"埼玉県さいたま市北区〇〇町1-1-1",
-				"サンプル",
-				Date.valueOf("2022-3-22"),
-				new Tantosha(1, "admin", new Shozoku(1, "所属1"), ROLE_ADMIN),
-				expectedPhones1,
-				expectedMails1));
-
-		List<CustomerPhone> expectedPhones2 = new ArrayList<>();
-		expectedPhones2.add(new CustomerPhone(4, 2, "08000000000", "佐藤次郎さんの電話番号１", false));
-		List<CustomerMail> expectedMails2 = new ArrayList<>();
-		expectedList.add(new Customer(
-				2,
-				"佐藤次郎",
-				"サトウジロウ",
-				Date.valueOf("1993-2-21"),
-				"male",
-				"A",
-				"埼玉県さいたま市北区〇〇町1-1-1",
-				"サンプル",
-				Date.valueOf("2022-3-22"),
-				new Tantosha(2, "user", new Shozoku(4, "婦人服"), ROLE_GENERAL),
-				expectedPhones2,
-				expectedMails2));
-
-		List<CustomerPhone> expectedPhones3 = new ArrayList<>();
-		expectedPhones3.add(new CustomerPhone(5, 3, "09000000000", "佐藤三郎さんの電話番号１", false));
-		expectedPhones3.add(new CustomerPhone(6, 3, "09000000001", "佐藤三郎さんの電話番号２", false));
-		List<CustomerMail> expectedMails3 = new ArrayList<>();
-		expectedMails3.add(new CustomerMail(4, 3, "saburo1@example.com", "佐藤三郎さんのメールアドレス１", false));
-		expectedMails3.add(new CustomerMail(5, 3, "saburo2@example.com", "佐藤三郎さんのメールアドレス２", false));
-		expectedList.add(new Customer(
-				3,
-				"佐藤三郎",
-				"サトウサブロウ",
-				Date.valueOf("1993-2-22"),
-				"male",
-				"O",
-				"埼玉県さいたま市北区〇〇町1-1-1",
-				"サンプル",
-				Date.valueOf("2022-3-22"),
-				new Tantosha(3, "test", new Shozoku(6, "食品"), ROLE_GENERAL),
-				expectedPhones3,
-				expectedMails3));
+		// Execute
 		List<Customer> actualList = repository.findAll();
+
+		// Verify
 		assertEquals(3, actualList.size());
-		assertEquals(expectedList, actualList);
+		assertEquals(FOR_FINDALL, actualList);
 	}
 
 	@Test
-	@Order(4)
 	@DatabaseSetup("/testdata/CustomerRepositoryTest/init-data")
 	@ExpectedDatabase(value = "/testdata/CustomerRepositoryTest/init-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
 	void 一件選択のテスト() {
-		List<CustomerPhone> expectedPhones = new ArrayList<>();
-		expectedPhones.add(new CustomerPhone(1, 1, "07000000000", "メモ", false));
-		expectedPhones.add(new CustomerPhone(2, 1, "07000000001", "メモ", false));
-		expectedPhones.add(new CustomerPhone(3, 1, "07000000002", "メモ", false));
-		List<CustomerMail> expectedMails = new ArrayList<>();
-		expectedMails.add(new CustomerMail(1, 1, "sample1@example.com", "メモ", false));
-		expectedMails.add(new CustomerMail(2, 1, "sample2@example.com", "メモ", false));
-		expectedMails.add(new CustomerMail(3, 1, "sample3@example.com", "メモ", false));
-		Shozoku expectedShozoku = Shozoku.builder()
-			.id(1)
-			.name("所属1")
-			.build();
-		Tantosha expectedTantosha = Tantosha.builder()
-			.id(1)
-			.name("admin")
-			.shozoku(expectedShozoku)
-			.role(ROLE_ADMIN)
-			.build();
-		Customer expected = Customer.builder()
-			.id(1)
-			.name("佐藤一郎")
-			.nameKana("サトウイチロウ")
-			.birthday(Date.valueOf("1993-2-20"))
-			.gender("male")
-			.bloodType("B")
-			.address("埼玉県さいたま市北区〇〇町1-1-1")
-			.memo("サンプル")
-			.tantosha(expectedTantosha)
-			.signupDate(Date.valueOf("2022-3-22"))
-			.customerPhoneList(expectedPhones)
-			.customerMailList(expectedMails)
-			.build();
+		// Execute
 		Customer actual = repository.findByPk(1);
-		assertEquals(expected, actual);
+
+		// Verify
+		assertThat(actual.getId()).isEqualTo(FOR_FINDBYPK.getId());
+		assertThat(actual.getName()).isEqualTo(FOR_FINDBYPK.getName());
+		assertThat(actual.getNameKana()).isEqualTo(FOR_FINDBYPK.getNameKana());
+		assertThat(actual.getBirthday()).isEqualTo(FOR_FINDBYPK.getBirthday());
+		assertThat(actual.getGender()).isEqualTo(FOR_FINDBYPK.getGender());
+		assertThat(actual.getBloodType()).isEqualTo(FOR_FINDBYPK.getBloodType());
+		assertThat(actual.getPhoneNo1()).isEqualTo(FOR_FINDBYPK.getPhoneNo1());
+		assertThat(actual.getPhoneNo2()).isEqualTo(FOR_FINDBYPK.getPhoneNo2());
+		assertThat(actual.getPhoneNo3()).isEqualTo(FOR_FINDBYPK.getPhoneNo3());
+		assertThat(actual.getMailAddress()).isEqualTo(FOR_FINDBYPK.getMailAddress());
+		assertThat(actual.getAddress()).isEqualTo(FOR_FINDBYPK.getAddress());
+		assertThat(actual.getMemo()).isEqualTo(FOR_FINDBYPK.getMemo());
+		assertThat(actual.getSignupDate()).isEqualTo(FOR_FINDBYPK.getSignupDate());
+		assertThat(actual.getTantosha()).isEqualTo(FOR_FINDBYPK.getTantosha());
 	}
 
 	@Test
-	@Order(5)
 	@DatabaseSetup("/testdata/CustomerRepositoryTest/init-data")
 	@ExpectedDatabase(value = "/testdata/CustomerRepositoryTest/after-update-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
-	void ありうる全てのパラメータを更新しDBを検証() {
+	void updateで全てのパラメータを更新しDBを検証() {
 		Customer update = Customer.builder()
 			.id(16)
 			.name("田中葵")
@@ -293,6 +319,10 @@ public class CustomerRepositoryTest {
 			.birthday(Date.valueOf("1993-3-7"))
 			.gender("female")
 			.bloodType("B")
+			.phoneNo1("11111111111")
+			.phoneNo2("11111111112")
+			.phoneNo3("11111111113")
+			.mailAddress("update@example.com")
 			.address("埼玉県さいたま市北区〇〇町1-2-3")
 			.memo("サンプル変更")
 			.tantosha(Tantosha.builder()
@@ -305,18 +335,21 @@ public class CustomerRepositoryTest {
 	}
 
 	@Test
-	@Order(6)
 	@DatabaseSetup("/testdata/CustomerRepositoryTest/init-data")
 	@ExpectedDatabase(value = "/testdata/CustomerRepositoryTest/after-part-update-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
-	void 一部のパラメータを更新しDBを検証() {
+	void updateで住所を変更しDBを検証() {
 		Customer update = Customer.builder()
 			.id(16)
-			.name("田中葵")
+			.name("田中一郎")
 			.nameKana("タナカイチロウ")
 			.birthday(Date.valueOf("1993-2-7"))
 			.gender("male")
 			.bloodType("AB")
-			.address("埼玉県さいたま市北区〇〇町1-1-1")
+			.phoneNo1("00000000000")
+			.phoneNo2("00000000001")
+			.phoneNo3("00000000002")
+			.mailAddress("mail@example.com")
+			.address("埼玉県さいたま市北区〇〇町1-2-4")
 			.memo("サンプル")
 			.tantosha(Tantosha.builder()
 				.id(1)
@@ -328,97 +361,28 @@ public class CustomerRepositoryTest {
 	}
 
 	@Test
-	@Order(7)
 	@DatabaseSetup("/testdata/CustomerRepositoryTest/init-data")
 	@ExpectedDatabase(value = "/testdata/CustomerRepositoryTest/after-delete-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
-	void 一件削除() {
+	void deleteで一件正しく削除されたか検証() {
 		int deleteCnt = repository.delete(20);
 		assertThat(deleteCnt).isEqualTo(1);
 	}
 
 	@Test
-	@Order(8)
 	@DatabaseSetup("/testdata/CustomerRepositoryTest/findAll-init-data")
 	@ExpectedDatabase(value = "/testdata/CustomerRepositoryTest/findAll-init-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
 	void findPageは指定された10件を正しく取得する() {
-		List<Customer> expectedList = new ArrayList<>();
-
-		List<CustomerPhone> expectedPhones1 = new ArrayList<>();
-		expectedPhones1.add(new CustomerPhone(1, 1, "07000000000", "佐藤一郎さんの電話番号１", false));
-		expectedPhones1.add(new CustomerPhone(2, 1, "07000000001", "佐藤一郎さんの電話番号２", false));
-		expectedPhones1.add(new CustomerPhone(3, 1, "07000000002", "佐藤一郎さんの電話番号３", false));
-		List<CustomerMail> expectedMails1 = new ArrayList<>();
-		expectedMails1.add(new CustomerMail(1, 1, "ichiro1@example.com", "佐藤一郎さんのメールアドレス１", false));
-		expectedMails1.add(new CustomerMail(2, 1, "ichiro2@example.com", "佐藤一郎さんのメールアドレス２", false));
-		expectedMails1.add(new CustomerMail(3, 1, "ichiro3@example.com", "佐藤一郎さんのメールアドレス３", false));
-
-		Customer expectedCustomer1 = new Customer(
-				1,
-				"佐藤一郎",
-				"サトウイチロウ",
-				Date.valueOf("1993-2-20"),
-				"male",
-				"B",
-				"埼玉県さいたま市北区〇〇町1-1-1",
-				"サンプル",
-				Date.valueOf("2022-3-22"),
-				new Tantosha(1, "admin", new Shozoku(1, "所属1"), ROLE_ADMIN),
-				expectedPhones1,
-				expectedMails1);
-		expectedList.add(expectedCustomer1);
-
-		List<CustomerPhone> expectedPhones2 = new ArrayList<>();
-		expectedPhones2.add(new CustomerPhone(4, 2, "08000000000", "佐藤次郎さんの電話番号１", false));
-		List<CustomerMail> expectedMails2 = new ArrayList<>();
-		Customer expectedCustomer2 = new Customer(
-				2,
-				"佐藤次郎",
-				"サトウジロウ",
-				Date.valueOf("1993-2-21"),
-				"male",
-				"A",
-				"埼玉県さいたま市北区〇〇町1-1-1",
-				"サンプル",
-				Date.valueOf("2022-3-22"),
-				new Tantosha(2, "user", new Shozoku(4, "婦人服"), ROLE_GENERAL),
-				expectedPhones2,
-				expectedMails2);
-		expectedList.add(expectedCustomer2);
-
-		List<CustomerPhone> expectedPhones3 = new ArrayList<>();
-		expectedPhones3.add(new CustomerPhone(5, 3, "09000000000", "佐藤三郎さんの電話番号１", false));
-		expectedPhones3.add(new CustomerPhone(6, 3, "09000000001", "佐藤三郎さんの電話番号２", false));
-		List<CustomerMail> expectedMails3 = new ArrayList<>();
-		expectedMails3.add(new CustomerMail(4, 3, "saburo1@example.com", "佐藤三郎さんのメールアドレス１", false));
-		expectedMails3.add(new CustomerMail(5, 3, "saburo2@example.com", "佐藤三郎さんのメールアドレス２", false));
-
-		Customer expectedCustomer3 = new Customer(
-				3,
-				"佐藤三郎",
-				"サトウサブロウ",
-				Date.valueOf("1993-2-22"),
-				"male",
-				"O",
-				"埼玉県さいたま市北区〇〇町1-1-1",
-				"サンプル",
-				Date.valueOf("2022-3-22"),
-				new Tantosha(3, "test", new Shozoku(6, "食品"), ROLE_GENERAL),
-				expectedPhones3,
-				expectedMails3);
-		expectedList.add(expectedCustomer3);
-
+		// Execute
 		List<Customer> actualList = repository.findPage(PageRequest.of(0, 10));
 
+		// Verify
 		assertEquals(3, actualList.size());
-		assertEquals(expectedList, actualList);
-		assertThat(actualList.get(0)).isEqualTo(expectedCustomer1);
-		assertThat(actualList.get(1)).isEqualTo(expectedCustomer2);
-		assertThat(actualList.get(2)).isEqualTo(expectedCustomer3);
-
+		assertThat(actualList.get(0)).isEqualTo(FOR_FINDALL.get(0));
+		assertThat(actualList.get(1)).isEqualTo(FOR_FINDALL.get(1));
+		assertThat(actualList.get(2)).isEqualTo(FOR_FINDALL.get(2));
 	}
 
 	@Test
-	@Order(9)
 	@DatabaseSetup("/testdata/CustomerRepositoryTest/init-data")
 	@ExpectedDatabase(value = "/testdata/CustomerRepositoryTest/init-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
 	void countはレコードの件数を正しく取得する() {

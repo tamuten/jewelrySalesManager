@@ -5,10 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -26,7 +23,6 @@ import com.jewelry.domain.model.Shozoku;
 import com.jewelry.domain.model.Tantosha;
 
 @SpringBootTest
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class) // DBUnitでCSVファイルを使えるよう指定。
 @TestExecutionListeners({
 		DependencyInjectionTestExecutionListener.class, // このテストクラスでDIを使えるように指定
@@ -38,7 +34,6 @@ public class TantoshaServiceTest {
 	private TantoshaService tantoshaService;
 
 	@Test
-	@Order(1)
 	@DatabaseSetup("/testdata/TantoshaServiceTest/init-data")
 	@ExpectedDatabase(value = "/testdata/TantoshaServiceTest/after-create-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
 	void 担当者作成のテスト_DBチェック() {
@@ -53,17 +48,16 @@ public class TantoshaServiceTest {
 		tantoshaService.create(newTantosha);
 	}
 
-	@DatabaseSetup("/testdata/TantoshaServiceTest/init-data")
 	@Test
-	@Order(2)
+	@DatabaseSetup("/testdata/TantoshaServiceTest/init-data")
 	void 担当者作成のテスト() {
 
 		// 正常系
-		正常系のテスト("田中一郎", 5, ROLE_ADMIN, 5);// 通常値
-		正常系のテスト(CHARS_50, 3, ROLE_GENERAL, 6);// 境界値
-		正常系のテスト(CHARS_50, 3, CHARS_50, 7);// 境界値
-		正常系のテスト("", 1, ROLE_GENERAL, 8);// 空文字
-		正常系のテスト("", 1, "", 9);// 空文字
+		正常系のテスト("田中一郎", 5, ROLE_ADMIN);// 通常値
+		正常系のテスト(CHARS_50, 3, ROLE_GENERAL);// 境界値
+		正常系のテスト(CHARS_50, 3, CHARS_50);// 境界値
+		正常系のテスト("", 1, ROLE_GENERAL);// 空文字
+		正常系のテスト("", 1, "");// 空文字
 
 		// 異常系
 		// null
@@ -74,12 +68,9 @@ public class TantoshaServiceTest {
 		制約違反のテスト(CHARS_51, 1, "");
 		制約違反のテスト(CHARS_51, 1, CHARS_51);
 		制約違反のテスト("", 1, CHARS_51);
-
-		//		存在しない所属IDのテスト("", 0, "");
-		//		存在しない所属IDのテスト("", 10000, "");
 	}
 
-	void 正常系のテスト(String name, int shozoku_id, String role, int expectedId) {
+	void 正常系のテスト(String name, int shozoku_id, String role) {
 		Shozoku newShozoku = Shozoku.builder()
 			.id(shozoku_id)
 			.build();
@@ -91,8 +82,6 @@ public class TantoshaServiceTest {
 
 		int createdCount = tantoshaService.create(newTantosha);
 		assertEquals(1, createdCount);
-		assertEquals(expectedId, newTantosha.getId());
-
 	}
 
 	void 制約違反のテスト(String name, int shozoku_id, String role) {
@@ -107,20 +96,7 @@ public class TantoshaServiceTest {
 		assertThrows(DataIntegrityViolationException.class, () -> tantoshaService.create(newTantosha));
 	}
 
-	void 存在しない所属IDのテスト(String name, int shozoku_id, String role) {
-		Shozoku newShozoku = Shozoku.builder()
-			.id(shozoku_id)
-			.build();
-		Tantosha newTantosha = Tantosha.builder()
-			.name(name)
-			.shozoku(newShozoku)
-			.role(role)
-			.build();
-		assertThrows(DataIntegrityViolationException.class, () -> tantoshaService.create(newTantosha));
-	}
-
 	@Test
-	@Order(3)
 	@DatabaseSetup("/testdata/TantoshaServiceTest/init-data")
 	@ExpectedDatabase(value = "/testdata/TantoshaServiceTest/init-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
 	void 全件選択のテスト() {
@@ -129,7 +105,6 @@ public class TantoshaServiceTest {
 	}
 
 	@Test
-	@Order(4)
 	@DatabaseSetup("/testdata/TantoshaServiceTest/init-data")
 	@ExpectedDatabase(value = "/testdata/TantoshaServiceTest/init-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
 	void 一件選択のテスト() {
@@ -144,7 +119,6 @@ public class TantoshaServiceTest {
 	}
 
 	@Test
-	@Order(5)
 	@DatabaseSetup("/testdata/TantoshaServiceTest/init-data")
 	@ExpectedDatabase(value = "/testdata/TantoshaServiceTest/after-update-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
 	void 更新のテスト() {
@@ -162,13 +136,11 @@ public class TantoshaServiceTest {
 	}
 
 	@Test
-	@Order(6)
 	@DatabaseSetup("/testdata/TantoshaServiceTest/init-data")
 	@ExpectedDatabase(value = "/testdata/TantoshaServiceTest/after-delete-data", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
 	void 削除のテスト() {
 		int deletedCount = tantoshaService.delete(3);
 		assertEquals(deletedCount, 1);
 	}
-
 
 }

@@ -1,7 +1,6 @@
 package com.jewelry.controller;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
@@ -21,8 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jewelry.Message;
 import com.jewelry.domain.model.Customer;
-import com.jewelry.domain.model.CustomerMail;
-import com.jewelry.domain.model.CustomerPhone;
 import com.jewelry.domain.service.CustomerService;
 import com.jewelry.domain.service.MessageService;
 import com.jewelry.domain.service.TantoshaService;
@@ -101,61 +98,6 @@ public class CustomerController {
 		form.setSignupDate(DateUtil.sqlToUtil(customer.getSignupDate()));
 
 		form.setDisplayMode("update");
-		model.addAttribute("radioBloodType", initRadioBloodType());
-		model.addAttribute("tantoshaList", tantoshaService.findAll());
-		model.addAttribute("contents", "contents/customer/customer :: customer_contents");
-		return "homeLayout";
-	}
-
-	@PostMapping("/phone/addRow")
-	public String addPhoneRow(CustomerForm form, Model model) {
-
-		form.getCustomerPhoneList()
-			.add(new CustomerPhone());
-
-		model.addAttribute("radioBloodType", initRadioBloodType());
-		model.addAttribute("tantoshaList", tantoshaService.findAll());
-		model.addAttribute("contents", "contents/customer/customer :: customer_contents");
-		return "homeLayout";
-	}
-
-	@PostMapping("/phone/removeRow")
-	public String removePhoneRow(CustomerForm form, Model model) {
-		List<CustomerPhone> customerPhoneList = form.getCustomerPhoneList();
-		for (int i = customerPhoneList.size() - 1; i >= 0; i--) {
-			CustomerPhone cp = customerPhoneList.get(i);
-			if (cp.isRowDelete()) {
-				customerPhoneList.remove(i);
-			}
-		}
-
-		model.addAttribute("radioBloodType", initRadioBloodType());
-		model.addAttribute("tantoshaList", tantoshaService.findAll());
-		model.addAttribute("contents", "contents/customer/customer :: customer_contents");
-		return "homeLayout";
-	}
-
-	@PostMapping("/mail/addRow")
-	public String addMailRow(CustomerForm form, Model model) {
-		form.getCustomerMailList()
-			.add(new CustomerMail());
-
-		model.addAttribute("radioBloodType", initRadioBloodType());
-		model.addAttribute("tantoshaList", tantoshaService.findAll());
-		model.addAttribute("contents", "contents/customer/customer :: customer_contents");
-		return "homeLayout";
-	}
-
-	@PostMapping("/mail/removeRow")
-	public String removeMailRow(CustomerForm form, Model model) {
-		List<CustomerMail> customerMailList = form.getCustomerMailList();
-		for (int i = customerMailList.size() - 1; i >= 0; i--) {
-			CustomerMail cp = customerMailList.get(i);
-			if (cp.isRowDelete()) {
-				customerMailList.remove(i);
-			}
-		}
-
 		model.addAttribute("radioBloodType", initRadioBloodType());
 		model.addAttribute("tantoshaList", tantoshaService.findAll());
 		model.addAttribute("contents", "contents/customer/customer :: customer_contents");

@@ -7,6 +7,8 @@ public class Const {
 	public static final String CHARS_5 = "あああああ";
 	public static final String CHARS_6 = "ああああああ";
 	public static final String CHARS_10 = "ああああああああああ";
+	public static final String CHARS_20 = "ああああああああああああああああああああ";
+	public static final String CHARS_21 = "あああああああああああああああああああああ";
 	public static final String CHARS_11 = "あああああああああああ";
 	public static final String CHARS_50 = "あああああああああああああああああああああああああああ"
 			+ "あああああああああああああああああああああああ";

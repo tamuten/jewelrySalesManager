@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jewelry.domain.model.Customer;
-import com.jewelry.domain.repository.CustomerMailRepository;
-import com.jewelry.domain.repository.CustomerPhoneRepository;
 import com.jewelry.domain.repository.CustomerRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -22,10 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @Slf4j
 public class CustomerService {
-	// TODO:
 	private final CustomerRepository repository;
-	private final CustomerPhoneRepository phoneRepository;
-	private final CustomerMailRepository mailRepository;
 
 	public List<Customer> findAll() {
 		return repository.findAll();
@@ -48,24 +43,15 @@ public class CustomerService {
 		return repository.findByPk(id);
 	}
 
-	public void create(Customer customer) {
-		repository.create(customer);
-		customer.getCustomerPhoneList()
-			.stream()
-			.forEach(cu -> cu.setCustomerId(customer.getId()));
-		customer.getCustomerMailList()
-			.stream()
-			.forEach(cu -> cu.setCustomerId(customer.getId()));
-
-		phoneRepository.createAll(customer.getCustomerPhoneList());
-		mailRepository.createAll(customer.getCustomerMailList());
+	public int create(Customer customer) {
+		return repository.create(customer);
 	}
 
-	public void update(Customer customer) {
-		// TODO:
+	public int update(Customer customer) {
+		return repository.update(customer);
 	}
 
-	public void delete(Integer id) {
-		// TODO:
+	public int delete(Integer id) {
+		return repository.delete(id);
 	}
 }

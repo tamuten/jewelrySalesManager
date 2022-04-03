@@ -17,7 +17,7 @@ INSERT INTO customer_phone(
 	</insert>
 
 	<insert id="upsertBulk">
-		INESRT INTO customer_phone(
+		INSERT INTO customer_phone(
 			customer_id,
 			phone_number,
 			memo

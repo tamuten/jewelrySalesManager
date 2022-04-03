@@ -24,7 +24,7 @@
 			</div>
 			<div class="w-100">
 				<div class="d-flex">
-					<div class="w-50 pr-2">
+					<div class="w-50">
 						<table class="table align-middle">
 							<tbody>
 								<tr>
@@ -116,6 +116,26 @@
 									</td>
 								</tr>
 								<tr>
+									<td>電話番号1</td>
+									<td><input type="text" autocomplete="off"
+										class="form-control" th:field="*{phoneNo1}" /></td>
+								</tr>
+								<tr>
+									<td>電話番号2</td>
+									<td><input type="text" autocomplete="off"
+										class="form-control" th:field="*{phoneNo2}" /></td>
+								</tr>
+								<tr>
+									<td>電話番号3</td>
+									<td><input type="text" autocomplete="off"
+										class="form-control" th:field="*{phoneNo3}" /></td>
+								</tr>
+								<tr>
+									<td>メールアドレス</td>
+									<td><input type="text" autocomplete="off"
+										class="form-control" th:field="*{mailAddress}" /></td>
+								</tr>
+								<tr>
 									<td>住所</td>
 									<td><input type="text" autocomplete="off"
 										class="form-control" th:field="*{address}" /></td>
@@ -123,7 +143,7 @@
 								<tr>
 									<td>担当者</td>
 									<td><input type="text" class="form-control"
-										list="tantoshaList" id="tanto" th:value="*{tantosha.name}" />
+										list="tantoshaList" id="tanto" th:value="*{tantosha.name} == null ? '' : *{tantosha.name}" />
 										<input type="hidden" id="tantoHi" name="tamtosha.id"
 										th:value="*{tantosha.id}"> <datalist id="tantoshaList">
 											<th:block th:each="data : ${tantoshaList}">
@@ -147,80 +167,6 @@
 							</tbody>
 						</table>
 
-					</div>
-					<div class="w-50 pl-2">
-						<!-- 電話番号 -->
-						<div class="d-flex mb-2">
-							<button type="submit" class="btn btn-sm btn-secondary"
-								th:formaction="@{/customer/phone/addRow}" id="addRow">行追加</button>
-							<button type="submit" class="btn btn-sm btn-secondary"
-								th:formaction="@{/customer/phone/removeRow}" id="removeRow">行削除</button>
-						</div>
-						<input type="hidden" id="customerPhoneListSize"
-							th:value="*{#lists.size(customerPhoneList)}" />
-						<table class="table table-sm align-middle">
-							<tr>
-								<td width="60%">電話番号</td>
-								<td width="35%">メモ</td>
-								<td width=" 5%"></td>
-							</tr>
-							<th:block th:each="ph, stat : *{customerPhoneList}">
-								<tr>
-									<td><input type="hidden"
-										th:field="*{customerPhoneList[__${stat.index}__].id}" /> <input
-										type="hidden"
-										th:field="*{customerPhoneList[__${stat.index}__].customerId}" />
-										<input type="text" class="form-control"
-										th:value="${ph.phoneNumber}"
-										th:name="|customerPhoneList[${stat.index}].phoneNumber|" /></td>
-									<td><input type="text" class="form-control"
-										th:value="${ph.memo}"
-										th:name="|customerPhoneList[${stat.index}].memo|" /></td>
-									<td>
-										<div class="form-check">
-											<input class="form-check-input position-static"
-												type="checkbox" th:field="*{customerPhoneList[__${stat.index}__].rowDelete}">
-										</div>
-									</td>
-								</tr>
-							</th:block>
-						</table>
-						<!-- メールアドレス -->
-						<div class="d-flex mb-2">
-							<button type="submit" class="btn btn-sm btn-secondary"
-								th:formaction="@{/customer/mail/addRow}" id="addRow">行追加</button>
-							<button type="submit" class="btn btn-sm btn-secondary"
-								th:formaction="@{/customer/mail/removeRow}" id="removeRow">行削除</button>
-						</div>
-						<input type="hidden" id="customerMailListSize"
-							th:value="*{#lists.size(customerMailList)}" />
-						<table class="table table-sm align-middle">
-							<tr>
-								<td width="60%">メールアドレス</td>
-								<td width="35%">メモ</td>
-								<td width=" 5%"></td>
-							</tr>
-							<th:block th:each="ma, stat : *{customerMailList}">
-								<tr>
-									<td><input type="hidden"
-										th:field="*{customerMailList[__${stat.index}__].id}" /> <input
-										type="hidden"
-										th:field="*{customerMailList[__${stat.index}__].customerId}" />
-										<input type="text" class="form-control"
-										th:value="${ma.mailAddress}"
-										th:name="|customerMailList[${stat.index}].mailAddress|" /></td>
-									<td><input type="text" class="form-control"
-										th:value="${ma.memo}"
-										th:name="|customerMailList[${stat.index}].memo|" /></td>
-									<td>
-										<div class="form-check">
-											<input class="form-check-input position-static"
-												type="checkbox" th:field="*{customerMailList[__${stat.index}__].rowDelete}">
-										</div>
-									</td>
-								</tr>
-							</th:block>
-						</table>
 					</div>
 					<input type="hidden" th:field="*{id}" />
 					<input type="hidden" th:field="*{displayMode}"/>

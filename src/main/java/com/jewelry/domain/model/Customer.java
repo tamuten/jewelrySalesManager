@@ -1,7 +1,6 @@
 package com.jewelry.domain.model;
 
 import java.sql.Date;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,13 +20,14 @@ public class Customer {
 	private Date birthday;
 	private String gender;
 	private String bloodType;
+	private String phoneNo1;
+	private String phoneNo2;
+	private String phoneNo3;
+	private String mailAddress;
 	//	private String zipcode;
 	private String address;
 	private String memo;
 	private Date signupDate;
 
 	private Tantosha tantosha;
-
-	private List<CustomerPhone> customerPhoneList;
-	private List<CustomerMail> customerMailList;
 }

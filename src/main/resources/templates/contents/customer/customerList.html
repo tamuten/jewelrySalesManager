@@ -29,7 +29,9 @@
 						<td>血液型</td>
 						<td>住所</td>
 						<td>メモ</td>
-						<td>電話番号</td>
+						<td>電話番号1</td>
+						<td>電話番号2</td>
+						<td>電話番号3</td>
 						<td>メールアドレス</td>
 						<td>担当者</td>
 						<td></td>
@@ -50,16 +52,10 @@
 						<td th:text="${customer.bloodType}"></td>
 						<td th:text="${customer.address}"></td>
 						<td th:text="${customer.memo}"></td>
-						<td>
-							<th:block th:each="phone : ${customer.customerPhoneList}">
-								<p th:text="${phone.phoneNumber}"></p>
-							</th:block>
-						</td>
-						<td>
-							<th:block th:each="mail : ${customer.customerMailList}">
-								<p th:text="${mail.mailAddress}"></p>
-							</th:block>
-						</td>
+						<td th:text="${customer.phoneNo1}"></td>
+						<td th:text="${customer.phoneNo2}"></td>
+						<td th:text="${customer.phoneNo3}"></td>
+						<td th:text="${customer.mailAddress}"></td>
 						<td th:text="${customer.tantosha.name}"></td>
 						<td><a class="btn btn-sm btn-secondary"
 							th:href="@{'/customer/detail/' + ${customer.id}}">詳細</a></td>
