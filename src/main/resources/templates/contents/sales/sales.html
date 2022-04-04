@@ -7,95 +7,103 @@
 </head>
 <body>
 	<div th:fragment="sales_contents" class="h-100 w-100">
-		<div class="content-title border-bottom">
-			<h2>売上登録</h2>
-		</div>
-		<div class="d-flex">
-			<button type="button" class="btn" id="addRow">行追加</button>
-			<button type="button" class="btn" id="removeRow">行削除</button>
-		</div>
+		<form th:action="@{/sales/signup}" th:object="${salesForm}"
+			method="post">
+			<div class="content-title border-bottom">
+				<h2>売上登録</h2>
+			</div>
+			<div class="d-flex row-btn-group">
+				<button type="button" class="btn btn-secondary" id="addRow">行追加</button>
+				<button type="button" class="btn btn-secondary" id="removeRow">行削除</button>
+			</div>
 
-		<table id="sales-table" class="table table-sm text-center " style="width: 100%;">
-			<thead class="thead-light">
-				<tr>
-					<th>受注日</th>
-					<th>計上日</th>
-					<th>売場</th>
-					<th>KS担当</th>
-					<th colspan="3" style="width: 9%;">品名</th>
-					<th class="">番号1</th>
-					<th>番号2</th>
-					<th>上代</th>
-					<th>下代</th>
-					<th>仕切日</th>
-					<th>仕切No</th>
-					<!-- <th>所属</th> -->
-					<!-- <th>担当者</th> -->
-					<th>客名</th>
-					<th style="width: 2%;"></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><input type="text" class="form-control form-control-sm date"></td>
-					<td><input type="text" class="form-control form-control-sm date"></td>
-					<td><select class="form-control form-control-sm">
-							<option></option>
-							<option>外商</option>
-							<option>店頭</option>
-							<option>売場1</option>
-							<option>売場2</option>
-							<option>売場3</option>
-					</select></td>
-					<td><select class="form-control form-control-sm">
-							<option></option>
-							<option>佐藤</option>
-							<option>田中</option>
-							<option>鈴木</option>
-							<option>伊藤</option>
-							<option>髙橋</option>
-					</select></td>
-					<td><input type="text" class="form-control form-control-sm"></td>
-					<td><input type="text" class="form-control form-control-sm"></td>
-					<td><input type="text" class="form-control form-control-sm"></td>
-					<td><input type="text" class="form-control form-control-sm"></td>
-					<td><input type="text" class="form-control form-control-sm"></td>
-					<td><input type="text" class="form-control form-control-sm"></td>
-					<td><input type="text" class="form-control form-control-sm"></td>
-					<td><input type="text" class="form-control form-control-sm date"></td>
-					<td><input type="text" class="form-control form-control-sm"></td>
-					<!-- <td><select class="form-control form-control-sm">
-							<option></option>
-							<option>外商</option>
-							<option>店頭</option>
-							<option>売場1</option>
-							<option>売場2</option>
-							<option>売場3</option>
-					</select></td> -->
-					<!-- <td><select class="form-control form-control-sm">
-							<option></option>
-							<option>佐藤</option>
-							<option>田中</option>
-							<option>鈴木</option>
-							<option>伊藤</option>
-							<option>髙橋</option>
-					</select></td> -->
-					<td><input type="text" class="form-control form-control-sm" list="keywords">
-						<datalist id="keywords">
-							<option>山本</option>
-							<option>田村</option>
-							<option>田中</option>
-						</datalist>
-					</td>
-					<td class="align-middle" ><input type="checkbox" class="position-static"> </td>
-				</tr>
-			</tbody>
-		</table>
+			<table id="sales-table" class="table table-sm text-center "
+				style="width: 100%;">
+				<thead class="thead-light">
+					<tr>
+						<th>受注日</th>
+						<th>計上日</th>
+						<th>売場</th>
+						<th>KS担当</th>
+						<th colspan="3" style="width: 9%;">品名</th>
+						<th class="">番号1</th>
+						<th>番号2</th>
+						<th>上代</th>
+						<th>下代</th>
+						<th>仕切日</th>
+						<th>仕切No</th>
+						<th>客名</th>
+						<th style="width: 2%;"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="sales, stat : *{salesList}">
+						<td><input type="text"
+							class="form-control form-control-sm date"
+							th:value="${sales.jutyuDate}"
+							th:name="|salesList[${stat.index}].jutyuDate|"> <!-- 受注日 --></td>
+						<td><input type="text"
+							class="form-control form-control-sm date"
+							th:value="${sales.keijoDate}"
+							th:name="|salesList[${stat.index}].keijoDate|"> <!-- 計上日 --></td>
+						<td><input type="text" class="form-control form-control-sm"
+							th:value="${sales.uriba}"
+							th:name="|salesList[${stat.index}].uriba|" /> <!-- 売場 --></td>
+						<td><input type="text" class="form-control form-control-sm"
+							th:value="${sales.ksTanto}"
+							th:name="|salesList[${stat.index}].ksTanto|" /> <!-- KS担当 --></td>
+						<td><input type="text" class="form-control form-control-sm"
+							th:value="${sales.hinmei1}"
+							th:name="|salesList[${stat.index}].hinmei1|" /> <!-- 品名 --></td>
+						<td><input type="text" class="form-control form-control-sm"
+							th:value="${sales.hinmei2}"
+							th:name="|salesList[${stat.index}].hinmei2|" /></td>
+						<td><input type="text" class="form-control form-control-sm"
+							th:value="${sales.hinmei3}"
+							th:name="|salesList[${stat.index}].hinmei3|" /></td>
+						<td><input type="text" class="form-control form-control-sm"
+							th:value="${sales.number1}"
+							th:name="|salesList[${stat.index}].number1|" /> <!-- 番号1 --></td>
+						<td><input type="text" class="form-control form-control-sm"
+							th:value="${sales.number2}"
+							th:name="|salesList[${stat.index}].number2|" /> <!-- 番号2 --></td>
+						<td><input type="text" class="form-control form-control-sm"
+							th:value="${sales.jodai}"
+							th:name="|salesList[${stat.index}].jodai|" /> <!-- 上代 --></td>
+						<td><input type="text" class="form-control form-control-sm"
+							th:value="${sales.gedai}"
+							th:name="|salesList[${stat.index}].gedai|" /> <!-- 下代 --></td>
+						<td><input type="text"
+							class="form-control form-control-sm date"
+							th:value="${sales.shikiriDate}"
+							th:name="|salesList[${stat.index}].shikiriDate|" /> <!-- 仕切日 --></td>
+						<td><input type="text" class="form-control form-control-sm"
+							th:value="${sales.shikiriNo}"
+							th:name="|salesList[${stat.index}].shikiriNo|" /> <!-- 仕切No --></td>
+						<td><input type="text" class="form-control form-control-sm"
+							list="keywords"
+							th:value="${sales.customer} == null ? '' : ${sales.customer.name}">
+							<datalist id="keywords">
+								<th:block th:each="data : ${customerList}">
+									<option th:value="${data.name}" th:label="${data.id}"
+										th:inline="text">[[${data.name}]]</option>
+								</th:block>
+							</datalist> <input type="hidden" id="custHi"
+							th:value="${sales.customer} == null ? '' : ${sales.customer.id}"
+							th:name="|salesList[${stat.index}].customer.id|" /> <!-- 客名 -->
+						</td>
+						<td class="align-middle"><input type="checkbox"
+							class="position-static" th:value="${sales.rowDelete}"
+							th:name="|salesList[${stat.index}].rowDelete|"></td>
+					</tr>
+				</tbody>
+			</table>
 
-		<div class="btns d-flex justify-content-between">
-			<button type="button" class="btn btn-lg ">戻る</button>
-			<button type="button" class="btn btn-lg btn-primary">登録</button>
-		</div>
+			<div class="btns d-flex justify-content-between">
+				<button type="button" class="btn btn-lg ">戻る</button>
+				<button type="button" class="btn btn-lg btn-primary">登録</button>
+			</div>
+		</form>
 	</div>
 </body>
 </html>

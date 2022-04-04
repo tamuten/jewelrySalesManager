@@ -18,7 +18,8 @@
 			<p th:text="${message}"></p>
 		</div>
 		<div class="w-100">
-			<table class="table table-sm text-center table-responsive" style="width:100%;">
+			<table class="table table-sm text-center table-responsive"
+				style="width: 100%;">
 				<thead>
 					<tr>
 						<td></td>
@@ -35,6 +36,7 @@
 						<td>メールアドレス</td>
 						<td>担当者</td>
 						<td></td>
+						<td></td>
 					</tr>
 				</thead>
 				<tbody>
@@ -43,12 +45,10 @@
 						<td th:text="${customer.name}"></td>
 						<td th:text="${customer.nameKana}"></td>
 						<td th:text="${customer.birthday}"></td>
-						<td>
-							<th:block th:switch="${customer.gender}">
+						<td><th:block th:switch="${customer.gender}">
 								<th:block th:case="male">男性</th:block>
 								<th:block th:case="female">女性</th:block>
-							</th:block>
-						</td>
+							</th:block></td>
 						<td th:text="${customer.bloodType}"></td>
 						<td th:text="${customer.address}"></td>
 						<td th:text="${customer.memo}"></td>
@@ -56,12 +56,16 @@
 						<td th:text="${customer.phoneNo2}"></td>
 						<td th:text="${customer.phoneNo3}"></td>
 						<td th:text="${customer.mailAddress}"></td>
-						<td th:text="${customer.tantosha.name}"></td>
+						<td
+							th:text="${customer.tantosha} == null ? '' : ${customer.tantosha.name}"></td>
+						<td><a class="btn btn-sm btn-outline-secondary"
+							th:href="@{'/customer/purchase/' + ${customer.id}}">購入履歴</a></td>
 						<td><a class="btn btn-sm btn-secondary"
 							th:href="@{'/customer/detail/' + ${customer.id}}">詳細</a></td>
 					</tr>
 				</tbody>
 			</table>
+			<!-- ページング -->
 			<div th:replace="contents/component/pagenation :: page_contents"></div>
 		</div>
 	</div>

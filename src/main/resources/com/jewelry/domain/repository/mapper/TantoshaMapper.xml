@@ -21,12 +21,13 @@ FROM
 
 	<select id="existsByShozokuId" parameterType="integer" resultType="boolean">
 	<![CDATA[
-        SELECT COUNT(*) > 0 FROM tantosha WHERE shozoku_id = #{shozokuId} 
+        SELECT COUNT(*) > 0 FROM tantosha WHERE shozoku_id = #{shozokuId}
 	]]>
 	</select>
 	<select id="findAll" resultMap="tantoshaResultMap">
 		<bind name="tantoshaTable" value="'tantosha'"/>
 		<include refid="findTantosha"/>
+		ORDER BY ta.id
 	</select>
 
 	<select id="findPage" resultMap="tantoshaResultMap">

@@ -16,8 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.jewelry.domain.model.Customer;
-import com.jewelry.domain.repository.CustomerMailRepository;
-import com.jewelry.domain.repository.CustomerPhoneRepository;
 import com.jewelry.domain.repository.CustomerRepository;
 
 @SpringBootTest
@@ -26,10 +24,6 @@ public class CustomerServiceTest {
 	CustomerService service;
 	@MockBean
 	CustomerRepository repository;
-	@MockBean
-	CustomerPhoneRepository phoneRepository;
-	@MockBean
-	CustomerMailRepository mailRepository;
 
 	@Test
 	void findPageは件数が1件のときrepository_findPageで取得したリストを含むページを返す() {

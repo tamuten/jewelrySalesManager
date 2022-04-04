@@ -102,3 +102,7 @@ input:focus {
 	margin-left: auto;
 	margin-right: 5px;
 }
+
+.row-btn-group {
+	margin-bottom:10px;
+}

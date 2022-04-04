@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jewelry.domain.repository.mapper.SalesMapper">
+<resultMap type="Sales" id="salesResultMap">
+<id column="id" property="id" />
+<result column="jutyu_date" property="jutyuDate" />
+<result column="keijo_date" property="keijoDate" />
+<result column="uriba" property="uriba" />
+<result column="ks_tanto" property="ksTanto" />
+<result column="hinmei1" property="hinmei1" />
+<result column="hinmei2" property="hinmei2" />
+<result column="hinmei3" property="hinmei3" />
+<result column="number1" property="number1" />
+<result column="number2" property="number2" />
+<result column="jodai" property="jodai" />
+<result column="gedai" property="gedai" />
+<result column="shikiri_date" property="shikiriDate" />
+<result column="shikiri_no" property="shikiriNo" />
+<association property="customer" javaType="Customer">
+	<result property="id" column="customer_id"/>
+	<result property="name" column="customer_name"/>
+</association>
+</resultMap>
+<sql id="findSales">
+SELECT
+	sa.id,
+	sa.jutyu_date,
+	sa.keijo_date,
+	sa.uriba,
+	sa.ks_tanto,
+	sa.hinmei1,
+	sa.hinmei2,
+	sa.hinmei3,
+	sa.number1,
+	sa.number2,
+	sa.jodai,
+	sa.gedai,
+	sa.shikiri_date,
+	sa.shikiri_no,
+	cu.id as customer_id,
+	cu.name as customer_name
+FROM
+	${salesTable} sa
+	LEFT OUTER JOIN
+		customer cu
+	ON sa.customer_id = cu.id
+</sql>
+	<select id="count" resultType="long">
+		SELECT COUNT(*) FROM sales
+	</select>
+	<select id="countByCustomer" resultType="long">
+		SELECT COUNT(*) FROM sales WHERE customer_id = #{customerId}
+	</select>
+	<select id="findAll" resultMap="salesResultMap">
+	<bind name="salesTable" value="'sales'"/>
+	<include refid="findSales"></include>
+ORDER BY sa.id
+	</select>
+
+	<select id="findPage" resultMap="salesResultMap">
+	<bind name="salesTable" value="
+	'(
+	SELECT
+		*
+	FROM
+		sales
+	ORDER BY
+		id
+	LIMIT #{pageable.pageSize}
+	OFFSET #{pageable.offset}
+	)'"/>
+	<include refid="findSales"></include>
+		ORDER BY sa.id
+	</select>
+
+	<select id="findByCustomer" resultMap="salesResultMap">
+		<bind name="salesTable" value="
+	'(
+	SELECT
+		*
+	FROM
+		sales
+	WHERE
+		customer_id = #{customerId}
+	ORDER BY
+		id
+	LIMIT #{pageable.pageSize}
+	OFFSET #{pageable.offset}
+	)'"/>
+	<include refid="findSales"></include>
+	ORDER BY sa.id
+	</select>
+	<select id="selectOne" parameterType="integer" resultType="Shozoku">
+		SELECT * FROM shozoku WHERE id = #{id}
+	</select>
+	<insert id="insertOne" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO shozoku (name) VALUES (#{name})
+	</insert>
+	<insert id="insertBulk" parameterType="java.util.List">
+		INSERT INTO sales (
+			jutyu_date,
+			keijo_date,
+			uriba,
+			ks_tanto,
+			hinmei1,
+			hinmei2,
+			hinmei3,
+			number1,
+			number2,
+			jodai,
+			gedai,
+			shikiri_date,
+			shikiri_no,
+			customer_id
+		)
+		VALUES
+		<foreach collection="list" item="sa" separator=",">
+		(
+			#{sa.jutyuDate},
+			#{sa.keijoDate},
+			#{sa.uriba},
+			#{sa.ksTanto},
+			#{sa.hinmei1},
+			#{sa.hinmei2},
+			#{sa.hinmei3},
+			#{sa.number1},
+			#{sa.number2},
+			#{sa.jodai},
+			#{sa.gedai},
+			#{sa.shikiriDate},
+			#{sa.shikiriNo},
+			#{sa.customer.id}
+		)
+		</foreach>
+	</insert>
+	<update id="updateOne" parameterType="Shozoku">
+		UPDATE shozoku SET name = #{name} WHERE id = #{id}
+	</update>
+	<update id="deleteOne" parameterType="integer">
+		DELETE FROM shozoku WHERE id = #{id}
+	</update>
+</mapper>

@@ -143,9 +143,9 @@
 								<tr>
 									<td>担当者</td>
 									<td><input type="text" class="form-control"
-										list="tantoshaList" id="tanto" th:value="*{tantosha.name} == null ? '' : *{tantosha.name}" />
-										<input type="hidden" id="tantoHi" name="tamtosha.id"
-										th:value="*{tantosha.id}"> <datalist id="tantoshaList">
+										list="tantoshaList" id="tanto" th:value="*{tantosha} == null ? '' : *{tantosha.name}" />
+										<input type="hidden" id="tantoHi" name="tantosha.id"
+										th:value="*{tantosha} == null ? '' : *{tantosha.id}"> <datalist id="tantoshaList">
 											<th:block th:each="data : ${tantoshaList}">
 												<option th:value="${data.name}" th:label="${data.id}"
 													th:inline="text">[[${data.name}]]</option>

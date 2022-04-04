@@ -30,14 +30,16 @@ CREATE TABLE customer (
   signup_date date NOT NULL
 );
 
-DROP TABLE IF EXISTS orders CASCADE;
-CREATE TABLE orders (
+DROP TABLE IF EXISTS sales CASCADE;
+CREATE TABLE sales (
   id serial PRIMARY KEY,
   jutyu_date date NOT NULL,
   keijo_date date,
   uriba varchar(20),
   ks_tanto varchar(50),
-  hinmei varchar(50),
+  hinmei1 varchar(50),
+  hinmei2 varchar(50),
+  hinmei3 varchar(50),
   number1 varchar(10),
   number2 varchar(10),
   jodai integer,
