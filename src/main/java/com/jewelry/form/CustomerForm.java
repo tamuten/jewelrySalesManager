@@ -1,6 +1,6 @@
 package com.jewelry.form;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -29,7 +29,7 @@ public class CustomerForm {
 	@Size(max = 100)
 	private String nameKana;
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private Date birthday;
+	private LocalDate birthday;
 	private Integer birthdayYear;
 	private Integer birthdayMonth;
 	private Integer birthdayDay;
@@ -51,7 +51,7 @@ public class CustomerForm {
 	private String memo;
 	@NotNull
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private Date signupDate;
+	private LocalDate signupDate;
 
 	private Tantosha tantosha;
 
@@ -61,7 +61,7 @@ public class CustomerForm {
 		this.gender = "unknown";
 		this.bloodType = "A";
 		this.tantosha = new Tantosha();
-		this.signupDate = new Date();
+		this.signupDate = LocalDate.now();
 	}
 
 }

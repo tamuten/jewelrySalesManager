@@ -1,7 +1,5 @@
 package com.jewelry.controller;
 
-import java.sql.Date;
-import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -31,7 +29,6 @@ import com.jewelry.domain.service.MessageService;
 import com.jewelry.domain.service.SalesService;
 import com.jewelry.domain.service.TantoshaService;
 import com.jewelry.form.CustomerForm;
-import com.jewelry.util.DateUtil;
 
 @Controller
 @RequestMapping("/customer")
@@ -143,11 +140,10 @@ public class CustomerController {
 
 		Customer customer = new Customer();
 		BeanUtils.copyProperties(form, customer);
-		Calendar cal = Calendar.getInstance();
-		cal.set(form.getBirthdayYear(), form.getBirthdayMonth() + 1, form.getBirthdayDay());
-		customer.setBirthday(new Date(cal.getTime()
-			.getTime()));
-		customer.setSignupDate(DateUtil.utilToSql(form.getSignupDate()));
+		//		Calendar cal = Calendar.getInstance();
+		//		cal.set(form.getBirthdayYear(), form.getBirthdayMonth() + 1, form.getBirthdayDay());
+		//		customer.setBirthday(new Date(cal.getTime()
+		//			.getTime()));
 
 		customerService.create(customer);
 
@@ -167,8 +163,6 @@ public class CustomerController {
 	public String detail(CustomerForm form, @PathVariable int id, Model model) {
 		Customer customer = customerService.findByPk(id);
 		BeanUtils.copyProperties(customer, form);
-		form.setBirthday(DateUtil.sqlToUtil(customer.getBirthday()));
-		form.setSignupDate(DateUtil.sqlToUtil(customer.getSignupDate()));
 
 		form.setDisplayMode("update");
 		model.addAttribute("radioBloodType", initRadioBloodType());
@@ -190,11 +184,10 @@ public class CustomerController {
 
 		Customer customer = new Customer();
 		BeanUtils.copyProperties(form, customer);
-		Calendar cal = Calendar.getInstance();
-		cal.set(form.getBirthdayYear(), form.getBirthdayMonth() - 1, form.getBirthdayDay());
-		customer.setBirthday(new Date(cal.getTime()
-			.getTime()));
-		customer.setSignupDate(DateUtil.utilToSql(form.getSignupDate()));
+		//		Calendar cal = Calendar.getInstance();
+		//		cal.set(form.getBirthdayYear(), form.getBirthdayMonth() - 1, form.getBirthdayDay());
+		//		customer.setBirthday(new Date(cal.getTime()
+		//			.getTime()));
 
 		customerService.update(customer);
 

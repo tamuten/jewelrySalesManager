@@ -1,17 +1,9 @@
 package com.jewelry.controller;
 
-import com.jewelry.Message;
-import com.jewelry.domain.model.Tantosha;
-import com.jewelry.domain.service.MessageService;
-import com.jewelry.domain.service.ShozokuService;
-import com.jewelry.domain.service.TantoshaService;
-import com.jewelry.form.TantoshaForm;
-import com.jewelry.form.validator.TantoshaFormValidator;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -24,6 +16,15 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.jewelry.Message;
+import com.jewelry.domain.model.Tantosha;
+import com.jewelry.domain.service.MessageService;
+import com.jewelry.domain.service.ShozokuService;
+import com.jewelry.domain.service.TantoshaService;
+import com.jewelry.form.TantoshaForm;
+import com.jewelry.form.validator.TantoshaFormValidator;
 
 @Controller
 @RequestMapping("/tantosha")
@@ -36,6 +37,16 @@ public class TantoshaController {
 	private MessageService messageService;
 	@Autowired
 	private TantoshaFormValidator validator;
+
+	/**
+	 * 未入力のStringをnullに設定する
+	 *
+	 * @param binder
+	 */
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+	}
 
 	@InitBinder("tantoshaForm")
 	public void validatorBinder(WebDataBinder binder) {
@@ -64,7 +75,8 @@ public class TantoshaController {
 	}
 
 	@PostMapping("/update")
-	public String update(@Validated TantoshaForm form, BindingResult result, Model model) {
+	public String update(@Validated TantoshaForm form, BindingResult result, Model model,
+			RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
 			model.addAttribute("displayMode", "update");
 			model.addAttribute("contents", "contents/tantosha/tantosha :: tantosha_contents");
@@ -77,8 +89,8 @@ public class TantoshaController {
 
 		tantoshaService.update(tantosha);
 
-		model.addAttribute("message", messageService.getMessage(Message.UPDATE));
-		return detail(form.getId(), form, model);
+		redirectAttributes.addFlashAttribute("message", messageService.getMessage(Message.UPDATE));
+		return "redirect:/tantosha/detail/" + String.valueOf(tantosha.getId());
 	}
 
 	@GetMapping("/signup")
@@ -90,7 +102,8 @@ public class TantoshaController {
 	}
 
 	@PostMapping("/signup")
-	public String postSignup(@Validated TantoshaForm form, BindingResult result, Model model) {
+	public String postSignup(@Validated TantoshaForm form, BindingResult result, Model model,
+			RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
 			return getSignup(form, model);
 		}
@@ -100,16 +113,16 @@ public class TantoshaController {
 
 		tantoshaService.create(tantosha);
 
-		model.addAttribute("message", messageService.getMessage(Message.SIGNUP));
-		return detail(tantosha.getId(), form, model);
+		redirectAttributes.addFlashAttribute("message", messageService.getMessage(Message.SIGNUP));
+		return "redirect:/tantosha/detail/" + String.valueOf(tantosha.getId());
 	}
 
 	@PostMapping("/delete")
-	public String delete(TantoshaForm form, Model model) {
+	public String delete(TantoshaForm form, Model model, RedirectAttributes redirectAttributes) {
 		tantoshaService.delete(form.getId());
 
-		model.addAttribute("message", messageService.getMessage(Message.DELETE));
-		return getList(model, PageRequest.of(0, 10));
+		redirectAttributes.addFlashAttribute("message", messageService.getMessage(Message.DELETE));
+		return "redirect:/tantosha/list";
 	}
 
 }

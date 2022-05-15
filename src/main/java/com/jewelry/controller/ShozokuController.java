@@ -1,14 +1,8 @@
 package com.jewelry.controller;
 
-import com.jewelry.Message;
-import com.jewelry.domain.model.Shozoku;
-import com.jewelry.domain.service.MessageService;
-import com.jewelry.domain.service.ShozokuService;
-import com.jewelry.exception.ShozokuChildForeignKeyConstraintViolationException;
-import com.jewelry.form.ShozokuForm;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -17,11 +11,20 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.jewelry.Message;
+import com.jewelry.domain.model.Shozoku;
+import com.jewelry.domain.service.MessageService;
+import com.jewelry.domain.service.ShozokuService;
+import com.jewelry.exception.ShozokuChildForeignKeyConstraintViolationException;
+import com.jewelry.form.ShozokuForm;
 
 @Controller
 @RequestMapping("/shozoku")
@@ -30,6 +33,16 @@ public class ShozokuController {
 	private ShozokuService shozokuService;
 	@Autowired
 	private MessageService messageService;
+
+	/**
+	 * 未入力のStringをnullに設定する
+	 *
+	 * @param binder
+	 */
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+	}
 
 	@GetMapping("/list")
 	public String getList(Model model, @PageableDefault(page = 0, size = 10) Pageable pageable) {
@@ -94,15 +107,15 @@ public class ShozokuController {
 	public String delete(ShozokuForm form, Errors errors, Model model, RedirectAttributes redirectAttributes) {
 		try {
 			shozokuService.validate(form);
-		} catch(ShozokuChildForeignKeyConstraintViolationException e){
-			errors.rejectValue("id", "shozokuForm.id.foreignkey", new String[]{"所属"}, "foreignKey error.");
+		} catch (ShozokuChildForeignKeyConstraintViolationException e) {
+			errors.rejectValue("id", "shozokuForm.id.foreignkey", new String[] { "所属" }, "foreignKey error.");
 			model.addAttribute("displayMode", "update");
 			model.addAttribute("contents", "contents/shozoku/shozoku :: shozoku_contents");
 			return "homeLayout";
 		}
-		
+
 		shozokuService.delete(form.getId());
-		
+
 		redirectAttributes.addFlashAttribute("message", messageService.getMessage(Message.DELETE));
 		return "redirect:/shozoku/list";
 	}

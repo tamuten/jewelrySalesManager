@@ -1,6 +1,6 @@
 package com.jewelry.domain.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +22,7 @@ public class Customer {
 	private Integer id;
 	private String name;
 	private String nameKana;
-	private Date birthday;
+	private LocalDate birthday;
 	private String gender;
 	private String bloodType;
 	private String phoneNo1;
@@ -32,7 +32,7 @@ public class Customer {
 	//	private String zipcode;
 	private String address;
 	private String memo;
-	private Date signupDate;
+	private LocalDate signupDate;
 
 	private Tantosha tantosha;
 }

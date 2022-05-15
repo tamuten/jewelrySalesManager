@@ -48,3 +48,13 @@ CREATE TABLE sales (
   shikiri_no varchar(10),
   customer_id integer NOT NULL
 );
+DROP TABLE IF EXISTS uriba CASCADE;
+CREATE TABLE uriba (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(20) NOT NULL
+);
+DROP TABLE IF EXISTS ks_tanto CASCADE;
+CREATE TABLE ks_tanto (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(50) NOT NULL
+);

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jewelry.domain.repository.mapper.UribaMapper">
+	<select id="count" resultType="long">
+		SELECT COUNT(*) FROM uriba
+	</select>
+	<select id="findAll" resultType="Uriba">
+		SELECT * FROM uriba ORDER BY id
+	</select>
+	<select id="findPage" resultType="Uriba">
+		SELECT * FROM uriba ORDER BY id
+		<if test="pageable.pageSize != null and pageable.offset != null">
+		LIMIT #{pageable.pageSize} OFFSET #{pageable.offset}
+		</if>
+	</select>
+	<select id="selectOne" parameterType="integer" resultType="Uriba">
+		SELECT * FROM uriba WHERE id = #{id}
+	</select>
+	<insert id="insertOne" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO uriba (name) VALUES (#{name})
+	</insert>
+	<update id="updateOne" parameterType="Uriba">
+		UPDATE uriba SET name = #{name} WHERE id = #{id}
+	</update>
+	<update id="deleteOne" parameterType="integer">
+		DELETE FROM uriba WHERE id = #{id}
+	</update>
+</mapper>

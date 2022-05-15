@@ -13,8 +13,8 @@
 				<h2>売上登録</h2>
 			</div>
 			<div class="d-flex row-btn-group">
-				<button type="button" class="btn btn-secondary" id="addRow">行追加</button>
-				<button type="button" class="btn btn-secondary" id="removeRow">行削除</button>
+				<button type="submit" class="btn btn-secondary" id="addRow" th:formaction="@{/sales/addRow}">行追加</button>
+				<button type="submit" class="btn btn-secondary" id="removeRow" th:formaction="@{/sales/removeRow}">行削除</button>
 			</div>
 
 			<table id="sales-table" class="table table-sm text-center "
@@ -93,15 +93,15 @@
 							th:name="|salesList[${stat.index}].customer.id|" /> <!-- 客名 -->
 						</td>
 						<td class="align-middle"><input type="checkbox"
-							class="position-static" th:value="${sales.rowDelete}"
+							class="position-static" th:checked="${sales.rowDelete}"
 							th:name="|salesList[${stat.index}].rowDelete|"></td>
 					</tr>
 				</tbody>
 			</table>
 
 			<div class="btns d-flex justify-content-between">
-				<button type="button" class="btn btn-lg ">戻る</button>
-				<button type="button" class="btn btn-lg btn-primary">登録</button>
+				<button type="button" class="btn btn-lg" th:onclick="@{location.href='/sales/list'}">一覧画面</button>
+				<button type="submit" class="btn btn-lg btn-primary">登録</button>
 			</div>
 		</form>
 	</div>

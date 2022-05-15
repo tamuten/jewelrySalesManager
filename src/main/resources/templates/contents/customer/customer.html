@@ -53,7 +53,7 @@
 													<th:block
 														th:each="i : ${#numbers.sequence(1900, __${#calendars.format(#calendars.createNow(), 'yyyy')}__ + 10)}">
 														<option th:value="${i}" th:text="${i}"
-															th:selected="${i} == *{#dates.year(birthday)}"></option>
+															th:selected="${i} == *{#temporals.year(birthday)}"></option>
 													</th:block>
 												</select>
 											</div>
@@ -63,7 +63,7 @@
 													<option value="">---</option>
 													<th:block th:each="i : ${#numbers.sequence(1, 12)}">
 														<option th:value="${i}" th:text="${i}"
-															th:selected="${i} == *{#dates.month(birthday)}"></option>
+															th:selected="${i} == *{#temporals.month(birthday)}"></option>
 													</th:block>
 												</select>
 											</div>
@@ -73,7 +73,7 @@
 													<option value="">---</option>
 													<th:block th:each="i : ${#numbers.sequence(1, 31)}">
 														<option th:value="${i}" th:text="${i}"
-															th:selected="${i} == *{#dates.day(birthday)}"></option>
+															th:selected="${i} == *{#temporals.day(birthday)}"></option>
 													</th:block>
 												</select>
 											</div>
@@ -161,7 +161,7 @@
 									<td>登録日</td>
 									<td><input type="text" autocomplete="off"
 										class="form-control date"
-										th:value="*{#dates.format(signupDate, 'yyyy/MM/dd')}"
+										th:value="*{#temporals.format(signupDate, 'yyyy/MM/dd')}"
 										name="signupDate" id="signupDate" /></td>
 								</tr>
 							</tbody>

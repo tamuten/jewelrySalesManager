@@ -29,7 +29,7 @@
 		<div class="container-fluid">
 			<div class="d-flex">
 				<div class="navbar-header">
-					<a class="navbar-brand" th:href="@{'/salesList'}">売上管理システム</a>
+					<a class="navbar-brand" th:href="@{'/sales/list'}">売上管理システム</a>
 				</div>
 				<div class="dropdown">
 					<button type="button" id="uriage"
@@ -45,8 +45,8 @@
 						class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
 						aria-haspopup="true" aria-expanded="false">顧客</button>
 					<div class="dropdown-menu" aria-labelledby="customer">
-						<a class="dropdown-item" th:href="@{/customer/list}">顧客一覧</a>
-						<a class="dropdown-item" th:href="@{/customer/signup}">顧客登録</a>
+						<a class="dropdown-item" th:href="@{/customer/list}">顧客一覧</a> <a
+							class="dropdown-item" th:href="@{/customer/signup}">顧客登録</a>
 					</div>
 				</div>
 				<div class="dropdown">
@@ -54,8 +54,8 @@
 						class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
 						aria-haspopup="true" aria-expanded="false">マスタ</button>
 					<div class="dropdown-menu" aria-labelledby="master">
-						<a class="dropdown-item" th:href="@{/tantosha/list}">担当者一覧</a>
-						<a class="dropdown-item" th:href="@{/shozoku/list}">所属一覧</a>
+						<a class="dropdown-item" th:href="@{/tantosha/list}">担当者一覧</a> <a
+							class="dropdown-item" th:href="@{/shozoku/list}">所属一覧</a>
 					</div>
 				</div>
 			</div>
@@ -67,7 +67,17 @@
 	</nav>
 	<div class="main d-flex align-items-center" style="margin-top: 50px;">
 		<div class="sidebar h-100">
-			サイドバー
+			<!-- サイドバー -->
+			<ul class="nav flex-column">
+				<li class="nav-item"><a class="nav-link" data-toggle="collapse"
+					href="#uriage-collapse" role="button" aria-expanded="false"
+					aria-controls="uriage-collapse">売上</a>
+					<div class="collapse" id="uriage-collapse">
+						<a th:href="@{/sales/signup}">売上登録</a> <a th:href="@{/sales/list}">売上一覧</a>
+					</div></li>
+				<li class="nav-item"><a class="nav-link">顧客</a></li>
+				<li class="nav-item"><a class="nav-link">マスタ</a></li>
+			</ul>
 		</div>
 		<div class="content w-100 h-100">
 			<!-- メインコンテンツ -->

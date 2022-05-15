@@ -1,6 +1,10 @@
-package com.jewelry.domain.model;
+package com.jewelry.form;
 
-import java.sql.Date;
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.jewelry.domain.model.Customer;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,9 +17,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Sales {
+public class SalesSample {
 	private Integer id;
+	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private Date jutyuDate;
+	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private Date keijoDate;
 	private String uriba;
 	private String ksTanto;
@@ -26,8 +32,11 @@ public class Sales {
 	private String number2;
 	private Integer jodai;
 	private Integer gedai;
+	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private Date shikiriDate;
 	private String shikiriNo;
 	private Customer customer;
 
+	// フォーム用
+	private boolean rowDelete;
 }
