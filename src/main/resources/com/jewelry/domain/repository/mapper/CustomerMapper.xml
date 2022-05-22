@@ -29,6 +29,14 @@
 <select id="count" resultType="long">
 SELECT COUNT(*) FROM customer
 </select>
+<select id="searchCount" resultType="long">
+SELECT COUNT(*) FROM customer
+<where>
+<if test="searchName != null">
+name LIKE '%' || #{searchName} || '%'
+</if>
+</where>
+</select>
 <sql id="findCustomer">
 SELECT
     cu.id,
@@ -87,6 +95,50 @@ ORDER BY
 WHERE
     cu.id = #{id}
 	</select>
+  <select id="search" parameterType="CustomerSearch" resultMap="customerResultMap">
+SELECT
+    cu.id,
+    cu.name,
+    cu.name_kana,
+    cu.birthday,
+    cu.gender,
+    cu.blood_type,
+    cu.phone_no1,
+    cu.phone_no2,
+    cu.phone_no3,
+    cu.mail_address,
+    cu.address,
+    cu.memo,
+    cu.signup_date,
+    ta.id as tantosha_id,
+    ta.name as tantosha_name,
+    ta.role,
+    sho.id as shozoku_id,
+    sho.name as shozoku_name
+FROM
+    (
+        SELECT
+            *
+        FROM
+            customer
+        <where>
+        <if test="customerSearch.searchName != null">
+            name LIKE '%' || #{customerSearch.searchName} || '%'
+        </if>
+        </where>
+        ORDER BY
+            id
+        LIMIT #{pageable.pageSize} OFFSET #{pageable.offset}
+    ) cu
+    LEFT OUTER JOIN
+        tantosha ta
+    ON  cu.tantosha_id = ta.id
+    LEFT OUTER JOIN
+        shozoku sho
+    ON  ta.shozoku_id = sho.id
+ORDER BY
+    cu.id
+  </select>
 	<insert id="insertOne" parameterType="Customer" useGeneratedKeys="true" keyProperty="id">
 INSERT INTO customer(
     name,

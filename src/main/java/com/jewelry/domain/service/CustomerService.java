@@ -3,14 +3,15 @@ package com.jewelry.domain.service;
 import java.util.Collections;
 import java.util.List;
 
+import com.jewelry.domain.model.Customer;
+import com.jewelry.domain.model.CustomerSearch;
+import com.jewelry.domain.repository.CustomerRepository;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.jewelry.domain.model.Customer;
-import com.jewelry.domain.repository.CustomerRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,38 +21,51 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @Slf4j
 public class CustomerService {
-	private final CustomerRepository repository;
+  private final CustomerRepository repository;
 
-	public List<Customer> findAll() {
-		return repository.findAll();
-	}
+  public List<Customer> findAll() {
+    return repository.findAll();
+  }
 
-	public Page<Customer> findPage(Pageable pageable) {
-		long customerCnt = repository.count();
-		List<Customer> customerList = Collections.emptyList();
+  public Page<Customer> findPage(Pageable pageable) {
+    long customerCnt = repository.count();
+    List<Customer> customerList = Collections.emptyList();
 
-		if (customerCnt > 0) {
-			customerList = repository.findPage(pageable);
-		}
+    if (customerCnt > 0) {
+      customerList = repository.findPage(pageable);
+    }
 
-		log.info("[CustomerList]" + customerList.toString());
+    log.info("[CustomerList]" + customerList.toString());
 
-		return new PageImpl<Customer>(customerList, pageable, customerCnt);
-	}
+    return new PageImpl<Customer>(customerList, pageable, customerCnt);
+  }
 
-	public Customer findByPk(Integer id) {
-		return repository.findByPk(id);
-	}
+  public Page<Customer> search(CustomerSearch customerSearch, Pageable pageable) {
+    long amount = repository.searchCount(customerSearch);
+    List<Customer> customerList = Collections.emptyList();
 
-	public int create(Customer customer) {
-		return repository.create(customer);
-	}
+    if (amount > 0) {
+      customerList = repository.search(customerSearch, pageable);
+    }
 
-	public int update(Customer customer) {
-		return repository.update(customer);
-	}
+    log.debug("[CustomerList]" + customerList.toString());
 
-	public int delete(Integer id) {
-		return repository.delete(id);
-	}
+    return new PageImpl<Customer>(customerList, pageable, amount);
+  }
+
+  public Customer findByPk(Integer id) {
+    return repository.findByPk(id);
+  }
+
+  public int create(Customer customer) {
+    return repository.create(customer);
+  }
+
+  public int update(Customer customer) {
+    return repository.update(customer);
+  }
+
+  public int delete(Integer id) {
+    return repository.delete(id);
+  }
 }

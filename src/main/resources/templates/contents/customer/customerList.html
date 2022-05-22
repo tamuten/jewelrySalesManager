@@ -1,73 +1,103 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-<meta charset="UTF-8">
-<title>お客様一覧</title>
-</head>
-<body>
-	<div th:fragment="customerList_contents" class="h-100 w-100">
-		<div class="content-title border-bottom">
-			<h2>お客様一覧</h2>
-		</div>
-		<div class="signupBtn">
-			<input type="button" class="btn btn-success" value="新規登録"
-				th:onclick="@{location.href='/customer/signup'}" />
-		</div>
-		<div th:if="${message}" class="alert alert-success">
-			<p th:text="${message}"></p>
-		</div>
-		<div class="w-100">
-			<table class="table table-sm text-center table-responsive"
-				style="width: 100%;">
-				<thead>
-					<tr>
-						<td></td>
-						<td>顧客名</td>
-						<td>顧客名カナ</td>
-						<td>生年月日</td>
-						<td>性別</td>
-						<td>血液型</td>
-						<td>住所</td>
-						<td>メモ</td>
-						<td>電話番号1</td>
-						<td>電話番号2</td>
-						<td>電話番号3</td>
-						<td>メールアドレス</td>
-						<td>担当者</td>
-						<td></td>
-						<td></td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="customer : ${customerList}">
-						<td th:text="${customer.id}"></td>
-						<td th:text="${customer.name}"></td>
-						<td th:text="${customer.nameKana}"></td>
-						<td th:text="${customer.birthday}"></td>
-						<td><th:block th:switch="${customer.gender}">
-								<th:block th:case="male">男性</th:block>
-								<th:block th:case="female">女性</th:block>
-							</th:block></td>
-						<td th:text="${customer.bloodType}"></td>
-						<td th:text="${customer.address}"></td>
-						<td th:text="${customer.memo}"></td>
-						<td th:text="${customer.phoneNo1}"></td>
-						<td th:text="${customer.phoneNo2}"></td>
-						<td th:text="${customer.phoneNo3}"></td>
-						<td th:text="${customer.mailAddress}"></td>
-						<td
-							th:text="${customer.tantosha} == null ? '' : ${customer.tantosha.name}"></td>
-						<td><a class="btn btn-sm btn-outline-secondary"
-							th:href="@{'/customer/purchase/' + ${customer.id}}">購入履歴</a></td>
-						<td><a class="btn btn-sm btn-secondary"
-							th:href="@{'/customer/detail/' + ${customer.id}}">詳細</a></td>
-					</tr>
-				</tbody>
-			</table>
-			<!-- ページング -->
-			<div th:replace="contents/component/pagenation :: page_contents"></div>
-		</div>
-	</div>
-</body>
+<html
+  lang="ja"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>お客様一覧</title>
+  </head>
+  <body>
+    <div th:fragment="customerList_contents" class="h-100 w-100">
+      <div class="content-title border-bottom">
+        <h2>お客様一覧</h2>
+      </div>
+      <div class="signupBtn">
+        <input
+          type="button"
+          class="btn btn-success"
+          value="新規登録"
+          th:onclick="@{location.href='/customer/signup'}"
+        />
+      </div>
+      <div th:if="${message}" class="alert alert-success">
+        <p th:text="${message}"></p>
+      </div>
+      <form
+        method="get"
+        th:action="@{/customer/list}"
+        th:object="${customerSearchForm}"
+      >
+        <input type="text" th:field="*{searchName}" class="form-control" />
+        <input type="submit" value="検索" class="btn" />
+      </form>
+      <div class="w-100">
+        <table
+          class="table table-sm text-center table-responsive"
+          style="width: 100%"
+        >
+          <thead>
+            <tr>
+              <td></td>
+              <td>顧客名</td>
+              <td>顧客名カナ</td>
+              <td>生年月日</td>
+              <td>性別</td>
+              <td>血液型</td>
+              <td>住所</td>
+              <td>メモ</td>
+              <td>電話番号1</td>
+              <td>電話番号2</td>
+              <td>電話番号3</td>
+              <td>メールアドレス</td>
+              <td>担当者</td>
+              <td></td>
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="customer : ${customerList}">
+              <td th:text="${customer.id}"></td>
+              <td th:text="${customer.name}"></td>
+              <td th:text="${customer.nameKana}"></td>
+              <td th:text="${customer.birthday}"></td>
+              <td>
+                <th:block th:switch="${customer.gender}">
+                  <th:block th:case="male">男性</th:block>
+                  <th:block th:case="female">女性</th:block>
+                </th:block>
+              </td>
+              <td th:text="${customer.bloodType}"></td>
+              <td th:text="${customer.address}"></td>
+              <td th:text="${customer.memo}"></td>
+              <td th:text="${customer.phoneNo1}"></td>
+              <td th:text="${customer.phoneNo2}"></td>
+              <td th:text="${customer.phoneNo3}"></td>
+              <td th:text="${customer.mailAddress}"></td>
+              <td
+                th:text="${customer.tantosha} == null ? '' : ${customer.tantosha.name}"
+              ></td>
+              <td>
+                <a
+                  class="btn btn-sm btn-outline-secondary"
+                  th:href="@{'/customer/purchase/' + ${customer.id}}"
+                  >購入履歴</a
+                >
+              </td>
+              <td>
+                <a
+                  class="btn btn-sm btn-secondary"
+                  th:href="@{'/customer/detail/' + ${customer.id}}"
+                  >詳細</a
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- ページング -->
+        <div th:replace="contents/component/pagenation :: page_contents"></div>
+      </div>
+    </div>
+  </body>
 </html>
